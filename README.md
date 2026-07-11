@@ -86,7 +86,7 @@ texture loading, and threading behaviour so the engine builds and runs on macOS.
 
 - **Open Rails** and its engine — the [Open Rails team](http://www.openrails.org/)
   and all upstream contributors.
-- **macOS / Apple Silicon port** — Aman.
+- **macOS / Apple Silicon port** — Aman Prajapati.
 
 ## 📄 License
 
