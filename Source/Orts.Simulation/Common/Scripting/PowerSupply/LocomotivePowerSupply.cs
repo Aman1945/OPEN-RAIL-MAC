@@ -620,20 +620,9 @@ namespace ORTS.Scripting.Api
 
         protected T LoadParameter<T>(string sectionName, string keyName, T defaultValue)
         {
-            string buffer;
-            int length;
-
-            if (File.Exists(LpsHost.ParametersFileName))
-            {
-                buffer = new string('\0', 256);
-                length = NativeMethods.GetPrivateProfileString(sectionName, keyName, null, buffer, buffer.Length, LpsHost.ParametersFileName);
-
-                if (length > 0)
-                {
-                    buffer = buffer.Trim('\0').Trim();
-                    return (T)Convert.ChangeType(buffer, typeof(T), System.Globalization.CultureInfo.InvariantCulture);
-                }
-            }
+            var buffer = SimpleIniReader.GetValue(sectionName, keyName, LpsHost.ParametersFileName);
+            if (!string.IsNullOrEmpty(buffer))
+                return (T)Convert.ChangeType(buffer, typeof(T), System.Globalization.CultureInfo.InvariantCulture);
 
             return defaultValue;
         }

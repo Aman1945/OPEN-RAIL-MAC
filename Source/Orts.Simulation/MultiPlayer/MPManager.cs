@@ -879,29 +879,29 @@ namespace Orts.MultiPlayer
                     engList = GetList(Simulator, type);
                 copyList = engList;
             }
-            string bestName = "Default\\default.wag"; double bestDist = 1000;
+            string bestName = "Default/default.wag"; double bestDist = 1000;
 
             foreach (var item in copyList)
             {
                 var dist = Math.Abs(item.Key - length);
                 if (dist < bestDist) { bestDist = dist; bestName = item.Value; }
             }
-            return Simulator.BasePath + "\\trains\\trainset\\" + bestName;
+            return Simulator.BasePath + "/trains/trainset/" + bestName;
         }
 
         static SortedList<double, string> GetList(Simulator simulator, char type)
         {
             string ending = "*.eng";
             if (type == 'w') ending = "*.wag";
-            string[] filePaths = Directory.GetFiles(simulator.BasePath + "\\trains\\trainset", ending, SearchOption.AllDirectories);
+            string[] filePaths = Directory.GetFiles(simulator.BasePath + "/trains/trainset", ending, SearchOption.AllDirectories);
             string temp;
             List<string> allEngines = new List<string>();
             SortedList<double, string> carList = new SortedList<double, string>();
             for (var i = 0; i < filePaths.Length; i++)
             {
-                int index = filePaths[i].LastIndexOf("\\trains\\trainset\\");
+                int index = filePaths[i].LastIndexOf("/trains/trainset/");
                 temp = filePaths[i].Substring(index + 17);
-                if (!temp.Contains("\\")) continue;
+                if (!temp.Contains("/")) continue;
                 allEngines.Add(temp);
             }
             foreach (string name in allEngines)
@@ -911,7 +911,7 @@ namespace Orts.MultiPlayer
 
                 try
                 {
-                    using (var stf = new STFReader(simulator.BasePath + "\\trains\\trainset\\" + name, false))
+                    using (var stf = new STFReader(simulator.BasePath + "/trains/trainset/" + name, false))
                         stf.ParseFile(new STFReader.TokenProcessor[] {
                             new STFReader.TokenProcessor("wagon", ()=>{
                                 stf.ReadString();
@@ -934,7 +934,7 @@ namespace Orts.MultiPlayer
         {
             try
             {
-                string fileName = Simulator.RoutePath + @"\" + Simulator.TRK.Tr_RouteFile.FileName + ".tdb";
+                string fileName = Simulator.RoutePath + @"/" + Simulator.TRK.Tr_RouteFile.FileName + ".tdb";
                 FileStream file = new FileStream(fileName, FileMode.Open);
                 MD5 md5 = new MD5CryptoServiceProvider();
                 byte[] retVal = md5.ComputeHash(file);

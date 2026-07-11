@@ -119,7 +119,7 @@ namespace Orts.Simulation.AIs
             int cnt = 0;
             outf.Write(SpecAuxActions.Count);
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "SaveAuxContainer, count :" + SpecAuxActions.Count + 
+            File.AppendAllText(@"C:/temp/checkpath.txt", "SaveAuxContainer, count :" + SpecAuxActions.Count + 
                 "Position in file: " + outf.BaseStream.Position + "\n");
 #endif
             AITrain aiTrain = ThisTrain as AITrain;
@@ -167,7 +167,7 @@ namespace Orts.Simulation.AIs
             int cnt = 0;
             outf.Write(AuxActions.Count);
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "SaveAIAuxActions, count :" + AuxActions.Count + 
+            File.AppendAllText(@"C:/temp/checkpath.txt", "SaveAIAuxActions, count :" + AuxActions.Count + 
                 "Position in file: " + outf.BaseStream.Position + "\n");
 #endif
 
@@ -269,7 +269,7 @@ namespace Orts.Simulation.AIs
                     if (typeSource == fonction.Key)   //  Caller object is a LevelCrossing
                     {
 #if WITH_PATH_DEBUG
-                        File.AppendAllText(@"C:\temp\checkpath.txt", "GenFunctions registered for train " + ThisTrain.Number + "\n");
+                        File.AppendAllText(@"C:/temp/checkpath.txt", "GenFunctions registered for train " + ThisTrain.Number + "\n");
 #endif
                         AIAuxActionsRef called = (AIAuxActionsRef)fonction.Value;
                         if (called.HasAction(ThisTrain.Number, location))
@@ -291,7 +291,7 @@ namespace Orts.Simulation.AIs
         public void RemoveGenActions(System.Type typeSource, WorldLocation location)
         {
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "Remove GenAction for train " + ThisTrain.Number + "\n");
+            File.AppendAllText(@"C:/temp/checkpath.txt", "Remove GenAction for train " + ThisTrain.Number + "\n");
 #endif
             if (ThisTrain is AITrain)
             {
@@ -861,9 +861,9 @@ namespace Orts.Simulation.AIs
             : base(thisTrain, distance, requiredSpeedMpS, subrouteIdx, routeIdx, sectionIdx, dir, AuxActionRef.AUX_ACTION.WAITING_POINT)
         {
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "New AIAuxActionRef (WP) for train " + thisTrain.Number +
+            File.AppendAllText(@"C:/temp/checkpath.txt", "New AIAuxActionRef (WP) for train " + thisTrain.Number +
                 " Required Distance " + distance + ", speed " + requiredSpeedMpS + ", and dir " + dir + "\n");
-            File.AppendAllText(@"C:\temp\checkpath.txt", "\t\tSection id: " + subrouteIdx + "." + routeIdx + "." + sectionIdx 
+            File.AppendAllText(@"C:/temp/checkpath.txt", "\t\tSection id: " + subrouteIdx + "." + routeIdx + "." + sectionIdx 
                 + "\n"); 
 #endif
             NextAction = AUX_ACTION.WAITING_POINT;
@@ -876,7 +876,7 @@ namespace Orts.Simulation.AIs
             OriginalDelay = inf.ReadInt32();
             NextAction = AUX_ACTION.WAITING_POINT;
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "\tRestore one WPAuxAction" +
+            File.AppendAllText(@"C:/temp/checkpath.txt", "\tRestore one WPAuxAction" +
                 "Position in file: " + inf.BaseStream.Position +
                 " type Action: " + NextAction.ToString() +
                 " Delay: " + Delay + "\n");
@@ -894,7 +894,7 @@ namespace Orts.Simulation.AIs
         public override void save(BinaryWriter outf, int cnt)
         {
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "\tSave one WPAuxAction, count :" + cnt +
+            File.AppendAllText(@"C:/temp/checkpath.txt", "\tSave one WPAuxAction, count :" + cnt +
                 "Position in file: " + outf.BaseStream.Position +
                 " type Action: " + NextAction.ToString() +
                 " Delay: " + Delay + "\n");
@@ -915,7 +915,7 @@ namespace Orts.Simulation.AIs
                 ((AuxActionWPItem)info).SetDelay(Delay);
                 keepIt = (AuxActionWPItem)info;
 #if WITH_PATH_DEBUG
-                File.AppendAllText(@"C:\temp\checkpath.txt", "New action item, type WP with distance " + distance + ", speed " + speed + ", activate distance  " + activateDistance +
+                File.AppendAllText(@"C:/temp/checkpath.txt", "New action item, type WP with distance " + distance + ", speed " + speed + ", activate distance  " + activateDistance +
                     " and inserted distance " + insertedDistance + " (delay " + Delay + ")\n");
 #endif
             }
@@ -937,7 +937,7 @@ namespace Orts.Simulation.AIs
 
                 Register(thisTrain.Number, location);
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "Caller registered for\n");
+            File.AppendAllText(@"C:/temp/checkpath.txt", "Caller registered for\n");
 #endif
             }
             return newAction;
@@ -951,7 +951,7 @@ namespace Orts.Simulation.AIs
         public void SetDelay(int delay)
         {
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "\tDelay set to: " + delay + "\n");
+            File.AppendAllText(@"C:/temp/checkpath.txt", "\tDelay set to: " + delay + "\n");
 #endif
             Delay = delay;
         }
@@ -1082,7 +1082,7 @@ namespace Orts.Simulation.AIs
             HornPattern = AILevelCrossingHornPattern.Restore(inf);
             NextAction = AUX_ACTION.SOUND_HORN;
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "\tRestore one WPAuxAction" +
+            File.AppendAllText(@"C:/temp/checkpath.txt", "\tRestore one WPAuxAction" +
                 "Position in file: " + inf.BaseStream.Position +
                 " type Action: " + NextAction.ToString() +
                 " Delay: " + Delay + "\n");
@@ -1101,7 +1101,7 @@ namespace Orts.Simulation.AIs
         public override void save(BinaryWriter outf, int cnt)
         {
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "\tSave one HornAuxAction, count :" + cnt +
+            File.AppendAllText(@"C:/temp/checkpath.txt", "\tSave one HornAuxAction, count :" + cnt +
                 "Position in file: " + outf.BaseStream.Position +
                 " type Action: " + NextAction.ToString() + 
                 " Delay: " + Delay + "\n");
@@ -1137,7 +1137,7 @@ namespace Orts.Simulation.AIs
             float[] distances = GetActivationDistances(thisTrain, location);
 
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "GenFunctions not yet defined for train:" + thisTrain.Number + 
+            File.AppendAllText(@"C:/temp/checkpath.txt", "GenFunctions not yet defined for train:" + thisTrain.Number + 
                 " Activation Distance: " + distances[0] + " & train distance: " + (-minDist) + "\n");
 #endif
             if (distances[0] >= -minDist) // We call the handler to generate an actionRef
@@ -1146,7 +1146,7 @@ namespace Orts.Simulation.AIs
                 newAction = Handler(distances[0] + thisTrain.DistanceTravelledM, thisTrain.SpeedMpS, distances[0] + thisTrain.DistanceTravelledM, thisTrain.DistanceTravelledM);
                 Register(thisTrain.Number, location);
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "Caller registered for\n");
+            File.AppendAllText(@"C:/temp/checkpath.txt", "Caller registered for\n");
 #endif
             }
             return newAction;
@@ -1214,7 +1214,7 @@ namespace Orts.Simulation.AIs
             Delay = inf.ReadInt32();
             NextAction = AUX_ACTION.CONTROL_START;
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "\tRestore one WPAuxAction" +
+            File.AppendAllText(@"C:/temp/checkpath.txt", "\tRestore one WPAuxAction" +
                 "Position in file: " + inf.BaseStream.Position +
                 " type Action: " + NextAction.ToString() +
                 " Delay: " + Delay + "\n");
@@ -1233,7 +1233,7 @@ namespace Orts.Simulation.AIs
         public override void save(BinaryWriter outf, int cnt)
         {
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "\tSave one HornAuxAction, count :" + cnt +
+            File.AppendAllText(@"C:/temp/checkpath.txt", "\tSave one HornAuxAction, count :" + cnt +
                 "Position in file: " + outf.BaseStream.Position +
                 " type Action: " + NextAction.ToString() + 
                 " Delay: " + Delay + "\n");
@@ -1272,7 +1272,7 @@ namespace Orts.Simulation.AIs
 
                 Register(thisTrain.Number, location);
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "Caller registered for\n");
+            File.AppendAllText(@"C:/temp/checkpath.txt", "Caller registered for\n");
 #endif
             }
             return newAction;
@@ -1415,7 +1415,7 @@ namespace Orts.Simulation.AIs
             IsAbsolute = inf.ReadBoolean();
             NextAction = AUX_ACTION.SIGNAL_DELEGATE;
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "\tRestore one WPAuxAction" +
+            File.AppendAllText(@"C:/temp/checkpath.txt", "\tRestore one WPAuxAction" +
                 "Position in file: " + inf.BaseStream.Position +
                 " type Action: " + NextAction.ToString() +
                 " Delay: " + Delay + "\n");
@@ -1425,7 +1425,7 @@ namespace Orts.Simulation.AIs
         public override void save(BinaryWriter outf, int cnt)
         {
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "\tSave one SigDelegate, count :" + cnt +
+            File.AppendAllText(@"C:/temp/checkpath.txt", "\tSave one SigDelegate, count :" + cnt +
                 "Position in file: " + outf.BaseStream.Position +
                 " type Action: " + NextAction.ToString() +
                 " Delay: " + Delay + "\n");
@@ -1508,7 +1508,7 @@ namespace Orts.Simulation.AIs
         public void SetDelay(int delay)
         {
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "\tDelay set to: " + delay + "\n");
+            File.AppendAllText(@"C:/temp/checkpath.txt", "\tDelay set to: " + delay + "\n");
 #endif
             Delay = delay;
         }
@@ -1721,7 +1721,7 @@ namespace Orts.Simulation.AIs
                 aiTrain.AuxActionsContain.CheckGenActions(this.GetType(), aiTrain.RearTDBTraveller.WorldLocation, Delay);
 
 #if WITH_PATH_DEBUG
-                File.AppendAllText(@"C:\temp\checkpath.txt", "WP, init action for train " + aiTrain.Number + " at " + correctedTime + " to " + ActualDepart + "(HANDLE_ACTION)\n");
+                File.AppendAllText(@"C:/temp/checkpath.txt", "WP, init action for train " + aiTrain.Number + " at " + correctedTime + " to " + ActualDepart + "(HANDLE_ACTION)\n");
 #endif
             }
 
@@ -1747,10 +1747,10 @@ namespace Orts.Simulation.AIs
                 else
                 {
 #if WITH_PATH_DEBUG
-                    File.AppendAllText(@"C:\temp\checkpath.txt", "WP, End Handle action for train " + aiTrain.Number + " at " + presentTime + "(END_ACTION)\n");
+                    File.AppendAllText(@"C:/temp/checkpath.txt", "WP, End Handle action for train " + aiTrain.Number + " at " + presentTime + "(END_ACTION)\n");
 #endif
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "WP, Action ended for train " + thisTrain.Number + " at " + presentTime + "(STOPPED)\n");
+            File.AppendAllText(@"C:/temp/checkpath.txt", "WP, Action ended for train " + thisTrain.Number + " at " + presentTime + "(STOPPED)\n");
 #endif
                     if (thisTrain.AuxActionsContain.CountSpec() > 0)
                         thisTrain.AuxActionsContain.Remove(this);
@@ -1760,7 +1760,7 @@ namespace Orts.Simulation.AIs
             else
             {
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "WP, Action ended for train " + thisTrain.Number + " at " + presentTime + "(STOPPED)\n");
+            File.AppendAllText(@"C:/temp/checkpath.txt", "WP, Action ended for train " + thisTrain.Number + " at " + presentTime + "(STOPPED)\n");
 #endif
                 if (thisTrain.AuxActionsContain.CountSpec() > 0)
                     thisTrain.AuxActionsContain.Remove(this);
@@ -1824,7 +1824,7 @@ namespace Orts.Simulation.AIs
 #if WITH_PATH_DEBUG
                     else
                     {
-                        File.AppendAllText(@"C:\temp\checkpath.txt", "AITRain " + thisTrain.Number + "!  No more AuxActions...\n");
+                        File.AppendAllText(@"C:/temp/checkpath.txt", "AITRain " + thisTrain.Number + "!  No more AuxActions...\n");
                     }
 #endif
                     if (thisTrain is AITrain)
@@ -1835,7 +1835,7 @@ namespace Orts.Simulation.AIs
                         movementState = AITrain.AI_MOVEMENT_STATE.BRAKING;
                         aiTrain.ResetActions(true);
 #if WITH_PATH_DEBUG
-                        File.AppendAllText(@"C:\temp\checkpath.txt", "AITRain " + aiTrain.Number + " is " + movementState.ToString() + " at " + presentTime + "\n");
+                        File.AppendAllText(@"C:/temp/checkpath.txt", "AITRain " + aiTrain.Number + " is " + movementState.ToString() + " at " + presentTime + "\n");
 #endif
                     }
                     break;
@@ -1929,7 +1929,7 @@ namespace Orts.Simulation.AIs
         public override AITrain.AI_MOVEMENT_STATE InitAction(Train thisTrain, int presentTime, float elapsedClockSeconds, AITrain.AI_MOVEMENT_STATE movementState)
         {
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "AITRain " + thisTrain.Number + " is " + movementState.ToString() + " at " + presentTime + "\n");
+            File.AppendAllText(@"C:/temp/checkpath.txt", "AITRain " + thisTrain.Number + " is " + movementState.ToString() + " at " + presentTime + "\n");
 #endif
             Processing = true;
             int correctedTime = presentTime;
@@ -1939,7 +1939,7 @@ namespace Orts.Simulation.AIs
                 var locomotive = (MSTSLocomotive)thisTrain.FindLeadLocomotive();
                 Execution = HornPattern.Execute(locomotive, DurationS);
 #if WITH_PATH_DEBUG
-                    File.AppendAllText(@"C:\temp\checkpath.txt", "Do Horn for AITRain " + thisTrain.Number + " , mvt state " + movementState.ToString() + " at " + presentTime + "\n");
+                    File.AppendAllText(@"C:/temp/checkpath.txt", "Do Horn for AITRain " + thisTrain.Number + " , mvt state " + movementState.ToString() + " at " + presentTime + "\n");
 #endif
                 Triggered = true;
             }
@@ -2099,7 +2099,7 @@ namespace Orts.Simulation.AIs
         public override AITrain.AI_MOVEMENT_STATE InitAction(Train thisTrain, int presentTime, float elapsedClockSeconds, AITrain.AI_MOVEMENT_STATE movementState)
         {
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "AITRain " + thisTrain.Number + " is " + movementState.ToString() + " at " + presentTime + "\n");
+            File.AppendAllText(@"C:/temp/checkpath.txt", "AITRain " + thisTrain.Number + " is " + movementState.ToString() + " at " + presentTime + "\n");
 #endif
             TrainCar locomotive = thisTrain.FindLeadLocomotive();
             if (!(locomotive is MSTSSteamLocomotive))
@@ -2147,7 +2147,7 @@ namespace Orts.Simulation.AIs
                 if (Triggered)
                 {
 #if WITH_PATH_DEBUG
-                File.AppendAllText(@"C:\temp\checkpath.txt", "Stop Horn for AITRain " + thisTrain.Number + " : mvt state " + movementState.ToString() + " at " + presentTime + "\n");
+                File.AppendAllText(@"C:/temp/checkpath.txt", "Stop Horn for AITRain " + thisTrain.Number + " : mvt state " + movementState.ToString() + " at " + presentTime + "\n");
 #endif
                     locomotive = thisTrain.FindLeadLocomotive();
                     ((MSTSLocomotive)locomotive).ManualHorn = false;
@@ -2284,7 +2284,7 @@ namespace Orts.Simulation.AIs
         public override AITrain.AI_MOVEMENT_STATE InitAction(Train thisTrain, int presentTime, float elapsedClockSeconds, AITrain.AI_MOVEMENT_STATE movementState)
         {
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "AITRain " + thisTrain.Number + " is " + movementState.ToString() + " at " + presentTime + "\n");
+            File.AppendAllText(@"C:/temp/checkpath.txt", "AITRain " + thisTrain.Number + " is " + movementState.ToString() + " at " + presentTime + "\n");
 #endif
             TrainCar locomotive = thisTrain.FindLeadLocomotive();
             if (!(locomotive is MSTSSteamLocomotive))
@@ -2332,7 +2332,7 @@ namespace Orts.Simulation.AIs
                 if (Triggered)
                 {
 #if WITH_PATH_DEBUG
-                File.AppendAllText(@"C:\temp\checkpath.txt", "Stop Horn for AITRain " + thisTrain.Number + " : mvt state " + movementState.ToString() + " at " + presentTime + "\n");
+                File.AppendAllText(@"C:/temp/checkpath.txt", "Stop Horn for AITRain " + thisTrain.Number + " : mvt state " + movementState.ToString() + " at " + presentTime + "\n");
 #endif
                     locomotive = thisTrain.FindLeadLocomotive();
                     ((MSTSLocomotive)locomotive).ManualHorn = false;
@@ -2591,7 +2591,7 @@ namespace Orts.Simulation.AIs
             thisTrain.TestAbsDelay(ref delay, presentTime);
             ActualDepart = presentTime + delay;
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "SigDelegate, init action for train " + thisTrain.Number + " at " + 
+            File.AppendAllText(@"C:/temp/checkpath.txt", "SigDelegate, init action for train " + thisTrain.Number + " at " + 
                 presentTime + "(HANDLE_ACTION)\n");
 #endif
             Processing = true;
@@ -2601,7 +2601,7 @@ namespace Orts.Simulation.AIs
         public override AITrain.AI_MOVEMENT_STATE HandleAction(Train thisTrain, int presentTime, float elapsedClockSeconds, AITrain.AI_MOVEMENT_STATE movementState)
         {
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "WP, End Handle action for train " + thisTrain.Number + 
+            File.AppendAllText(@"C:/temp/checkpath.txt", "WP, End Handle action for train " + thisTrain.Number + 
                 " at " + presentTime + "(END_ACTION)\n");
 #endif
             if (ActualDepart >= presentTime)
@@ -2626,7 +2626,7 @@ namespace Orts.Simulation.AIs
                 thisTrain.PresentPosition[0].TCSectionIndex == thisTrain.ValidRoute[0][thisTrain.ValidRoute[0].Count - 1].TCSectionIndex)
             {
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "WP, Action ended for train " + thisTrain.Number + " at " + presentTime + "(STOPPED)\n");
+            File.AppendAllText(@"C:/temp/checkpath.txt", "WP, Action ended for train " + thisTrain.Number + " at " + presentTime + "(STOPPED)\n");
 #endif
                 if (((AIActSigDelegateRef)ActionRef).AssociatedWPAction != null)
                 {
@@ -2647,7 +2647,7 @@ namespace Orts.Simulation.AIs
 #if WITH_PATH_DEBUG
                 else
                 {
-                    File.AppendAllText(@"C:\temp\checkpath.txt", "AITRain " + thisTrain.Number + "!  No more AuxActions...\n");
+                    File.AppendAllText(@"C:/temp/checkpath.txt", "AITRain " + thisTrain.Number + "!  No more AuxActions...\n");
                 }
 #endif
                 return thisTrain is AITrain && (thisTrain as AITrain).MovementState == AITrain.AI_MOVEMENT_STATE.STATION_STOP ? AITrain.AI_MOVEMENT_STATE.STATION_STOP : AITrain.AI_MOVEMENT_STATE.STOPPED;

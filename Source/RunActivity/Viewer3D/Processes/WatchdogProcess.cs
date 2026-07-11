@@ -126,6 +126,11 @@ namespace Orts.Viewer3D.Processes
                     else if (!token.IsResponding)
                         hungTokens.Add(token);
 
+#if MAC
+                // On macOS the initial world load and cross-platform asset paths can legitimately exceed the
+                // watchdog timeout, and stack capture of managed threads is unreliable here (it can be empty,
+                // which makes the hang-report constructors throw). Disable watchdog termination entirely.
+#else
                 if (hungTokens.Count > 0)
                 {
                     // Report every hung thread as a fatal error.
@@ -142,6 +147,7 @@ namespace Orts.Viewer3D.Processes
                     else
                         Environment.Exit(1);
                 }
+#endif
             }
         }
     }

@@ -6,7 +6,8 @@
       "version": "3.8.0.1641",
       "commands": [
         "mgfxc"
-      ]
+      ],
+      "rollForward": false
     }
   }
 }

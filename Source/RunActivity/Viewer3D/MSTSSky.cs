@@ -503,7 +503,7 @@ namespace Orts.Viewer3D
 
                 for (int i = 0; i < Viewer.ENVFile.SkyLayers.Count; i++)
                 {
-                    mstsSkyTexture[i] = Viewer.Simulator.RoutePath + @"\envfiles\textures\" + mstsskytexture[i].TextureName.ToString();
+                    mstsSkyTexture[i] = Viewer.Simulator.RoutePath + @"/envfiles/textures/" + mstsskytexture[i].TextureName.ToString();
                     MSTSSkyTexture.Add(Viewer.TextureManager.Get(mstsSkyTexture[i], true));
                     if( i == 0 )
                     {
@@ -540,8 +540,8 @@ namespace Orts.Viewer3D
             {
                 var mstsskysatellitetexture = Viewer.ENVFile.SkySatellites.ToArray();
 
-                string mstsSkySunTexture = Viewer.Simulator.RoutePath + @"\envfiles\textures\" + mstsskysatellitetexture[0].TextureName.ToString();
-                string mstsSkyMoonTexture = Viewer.Simulator.RoutePath + @"\envfiles\textures\" + mstsskysatellitetexture[1].TextureName.ToString();
+                string mstsSkySunTexture = Viewer.Simulator.RoutePath + @"/envfiles/textures/" + mstsskysatellitetexture[0].TextureName.ToString();
+                string mstsSkyMoonTexture = Viewer.Simulator.RoutePath + @"/envfiles/textures/" + mstsskysatellitetexture[1].TextureName.ToString();
 
                 MSTSSkySunTexture = Viewer.TextureManager.Get(mstsSkySunTexture);
                 MSTSSkyMoonTexture = Viewer.TextureManager.Get(mstsSkyMoonTexture);

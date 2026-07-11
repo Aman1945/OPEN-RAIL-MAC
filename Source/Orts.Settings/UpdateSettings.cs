@@ -58,7 +58,12 @@ namespace ORTS.Settings
         public string[] GetChannels()
         {
             // We are always a local INI settings store.
-            return (from name in (SettingStore as SettingsStoreLocalIni).GetSectionNames()
+#if WINDOWS
+            var sectionNames = (SettingStore as SettingsStoreLocalIni).GetSectionNames();
+#else
+            var sectionNames = (SettingStore as SettingsStoreLocalIniCrossPlatform).GetSectionNames();
+#endif
+            return (from name in sectionNames
                     where name.EndsWith("Settings")
                     select name.Replace("Settings", "")).ToArray();
         }

@@ -86,7 +86,7 @@ namespace Orts.Simulation.Signalling
             Simulator = simulator;
 
 #if DEBUG_REPORTS
-            File.Delete(@"C:\temp\printproc.txt");
+            File.Delete(@"C:/temp/printproc.txt");
 #endif
 
             SignalRefList = new Dictionary<uint, SignalRefObject>();
@@ -151,13 +151,13 @@ namespace Orts.Simulation.Signalling
 
             PrintTCBase(trackDB.TrackNodes);
 
-            if (File.Exists(@"C:\temp\SignalObjects.txt"))
+            if (File.Exists(@"C:/temp/SignalObjects.txt"))
             {
-                File.Delete(@"C:\temp\SignalObjects.txt");
+                File.Delete(@"C:/temp/SignalObjects.txt");
             }
-            if (File.Exists(@"C:\temp\SignalShapes.txt"))
+            if (File.Exists(@"C:/temp/SignalShapes.txt"))
             {
-                File.Delete(@"C:\temp\SignalShapes.txt");
+                File.Delete(@"C:/temp/SignalShapes.txt");
             }
 
 			var sob = new StringBuilder();
@@ -190,7 +190,7 @@ namespace Orts.Simulation.Signalling
                     sob.AppendFormat("TC TCNextTC    : {0}\n", singleSignal.TCNextTC);
                 }
             }
-            File.AppendAllText(@"C:\temp\SignalObjects.txt", sob.ToString());
+            File.AppendAllText(@"C:/temp/SignalObjects.txt", sob.ToString());
 
             var ssb = new StringBuilder();
             foreach (var sshape in sigcfg.SignalShapes)
@@ -222,7 +222,7 @@ namespace Orts.Simulation.Signalling
                 }
                 ssb.Append("\n==========================================\n");
             }
-            File.AppendAllText(@"C:\temp\SignalShapes.txt", ssb.ToString());
+            File.AppendAllText(@"C:/temp/SignalShapes.txt", ssb.ToString());
 #endif
 
             // Clear world lists to save memory
@@ -400,7 +400,7 @@ namespace Orts.Simulation.Signalling
         {
             // get all filesnames in World directory
 
-            var WFilePath = simulator.RoutePath + @"\WORLD\";
+            var WFilePath = simulator.RoutePath + @"/WORLD/";
 
             var Tokens = new List<TokenID>
             {
@@ -1094,7 +1094,7 @@ namespace Orts.Simulation.Signalling
             }
 
 #if DEBUG_PRINT
-            File.AppendAllText(@"C:\temp\speedpost.txt",
+            File.AppendAllText(@"C:/temp/speedpost.txt",
                 string.Format("\nPlaced : at : {0} {1}:{2} {3}; angle - track : {4}:{5}; delta : {6}; dir : {7}\n",
                 speedItem.TileX, speedItem.TileZ, speedItem.X, speedItem.Z,
                 speedItem.Angle, SignalObjects[foundSignals].tdbtraveller.RotY,
@@ -1118,7 +1118,7 @@ namespace Orts.Simulation.Signalling
             MilepostList.Add(milepost);
  
 #if DEBUG_PRINT
-            File.AppendAllText(@"C:\temp\speedpost.txt",
+            File.AppendAllText(@"C:/temp/speedpost.txt",
                 string.Format("\nMilepost placed : at : {0} {1}:{2} {3}. String: {4}\n",
                 speedItem.TileX, speedItem.TileZ, speedItem.X, speedItem.Z, speedItem.SpeedInd));
 #endif
@@ -1798,9 +1798,9 @@ namespace Orts.Simulation.Signalling
             // Test : print TrackCircuitList
 
 #if DEBUG_PRINT
-            if (File.Exists(@"C:\temp\TCBase.txt"))
+            if (File.Exists(@"C:/temp/TCBase.txt"))
             {
-                File.Delete(@"C:\temp\TCBase.txt");
+                File.Delete(@"C:/temp/TCBase.txt");
             }
 
             var tcbb = new StringBuilder();
@@ -2006,7 +2006,7 @@ namespace Orts.Simulation.Signalling
 
                 tcbb.Append("\n");
             }
-            File.AppendAllText(@"C:\temp\TCBase.txt", tcbb.ToString());
+            File.AppendAllText(@"C:/temp/TCBase.txt", tcbb.ToString());
 #endif
         }
 
@@ -3045,7 +3045,7 @@ namespace Orts.Simulation.Signalling
         public void requestClearNode(Train.TrainRouted thisTrain, Train.TCSubpathRoute routePart)
         {
 #if DEBUG_REPORTS
-            File.AppendAllText(@"C:\temp\printproc.txt",
+            File.AppendAllText(@"C:/temp/printproc.txt",
                 String.Format("Request for clear node from train {0} at section {1} starting from {2}\n",
                 thisTrain.Train.Number,
                 thisTrain.Train.PresentPosition[thisTrain.TrainRouteDirectionIndex].TCSectionIndex,
@@ -3053,7 +3053,7 @@ namespace Orts.Simulation.Signalling
 #endif
             if (thisTrain.Train.CheckTrain)
             {
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                     string.Format("Request for clear node from train {0} at section {1} starting from {2}\n",
                     thisTrain.Train.Number,
                     thisTrain.Train.PresentPosition[thisTrain.TrainRouteDirectionIndex].TCSectionIndex,
@@ -3156,13 +3156,13 @@ namespace Orts.Simulation.Signalling
             {
                 if (endListIndex >= 0)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt",
+                    File.AppendAllText(@"C:/temp/checktrain.txt",
                         string.Format("Index in route list : {0} = {1}\n",
                         endListIndex, thisRoute[endListIndex].TCSectionIndex));
                 }
                 else
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt",
+                    File.AppendAllText(@"C:/temp/checktrain.txt",
                         string.Format("Index in route list : {0}\n",
                         endListIndex));
                 }
@@ -3180,7 +3180,7 @@ namespace Orts.Simulation.Signalling
                     furthestRouteCleared = true;
                     if (thisTrain.Train.CheckTrain)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt",
+                        File.AppendAllText(@"C:/temp/checktrain.txt",
                             string.Format("Cleared Distance : {0} > Max Distance \n",
                             FormatStrings.FormatDistance(clearedDistanceM, true)));
                     }
@@ -3259,7 +3259,7 @@ namespace Orts.Simulation.Signalling
 
                 if (thisTrain.Train.CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt",
+                    File.AppendAllText(@"C:/temp/checktrain.txt",
                         string.Format("Starting check from : Index in route list : {0} = {1}\n",
                         routeIndex, thisRoute[routeIndex].TCSectionIndex));
                 }
@@ -3283,7 +3283,7 @@ namespace Orts.Simulation.Signalling
 
                 if (thisTrain.Train.CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt",
+                    File.AppendAllText(@"C:/temp/checktrain.txt",
                         string.Format("Train ahead in section {0} : {1}\n",
                         thisSection.Index, trainAhead.Count));
                 }
@@ -3302,13 +3302,13 @@ namespace Orts.Simulation.Signalling
                     {
                         if (lastRouteIndex >= 0)
                         {
-                            File.AppendAllText(@"C:\temp\checktrain.txt",
+                            File.AppendAllText(@"C:/temp/checktrain.txt",
                             string.Format("Set last valid section : Index in route list : {0} = {1}\n",
                             lastRouteIndex, thisTrain.Train.ValidRoute[thisTrain.TrainRouteDirectionIndex][lastRouteIndex].TCSectionIndex));
                         }
                         else
                         {
-                            File.AppendAllText(@"C:\temp\checktrain.txt", "First Section in Route\n");
+                            File.AppendAllText(@"C:/temp/checktrain.txt", "First Section in Route\n");
                         }
                     }
                 }
@@ -3321,7 +3321,7 @@ namespace Orts.Simulation.Signalling
                 {
                     if (thisTrain.Train.CheckTrain)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt",
+                        File.AppendAllText(@"C:/temp/checktrain.txt",
                             string.Format("Checking : Index in route list : {0} = {1}\n",
                             routeIndex, thisRoute[routeIndex].TCSectionIndex));
                     }
@@ -3342,7 +3342,7 @@ namespace Orts.Simulation.Signalling
 
                         if (thisTrain.Train.CheckTrain)
                         {
-                            File.AppendAllText(@"C:\temp\checktrain.txt", "Section looped \n");
+                            File.AppendAllText(@"C:/temp/checktrain.txt", "Section looped \n");
                         }
                     }
                     // check if section is access to pool
@@ -3360,7 +3360,7 @@ namespace Orts.Simulation.Signalling
                         clearedDistanceM += thisSection.Length - offset;
                         if (thisTrain.Train.CheckTrain)
                         {
-                            File.AppendAllText(@"C:\temp\checktrain.txt", "Section clear \n");
+                            File.AppendAllText(@"C:/temp/checktrain.txt", "Section clear \n");
                         }
 
                         if (thisSection.CircuitState.HasOtherTrainsOccupying(thisTrain))
@@ -3386,7 +3386,7 @@ namespace Orts.Simulation.Signalling
                             {
                                 if (thisTrain.Train.CheckTrain)
                                 {
-                                    File.AppendAllText(@"C:\temp\checktrain.txt",
+                                    File.AppendAllText(@"C:/temp/checktrain.txt",
                                         string.Format("Train ahead in section {0} : {1}\n",
                                         thisSection.Index, trainAhead.Count));
                                 }
@@ -3422,7 +3422,7 @@ namespace Orts.Simulation.Signalling
                                 furthestRouteCleared = true;
                                 if (thisTrain.Train.CheckTrain)
                                 {
-                                    File.AppendAllText(@"C:\temp\checktrain.txt",
+                                    File.AppendAllText(@"C:/temp/checktrain.txt",
                                         string.Format("Has end signal : {0}\n",
                                         thisSection.EndSignals[thisElement.Direction].thisRef));
                                 }
@@ -3441,7 +3441,7 @@ namespace Orts.Simulation.Signalling
                     {
                         if (thisTrain.Train.CheckTrain)
                         {
-                            File.AppendAllText(@"C:\temp\checktrain.txt", "Section blocked \n");
+                            File.AppendAllText(@"C:/temp/checktrain.txt", "Section blocked \n");
                         }
                         lastRouteIndex = routeIndex - 1;
                         lastReserved = lastRouteIndex >= 0 ? routePart[lastRouteIndex].TCSectionIndex : -1;
@@ -3460,7 +3460,7 @@ namespace Orts.Simulation.Signalling
 
                 if (thisTrain.Train.CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt",
+                    File.AppendAllText(@"C:/temp/checktrain.txt",
                         string.Format("Last section cleared in route list : {0} = {1}\n",
                         lastRouteIndex, thisRoute[lastRouteIndex].TCSectionIndex));
                 }
@@ -3472,7 +3472,7 @@ namespace Orts.Simulation.Signalling
                     furthestRouteCleared = true;
                     if (thisTrain.Train.CheckTrain)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt", "End of track \n");
+                        File.AppendAllText(@"C:/temp/checktrain.txt", "End of track \n");
                     }
                 }
 
@@ -3485,7 +3485,7 @@ namespace Orts.Simulation.Signalling
                         furthestRouteCleared = true;
                         if (thisTrain.Train.CheckTrain)
                         {
-                            File.AppendAllText(@"C:\temp\checktrain.txt", "End of path \n");
+                            File.AppendAllText(@"C:/temp/checktrain.txt", "End of path \n");
                         }
                     }
                 }
@@ -3531,7 +3531,7 @@ namespace Orts.Simulation.Signalling
                             furthestRouteCleared = true;
                             if (thisTrain.Train.CheckTrain)
                             {
-                                File.AppendAllText(@"C:\temp\checktrain.txt", "Reserved Switch \n");
+                                File.AppendAllText(@"C:/temp/checktrain.txt", "Reserved Switch \n");
                             }
                         }
                     }
@@ -3559,7 +3559,7 @@ namespace Orts.Simulation.Signalling
                         furthestRouteCleared = true;
                         if (thisTrain.Train.CheckTrain)
                         {
-                            File.AppendAllText(@"C:\temp\checktrain.txt", "Train Ahead \n");
+                            File.AppendAllText(@"C:/temp/checktrain.txt", "Train Ahead \n");
                         }
                     }
                     // check for train further ahead and determine distance to train
@@ -3575,7 +3575,7 @@ namespace Orts.Simulation.Signalling
                             furthestRouteCleared = true;
                             if (thisTrain.Train.CheckTrain)
                             {
-                                File.AppendAllText(@"C:\temp\checktrain.txt", "Train Ahead \n");
+                                File.AppendAllText(@"C:/temp/checktrain.txt", "Train Ahead \n");
                             }
                         }
                     }
@@ -3604,7 +3604,7 @@ namespace Orts.Simulation.Signalling
 
             if (thisTrain.Train.CheckTrain)
             {
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                     string.Format("Returned : \n    State : {0}\n    Dist  : {1}\n    Sect  : {2}\n",
                     endAuthority, FormatStrings.FormatDistance(clearedDistanceM, true), lastReserved));
             }

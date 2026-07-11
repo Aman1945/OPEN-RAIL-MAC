@@ -178,14 +178,14 @@ namespace Orts.Formats.OR
             node.Reduced = true;
             if (node.TrEndNode || node.TrJunctionNode != null)
             {
-                //File.AppendAllText(@"F:\temp\AE.txt", "Original TileX: " + this.UiD.TileX + ".." + this.UiD.X + "/ TileY: " + this.UiD.TileZ + ".." + this.UiD.Z + "\n");
+                //File.AppendAllText(@"F:/temp/AE.txt", "Original TileX: " + this.UiD.TileX + ".." + this.UiD.X + "/ TileY: " + this.UiD.TileZ + ".." + this.UiD.Z + "\n");
                 int intermX = node.UiD.TileX;
                 int intermY = node.UiD.TileZ;
                 node.UiD.TileX = intermX - (int)tileX;
                 node.UiD.TileZ = intermY - (int)tileY;
                 node.UiD.WorldTileX = node.UiD.TileX;
                 node.UiD.WorldTileZ = node.UiD.TileZ;
-                //File.AppendAllText(@"F:\temp\AE.txt", "reduced end or junction node TileX: " + this.UiD.TileX + ".." + this.UiD.X + "/ TileY: " + this.UiD.TileZ + ".." + this.UiD.Z + "\n");
+                //File.AppendAllText(@"F:/temp/AE.txt", "reduced end or junction node TileX: " + this.UiD.TileX + ".." + this.UiD.X + "/ TileY: " + this.UiD.TileZ + ".." + this.UiD.Z + "\n");
 
 
             }
@@ -195,7 +195,7 @@ namespace Orts.Formats.OR
                 {
                     if (section.Reduced)
                         continue;
-                    //File.AppendAllText(@"F:\temp\AE.txt", "Original TileX: " + section.TileX + ".." + section.X + "/ TileY: " + section.TileZ + ".." + section.Z + "\n");
+                    //File.AppendAllText(@"F:/temp/AE.txt", "Original TileX: " + section.TileX + ".." + section.X + "/ TileY: " + section.TileZ + ".." + section.Z + "\n");
                     int intermX = section.TileX;
                     int intermY = section.TileZ;
                     section.TileX = intermX - (int)tileX;
@@ -203,14 +203,14 @@ namespace Orts.Formats.OR
                     section.WFNameX = section.TileX;
                     section.WFNameZ = section.TileZ;
                     section.Reduced = true;
-                    //File.AppendAllText(@"F:\temp\AE.txt", "reduced section TileX: " + section.TileX + ".." + section.X + "/ TileY: " + section.TileZ + ".." + section.Z + "\n");
+                    //File.AppendAllText(@"F:/temp/AE.txt", "reduced section TileX: " + section.TileX + ".." + section.X + "/ TileY: " + section.TileZ + ".." + section.Z + "\n");
                 }
             }
             else
             {
                 if (!node.TrVectorNode.TrVectorSections[0].Reduced)
                 {
-                    //File.AppendAllText(@"F:\temp\AE.txt", "Original TileX: " + TrVectorNode.TrVectorSections[0].TileX +
+                    //File.AppendAllText(@"F:/temp/AE.txt", "Original TileX: " + TrVectorNode.TrVectorSections[0].TileX +
                     //    ".." + TrVectorNode.TrVectorSections[0].X + "/ TileY: " +
                     //    TrVectorNode.TrVectorSections[0].TileZ + ".." +
                     //    TrVectorNode.TrVectorSections[0].Z + "\n");
@@ -221,7 +221,7 @@ namespace Orts.Formats.OR
                     node.TrVectorNode.TrVectorSections[0].WFNameX = node.TrVectorNode.TrVectorSections[0].TileX;
                     node.TrVectorNode.TrVectorSections[0].WFNameZ = node.TrVectorNode.TrVectorSections[0].TileZ;
                     node.TrVectorNode.TrVectorSections[0].Reduced = true;
-                    //File.AppendAllText(@"F:\temp\AE.txt", "Reduced simple section TileX: " + TrVectorNode.TrVectorSections[0].TileX +
+                    //File.AppendAllText(@"F:/temp/AE.txt", "Reduced simple section TileX: " + TrVectorNode.TrVectorSections[0].TileX +
                     //    ".." + TrVectorNode.TrVectorSections[0].X + "/ TileY: " +
                     //    TrVectorNode.TrVectorSections[0].TileZ + ".." +
                     //    TrVectorNode.TrVectorSections[0].Z + "\n");

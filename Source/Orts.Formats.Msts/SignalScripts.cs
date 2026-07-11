@@ -180,11 +180,11 @@ namespace Orts.Formats.Msts
         private static IDictionary<string, SCRAndOr> TranslateAndOr;
 
 #if DEBUG_PRINT_IN
-        public static string din_fileLoc = @"C:\temp\";     /* file path for debug files */
+        public static string din_fileLoc = @"C:/temp/";     /* file path for debug files */
 #endif
 
 #if DEBUG_PRINT_OUT
-        public static string dout_fileLoc = @"C:\temp\";    /* file path for debug files */
+        public static string dout_fileLoc = @"C:/temp/";    /* file path for debug files */
 #endif
 
         public IDictionary<SignalType, SCRScripts> Scripts;
@@ -253,7 +253,7 @@ namespace Orts.Formats.Msts
 
             foreach (string FileName in ScriptFiles)
             {
-                string fullName = String.Concat(RoutePath, @"\", FileName);
+                string fullName = String.Concat(RoutePath, @"/", FileName);
                 int readLineNumber = 0;
 
 #if !DEBUG_ALLOWCRASH

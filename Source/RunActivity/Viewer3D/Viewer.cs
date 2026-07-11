@@ -22,9 +22,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+#if WINDOWS
 using System.Management;
+#endif
 using System.Threading;
-using System.Windows.Forms;
 using GNU.Gettext;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -187,7 +188,7 @@ namespace Orts.Viewer3D
 
         bool ForceMouseVisible;
         double MouseVisibleTillRealTime;
-        public Cursor ActualCursor = Cursors.Default;
+        public Microsoft.Xna.Framework.Input.MouseCursor ActualCursor = Microsoft.Xna.Framework.Input.MouseCursor.Arrow;
         public static Viewport DefaultViewport;
 
         ICabViewMouseControlRenderer MouseChangingControl;
@@ -195,6 +196,10 @@ namespace Orts.Viewer3D
         ICabViewMouseControlRenderer OldMousePickedControl;
 
         public bool SaveScreenshot { get; set; }
+#if MAC
+        bool MacAutoScreenshotDone;
+        bool MacAutoCameraDone;
+#endif
         public bool SaveActivityThumbnail { get; private set; }
         public string SaveActivityFileStem { get; private set; }
 
@@ -342,21 +347,21 @@ namespace Orts.Viewer3D
 
             string ORfilepath = System.IO.Path.Combine(Simulator.RoutePath, "OpenRails");
             ContentPath = Game.ContentPath;
-            ENVFile = new EnvironmentFile(Simulator.RoutePath + @"\ENVFILES\" + Simulator.TRK.Tr_RouteFile.Environment.ENVFileName(Simulator.Season, Simulator.WeatherType));
+            ENVFile = new EnvironmentFile(Simulator.RoutePath + @"/ENVFILES/" + Simulator.TRK.Tr_RouteFile.Environment.ENVFileName(Simulator.Season, Simulator.WeatherType));
 
-            if (File.Exists(ORfilepath + @"\sigcfg.dat"))
+            if (File.Exists(ORfilepath + @"/sigcfg.dat"))
             {
-                SIGCFG = new SignalConfigurationFile(ORfilepath + @"\sigcfg.dat", true);
+                SIGCFG = new SignalConfigurationFile(ORfilepath + @"/sigcfg.dat", true);
             }
             else
             {
-                SIGCFG = new SignalConfigurationFile(Simulator.RoutePath + @"\sigcfg.dat", false);
+                SIGCFG = new SignalConfigurationFile(Simulator.RoutePath + @"/sigcfg.dat", false);
             }
 
-            TrackTypes = new TrackTypesFile(Simulator.RoutePath + @"\TTYPE.DAT");
+            TrackTypes = new TrackTypesFile(Simulator.RoutePath + @"/TTYPE.DAT");
 
-            Tiles = new TileManager(Simulator.RoutePath + @"\TILES\", false);
-            LoTiles = new TileManager(Simulator.RoutePath + @"\LO_TILES\", true);
+            Tiles = new TileManager(Simulator.RoutePath + @"/TILES/", false);
+            LoTiles = new TileManager(Simulator.RoutePath + @"/LO_TILES/", true);
             MilepostUnitsMetric = Simulator.TRK.Tr_RouteFile.MilepostUnitsMetric;
 
             Simulator.AllowedSpeedRaised += (object sender, EventArgs e) =>
@@ -378,10 +383,10 @@ namespace Orts.Viewer3D
             // so it is opened only in activity mode
             if (Simulator.ActivityRun != null && Simulator.Activity.Tr_Activity.Tr_Activity_File.ActivityRestrictedSpeedZones != null)
             {
-                var speedpostDatFile = Simulator.RoutePath + @"\speedpost.dat";
+                var speedpostDatFile = Simulator.RoutePath + @"/speedpost.dat";
                 if (File.Exists(speedpostDatFile))
                 {
-                    SpeedpostDatFile = new SpeedpostDatFile(Simulator.RoutePath + @"\speedpost.dat", Simulator.RoutePath + @"\shapes\");
+                    SpeedpostDatFile = new SpeedpostDatFile(Simulator.RoutePath + @"/speedpost.dat", Simulator.RoutePath + @"/shapes/");
                 }
             }
 
@@ -753,7 +758,14 @@ namespace Orts.Viewer3D
         [CallOnThread("Updater")]
         internal void UpdateAdapterInformation(GraphicsAdapter graphicsAdapter)
         {
+#if WINDOWS
             adapterDescription = graphicsAdapter.Description;
+#else
+            // On macOS, GraphicsAdapter.Description calls glGetString, which crashes when invoked
+            // from the (non-render) Loader thread because the OpenGL context is not current there.
+            adapterDescription = "OpenGL";
+#endif
+#if WINDOWS
             try
             {
                 // Note that we might find multiple adapters with the same
@@ -771,6 +783,7 @@ namespace Orts.Viewer3D
             {
                 Trace.WriteLine(error);
             }
+#endif
         }
 
         [CallOnThread("Loader")]
@@ -933,7 +946,7 @@ namespace Orts.Viewer3D
 
         private void LoadDefectCarSound(TrainCar car, string filename)
         {
-            var smsFilePath = Simulator.BasePath + @"\sound\" + filename;
+            var smsFilePath = Simulator.BasePath + @"/sound/" + filename;
             if (!File.Exists(smsFilePath))
             {
                 Trace.TraceWarning("Cannot find defect car sound file {0}", filename);
@@ -1275,6 +1288,7 @@ namespace Orts.Viewer3D
             }
             if (UserInput.IsPressed(UserCommand.DebugSoundForm)) { SoundDebugFormEnabled = !SoundDebugFormEnabled; return; }
 
+#if WINDOWS
             if (UserInput.IsPressed(UserCommand.CameraJumpSeeSwitch))
             {
                 if (Program.MapForm != null && Program.MapForm.Enabled && (Program.MapForm.switchPickedItem != null || Program.MapForm.signalPickedItem != null))
@@ -1299,6 +1313,7 @@ namespace Orts.Viewer3D
                     FreeRoamCamera.Activate();
                 }
             }
+#endif
 
             // Turntable commands
             if (Simulator.MovingTables != null)
@@ -1398,7 +1413,7 @@ namespace Orts.Viewer3D
             //            SelectedTrain.FrontTDBTraveller.X.ToString(),
             //            SelectedTrain.FrontTDBTraveller.Z.ToString(),
             //            SelectedTrain.DistanceTravelledM.ToString());
-            //        File.AppendAllText(@"C:\temp\TrainPosition.txt", sob.ToString());
+            //        File.AppendAllText(@"C:/temp/TrainPosition.txt", sob.ToString());
 
             //        if (Simulator.Confirmer != null)
             //        {
@@ -1409,6 +1424,7 @@ namespace Orts.Viewer3D
             //    }
             //}
 
+#if WINDOWS
             // Map window: jump to the selected train in-game
             if (Program.MapForm != null && Program.MapForm.ClickedTrain == true)
             {
@@ -1423,6 +1439,7 @@ namespace Orts.Viewer3D
                     CameraActivate();
                 }
             }
+#endif
 
             //in TrainSwitcher, when one clicks a train, Viewer will jump to see that train
             if (Simulator.TrainSwitcher.ClickedTrainFromList == true)
@@ -1516,14 +1533,14 @@ namespace Orts.Viewer3D
                 }
                 else
                 {
-                    ActualCursor = Cursors.Default;
+                    ActualCursor = Microsoft.Xna.Framework.Input.MouseCursor.Arrow;
                 }
             }
 
             if (MousePickedControl != null & MousePickedControl != OldMousePickedControl)
                 Simulator.Confirmer.Message(ConfirmLevel.None, String.IsNullOrEmpty(MousePickedControl.ControlLabel) ? MousePickedControl.GetControlName() : MousePickedControl.ControlLabel);
 
-            ActualCursor = RenderProcess.ActualCursor = MousePickedControl != null ? Cursors.Hand : Cursors.Default;
+            ActualCursor = RenderProcess.ActualCursor = MousePickedControl != null ? Microsoft.Xna.Framework.Input.MouseCursor.Hand : Microsoft.Xna.Framework.Input.MouseCursor.Arrow;
 
             if (UserInput.IsMouseWheelChanged)
                 MousePickedControl?.HandleUserInput();
@@ -1824,6 +1841,21 @@ namespace Orts.Viewer3D
 
         internal void EndRender(RenderFrame frame)
         {
+#if MAC
+            // One-time automatic screenshot a few seconds into the run, so the rendered output can be
+            // inspected from a headless shell (which cannot capture the live window). Switch to the external
+            // tracking camera first so the whole locomotive and surrounding world/sky are visible.
+            if (!MacAutoCameraDone && RealTime > 5)
+            {
+                MacAutoCameraDone = true;
+                FrontCamera.Activate();
+            }
+            if (!MacAutoScreenshotDone && RealTime > 8)
+            {
+                MacAutoScreenshotDone = true;
+                SaveScreenshot = true;
+            }
+#endif
             // VisibilityState is used to delay calling SaveScreenshot() by one render cycle.
             // We want the hiding of the MessageWindow to take effect on the screen before the screen content is saved.
             if (Visibility == VisibilityState.Hidden)  // Test for Hidden state must come before setting Hidden state.
@@ -1831,7 +1863,7 @@ namespace Orts.Viewer3D
                 Visibility = VisibilityState.ScreenshotPending;  // Next state else this path would be taken more than once.
                 if (!Directory.Exists(Settings.ScreenshotPath))
                     Directory.CreateDirectory(Settings.ScreenshotPath);
-                var fileName = Path.Combine(Settings.ScreenshotPath, System.Windows.Forms.Application.ProductName + " " + DateTime.Now.ToString("yyyy-MM-dd hh-mm-ss")) + ".png";
+                var fileName = Path.Combine(Settings.ScreenshotPath, ApplicationInfo.ProductName + " " + DateTime.Now.ToString("yyyy-MM-dd hh-mm-ss")) + ".png";
                 SaveScreenshotToFile(Game.GraphicsDevice, fileName, false);
                 SaveScreenshot = false; // cancel trigger
             }
@@ -1870,6 +1902,36 @@ namespace Orts.Viewer3D
 
             graphicsDevice.GetBackBufferData(data);
 
+            for (var i = 0; i < data.Length; i++)
+                data[i] |= 0xFF000000;
+
+#if MAC
+            // MonoGame's Texture2D.SaveAsPng and creating a Texture2D on a background thread both require the
+            // render thread under DesktopGL, so encode the back-buffer straight to PNG with SkiaSharp here
+            // (this method already runs on the render thread via EndRender).
+            try
+            {
+                var bytes = new byte[data.Length * 4];
+                System.Buffer.BlockCopy(data, 0, bytes, 0, bytes.Length);
+                var info = new SkiaSharp.SKImageInfo(width, height, SkiaSharp.SKColorType.Rgba8888, SkiaSharp.SKAlphaType.Opaque);
+                using (var bmp = new SkiaSharp.SKBitmap())
+                {
+                    var handle = System.Runtime.InteropServices.GCHandle.Alloc(bytes, System.Runtime.InteropServices.GCHandleType.Pinned);
+                    try
+                    {
+                        bmp.InstallPixels(info, handle.AddrOfPinnedObject(), info.RowBytes);
+                        using (var img = SkiaSharp.SKImage.FromBitmap(bmp))
+                        using (var enc = img.Encode(SkiaSharp.SKEncodedImageFormat.Png, 90))
+                        using (var stream = File.OpenWrite(fileName))
+                            enc.SaveTo(stream);
+                    }
+                    finally { handle.Free(); }
+                }
+            }
+            catch (Exception error) { Trace.WriteLine(error); }
+            Visibility = VisibilityState.Visible;
+            MessagesWindow.Visible = true;
+#else
             new Thread(() =>
             {
                 try
@@ -1877,9 +1939,6 @@ namespace Orts.Viewer3D
                     // Unfortunately, the back buffer includes an alpha channel. Although saving this might seem okay,
                     // it actually ruins the picture - nothing in the back buffer is seen on-screen according to its
                     // alpha, it's only used for blending (if at all). We'll remove the alpha here.
-                    for (var i = 0; i < data.Length; i++)
-                        data[i] |= 0xFF000000;
-
                     using (var screenshot = new Texture2D(graphicsDevice, width, height))
                     {
                         screenshot.SetData(data);
@@ -1900,6 +1959,7 @@ namespace Orts.Viewer3D
                 }
                 catch { }
             }).Start();
+#endif
         }
     }
 }

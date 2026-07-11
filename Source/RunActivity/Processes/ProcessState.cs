@@ -96,6 +96,17 @@ namespace Orts.Processes
 #endif
         }
 
+        /// <summary>
+        /// Waits up to <paramref name="millisecondsTimeout"/> for the process to finish (or terminate).
+        /// Returns true if it finished/terminated, false on timeout. Unlike polling <see cref="Finished"/>,
+        /// this waits on the finish event, which is signalled last in <see cref="SignalFinish"/> — polling the
+        /// flag races with SignalStart from another thread and can wipe the start signal.
+        /// </summary>
+        public bool WaitTillFinished(int millisecondsTimeout)
+        {
+            return WaitHandle.WaitAny(FinishEvents, millisecondsTimeout) != WaitHandle.WaitTimeout;
+        }
+
         /// <summary>Wait for the specified number of milliseconds, unless termination is signalled.</summary>
         public void Sleep(int milliseconds)
         {

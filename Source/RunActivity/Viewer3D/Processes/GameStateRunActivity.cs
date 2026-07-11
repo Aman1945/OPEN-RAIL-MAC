@@ -24,7 +24,9 @@ using Orts.Common;
 using Orts.Formats.Msts;
 using Orts.MultiPlayer;
 using Orts.Simulation;
+#if WINDOWS
 using Orts.Viewer3D.Debugging;
+#endif
 using ORTS.Common;
 using ORTS.Settings;
 using System;
@@ -34,7 +36,9 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+#if WINDOWS
 using System.Windows.Forms;
+#endif
 
 namespace Orts.Viewer3D.Processes
 {
@@ -95,14 +99,24 @@ namespace Orts.Viewer3D.Processes
             public string acttype;
         }
 
+#if WINDOWS
         static MapViewer MapForm { get { return Program.MapForm; } set { Program.MapForm = value; } }
         static SoundDebugForm SoundDebugForm { get { return Program.SoundDebugForm; } set { Program.SoundDebugForm = value; } }
+#endif
 
         LoadingPrimitive Loading;
         LoadingScreenPrimitive LoadingScreen;
         LoadingBarPrimitive LoadingBar;
         TimetableLoadingBarPrimitive TimetableLoadingBar;
         Matrix LoadingMatrix = Matrix.Identity;
+
+        // On Windows both '-' and '/' introduce command-line options. On other platforms '/' begins an
+        // absolute file path, so only '-' may introduce an option there.
+#if WINDOWS
+        const bool IsOptionSlashAllowed = true;
+#else
+        const bool IsOptionSlashAllowed = false;
+#endif
 
         public GameStateRunActivity(string[] args)
         {
@@ -111,10 +125,10 @@ namespace Orts.Viewer3D.Processes
 
         internal override void Dispose()
         {
-            Loading.Dispose();
-            LoadingScreen.Dispose();
-            LoadingBar.Dispose();
-            TimetableLoadingBar.Dispose();
+            Loading?.Dispose();
+            LoadingScreen?.Dispose();
+            LoadingBar?.Dispose();
+            TimetableLoadingBar?.Dispose();
             base.Dispose();
         }
 
@@ -181,10 +195,11 @@ namespace Orts.Viewer3D.Processes
             Acttype = acttype;
 
             // Collect all non-action options.
-            var options = args.Where(a => (a.StartsWith("-") || a.StartsWith("/")) && !actions.Contains(a.Substring(1)) && !acttype.Contains(a.Substring(1))).Select(a => a.Substring(1)).ToArray();
+            // On non-Windows platforms, '/' begins an absolute file path, so only '-' introduces an option there.
+            var options = args.Where(a => (a.StartsWith("-") || (IsOptionSlashAllowed && a.StartsWith("/"))) && !actions.Contains(a.Substring(1)) && !acttype.Contains(a.Substring(1))).Select(a => a.Substring(1)).ToArray();
 
             // Collect all non-options as data.
-            var data = args.Where(a => !a.StartsWith("-") && !a.StartsWith("/")).ToArray();
+            var data = args.Where(a => !a.StartsWith("-") && !(IsOptionSlashAllowed && a.StartsWith("/"))).ToArray();
 
             // No action, check for data; for now assume any data is good data.
             if (action.Length == 0 && data.Length > 0)
@@ -229,11 +244,15 @@ namespace Orts.Viewer3D.Processes
                         break;
 
                     default:
+#if WINDOWS
                         MessageBox.Show("To start " + Application.ProductName + ", please run 'OpenRails.exe'.\n\n"
                                 + "If you are attempting to debug this component, please run 'OpenRails.exe' and execute the scenario you are interested in. "
                                 + "In the log file, a line with the command-line arguments used will be listed at the top. "
                                 + "You should then configure your debug environment to execute this component with those command-line arguments.",
                                 Application.ProductName + " " + VersionInfo.VersionOrBuild);
+#else
+                        Console.Error.WriteLine("To start " + ApplicationInfo.ProductName + ", please run with the correct command-line arguments.");
+#endif
                         Game.Exit();
                         break;
                 }
@@ -260,6 +279,7 @@ namespace Orts.Viewer3D.Processes
                         if (loadError != null && (error.InnerException is FileNotFoundException || error.InnerException is DirectoryNotFoundException))
                             error = error.InnerException;
 
+#if WINDOWS
                         if (error is IncompatibleSaveException)
                         {
                             MessageBox.Show(String.Format(
@@ -322,6 +342,13 @@ namespace Orts.Viewer3D.Processes
                             // but unfortunately if you need to log in (as most people might), Launchpad munges the title
                             // and leaves you with garbage. Plus, landing straight on a login page might confuse some people.
                         }
+#else
+                        var productName = ApplicationInfo.ProductName + " " + VersionInfo.VersionOrBuild;
+                        Console.Error.WriteLine(productName);
+                        Console.Error.WriteLine(error.GetType().FullName + ": " + error.Message);
+                        if (error is FileNotFoundException fnf)
+                            Console.Error.WriteLine("Missing file: " + fnf.FileName);
+#endif
                     }
                     // Make sure we quit after handling an error.
                     Game.Exit();
@@ -391,7 +418,7 @@ namespace Orts.Viewer3D.Processes
             //    MPManager.IsMultiPlayer() && MPManager.IsServer() ? "$Multipl$ " : "" , DateTime.Now);
 
             var saveSet = new SaveSet();  // Sets the filestem for the set of Save files
-            using (BinaryWriter outf = new BinaryWriter(new FileStream(UserSettings.UserDataFolder + "\\" + saveSet.FileStem + ".save", FileMode.Create, FileAccess.Write)))
+            using (BinaryWriter outf = new BinaryWriter(new FileStream(UserSettings.UserDataFolder + "/" + saveSet.FileStem + ".save", FileMode.Create, FileAccess.Write)))
             {
                 // Save some version identifiers so we can validate on load.
                 outf.Write(VersionInfo.Version);
@@ -715,7 +742,7 @@ namespace Orts.Viewer3D.Processes
                 Trace.TraceWarning("Restoring from a save made by version {1}\n"
                     + "of {0} may be incompatible with current version {2}.\n"
                     + "Please do not report any problems that may result.\n",
-                    Application.ProductName, versionOrBuild, VersionInfo.VersionOrBuild);
+                    ApplicationInfo.ProductName, versionOrBuild, VersionInfo.VersionOrBuild);
             }
             return new[] { version, build, versionOrBuild };
         }
@@ -805,7 +832,7 @@ namespace Orts.Viewer3D.Processes
                 string fileName;
                 try
                 {
-                    fileName = string.Format(settings.LoggingFilename, Application.ProductName, VersionInfo.VersionOrBuild, VersionInfo.Version, VersionInfo.Build, DateTime.Now);
+                    fileName = string.Format(settings.LoggingFilename, ApplicationInfo.ProductName, VersionInfo.VersionOrBuild, VersionInfo.Version, VersionInfo.Build, DateTime.Now);
                 }
                 catch (FormatException)
                 {
@@ -828,7 +855,7 @@ namespace Orts.Viewer3D.Processes
             // Trace.Listeners and Debug.Listeners are the same list.
             Trace.Listeners.Add(ORTraceListener);
 
-            Console.WriteLine("This is a log file for {0}. Please include this file in bug reports.", Application.ProductName);
+            Console.WriteLine("This is a log file for {0}. Please include this file in bug reports.", ApplicationInfo.ProductName);
             LogSeparator();
             if (settings.Logging)
             {
@@ -1338,10 +1365,11 @@ namespace Orts.Viewer3D.Processes
 
         long GetProcessBytesLoaded()
         {
+#if WINDOWS
             NativeMathods.IO_COUNTERS counters;
             if (NativeMathods.GetProcessIoCounters(Process.GetCurrentProcess().Handle, out counters))
                 return (long)counters.ReadTransferCount;
-
+#endif
             return 0;
         }
 
@@ -1639,6 +1667,7 @@ namespace Orts.Viewer3D.Processes
             }
         }
 
+#if WINDOWS
         static class NativeMathods
         {
             [DllImport("kernel32.dll", SetLastError = true)]
@@ -1655,6 +1684,7 @@ namespace Orts.Viewer3D.Processes
                 public UInt64 OtherTransferCount;
             };
         }
+#endif
     }
 
     public sealed class IncompatibleSaveException : Exception

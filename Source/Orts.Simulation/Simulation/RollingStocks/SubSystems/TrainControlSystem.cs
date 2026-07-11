@@ -240,7 +240,7 @@ namespace Orts.Simulation.RollingStocks.SubSystems
 
                 if (Locomotive.Train.TcsParametersFileName != null)
                 {
-                    TrainParametersFileName = Path.Combine(Simulator.BasePath, @"TRAINS\CONSISTS\SCRIPT\", Locomotive.Train.TcsParametersFileName);
+                    TrainParametersFileName = Path.Combine(Simulator.BasePath, @"TRAINS/CONSISTS/SCRIPT/", Locomotive.Train.TcsParametersFileName);
                 }
 
                 if (Script == null)
@@ -914,32 +914,13 @@ namespace Orts.Simulation.RollingStocks.SubSystems
 
         private T LoadParameter<T>(string sectionName, string keyName, T defaultValue)
         {
-            string buffer;
-            int length;
+            var buffer = SimpleIniReader.GetValue(sectionName, keyName, TrainParametersFileName);
+            if (!string.IsNullOrEmpty(buffer))
+                return (T)Convert.ChangeType(buffer, typeof(T), System.Globalization.CultureInfo.InvariantCulture);
 
-            if (File.Exists(TrainParametersFileName))
-            {
-                buffer = new string('\0', 256);
-                length = NativeMethods.GetPrivateProfileString(sectionName, keyName, null, buffer, buffer.Length, TrainParametersFileName);
-
-                if (length > 0)
-                {
-                    buffer = buffer.Trim('\0').Trim();
-                    return (T)Convert.ChangeType(buffer, typeof(T), System.Globalization.CultureInfo.InvariantCulture);
-                }
-            }
-
-            if (File.Exists(ParametersFileName))
-            {
-                buffer = new string('\0', 256);
-                length = NativeMethods.GetPrivateProfileString(sectionName, keyName, null, buffer, buffer.Length, ParametersFileName);
-
-                if (length > 0)
-                {
-                    buffer = buffer.Trim('\0').Trim();
-                    return (T)Convert.ChangeType(buffer, typeof(T), System.Globalization.CultureInfo.InvariantCulture);
-                }
-            }
+            buffer = SimpleIniReader.GetValue(sectionName, keyName, ParametersFileName);
+            if (!string.IsNullOrEmpty(buffer))
+                return (T)Convert.ChangeType(buffer, typeof(T), System.Globalization.CultureInfo.InvariantCulture);
 
             return defaultValue;
         }

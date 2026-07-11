@@ -27,8 +27,10 @@ using Microsoft.Xna.Framework;
 using ORTS.Common;
 using Orts.Parsers.Msts;
 using Orts.Simulation.RollingStocks.SubSystems.PowerTransmissions;
+#if WINDOWS
 using SharpDX.Direct2D1;
 using SharpDX.Direct3D9;
+#endif
 using Orts.Formats.OR;
 using static Orts.Simulation.RollingStocks.SubSystems.PowerTransmissions.Axle;
 using MonoGame.Framework.Utilities.Deflate;

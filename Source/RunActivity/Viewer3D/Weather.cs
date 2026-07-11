@@ -81,8 +81,8 @@ namespace Orts.Viewer3D
 
             var pathArray = new[]
             {
-                Program.Simulator.RoutePath + @"\SOUND",
-                Program.Simulator.BasePath + @"\SOUND",
+                Program.Simulator.RoutePath + @"/SOUND",
+                Program.Simulator.BasePath + @"/SOUND",
             };
 
             ClearSound = new List<SoundSourceBase>

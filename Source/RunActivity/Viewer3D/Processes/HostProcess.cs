@@ -44,6 +44,7 @@ namespace Orts.Viewer3D.Processes
         public float GPUMemoryDedicated { get; private set; }
         public float GPUMemoryShared { get; private set; }
 
+#if WINDOWS
         readonly PerformanceCounterCategory CounterDotNetClrMemory = new PerformanceCounterCategory(".NET CLR Memory");
         readonly PerformanceCounterCategory CounterProcess = new PerformanceCounterCategory("Process");
         readonly PerformanceCounterCategory CounterGpuProcessMemory = new PerformanceCounterCategory("GPU Process Memory");
@@ -56,6 +57,7 @@ namespace Orts.Viewer3D.Processes
         CounterSample[] GPUMemoryCommittedSamples = new CounterSample[1];
         CounterSample[] GPUMemoryDedicatedSamples = new CounterSample[1];
         CounterSample[] GPUMemorySharedSamples = new CounterSample[1];
+#endif
 
         readonly Profiler Profiler = new Profiler("Host");
         readonly ProcessState State = new ProcessState("Host");
@@ -87,9 +89,11 @@ namespace Orts.Viewer3D.Processes
         {
             Profiler.SetThread();
 
+#if WINDOWS
             var memoryStatus = new MEMORYSTATUSEX { Size = 64 };
             GlobalMemoryStatusEx(memoryStatus);
             CPUMemoryVirtualLimit = Math.Min(memoryStatus.TotalVirtual, memoryStatus.TotalPhysical);
+#endif
 
             while (true)
             {
@@ -130,6 +134,7 @@ namespace Orts.Viewer3D.Processes
             Profiler.Start();
             try
             {
+#if WINDOWS
                 var processId = Process.GetCurrentProcess().Id;
 
                 var dotNetClrMemory = GetInstanceSamples(CounterDotNetClrMemory, "Process ID", processId, "Allocated Bytes/sec");
@@ -145,6 +150,10 @@ namespace Orts.Viewer3D.Processes
                 GPUMemoryCommitted = GetSumValue(ref GPUMemoryCommittedSamples, gpuProcessMemory[0]);
                 GPUMemoryDedicated = GetSumValue(ref GPUMemoryDedicatedSamples, gpuProcessMemory[1]);
                 GPUMemoryShared = GetSumValue(ref GPUMemorySharedSamples, gpuProcessMemory[2]);
+#else
+                CPUMemoryPrivate = Process.GetCurrentProcess().PrivateMemorySize64;
+                CPUMemoryWorkingSet = Process.GetCurrentProcess().WorkingSet64;
+#endif
             }
             finally
             {
@@ -152,6 +161,7 @@ namespace Orts.Viewer3D.Processes
             }
         }
 
+#if WINDOWS
         IList<CounterSample> GetInstanceSamples(PerformanceCounterCategory category, string key, long value, params string[] counterNames)
         {
             try
@@ -212,7 +222,9 @@ namespace Orts.Viewer3D.Processes
                 counterSamples = nextCounterSamples;
             }
         }
+#endif
 
+#if WINDOWS
         #region Native code
 
         [StructLayout(LayoutKind.Sequential, Size = 64)]
@@ -233,5 +245,6 @@ namespace Orts.Viewer3D.Processes
         static extern bool GlobalMemoryStatusEx([In, Out] MEMORYSTATUSEX buffer);
 
         #endregion
+#endif
     }
 }

@@ -17,15 +17,21 @@
 
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 
 namespace ORTS.Common
 {
     public static class ApplicationInfo
     {
+#if WINDOWS
         public static string ProcessFile => Process.GetCurrentProcess().MainModule.FileName;
+#else
+        // When launched via `dotnet exec`, MainModule.FileName points at the dotnet host, not our assembly.
+        public static string ProcessFile => Assembly.GetEntryAssembly().Location;
+#endif
         public static string ProcessDirectory => Path.GetDirectoryName(ProcessFile);
         static FileVersionInfo VersionInfo => FileVersionInfo.GetVersionInfo(ProcessFile);
-        public static string ProductName => VersionInfo.ProductName;
-        public static string ApplicationName => VersionInfo.FileDescription;
+        public static string ProductName => string.IsNullOrEmpty(VersionInfo.ProductName) ? "Open Rails" : VersionInfo.ProductName;
+        public static string ApplicationName => string.IsNullOrEmpty(VersionInfo.FileDescription) ? "Open Rails" : VersionInfo.FileDescription;
     }
 }

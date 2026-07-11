@@ -272,11 +272,11 @@ namespace Orts.Formats.OR
 
         public string asString()
         {
-            //File.AppendAllText(@"F:\temp\AE.txt", "Coord: X:" + TileX + ".." + X + "/ Y:" + TileY + ".." + Y);
+            //File.AppendAllText(@"F:/temp/AE.txt", "Coord: X:" + TileX + ".." + X + "/ Y:" + TileY + ".." + Y);
             string X1 = string.Format("{0:d}", (int)((TileX * 2048f) + X));
             string Y1 = string.Format("{0:d}", (int)((TileY * 2048f) + Y));
             string info = "(" + X1 + "," + Y1 + ")";
-            //File.AppendAllText(@"F:\temp\AE.txt", "/ donne :" + info + "\n");
+            //File.AppendAllText(@"F:/temp/AE.txt", "/ donne :" + info + "\n");
             return info;
         }
     }

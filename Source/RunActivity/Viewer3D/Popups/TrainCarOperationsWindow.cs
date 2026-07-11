@@ -216,7 +216,7 @@ namespace Orts.Viewer3D.Popups
             if (Coupler == null)
             {
                 var GraphicsDeviceRender = Owner.Viewer.RenderProcess.GraphicsDevice;
-                var TrainOperationsPath = System.IO.Path.Combine(Owner.Viewer.ContentPath, "TrainOperations\\TrainOperationsMap.png");
+                var TrainOperationsPath = System.IO.Path.Combine(Owner.Viewer.ContentPath, "TrainOperations/TrainOperationsMap.png");
 
                 // TO DO: This should happen on the loader thread.
                 //                                                                        texture rectangles : X, Y, width, height
@@ -312,7 +312,7 @@ namespace Orts.Viewer3D.Popups
                 IsFullScreen = Owner.Viewer.RenderProcess.isFullScreen;
 
                 // Validates rows with windows DPI settings
-                var dpiScale = System.Drawing.Graphics.FromHwnd(IntPtr.Zero).DpiY / 96;
+                var dpiScale = DpiCompat.DpiY / 96;
                 var separatorSize = ControlLayout.SeparatorSize;
 
                 DesiredHeight = FontToBold ? (Owner.TextFontDefaultBold.Height * (RowsCount + 1)) + (separatorSize * (SeparatorCount + 3))

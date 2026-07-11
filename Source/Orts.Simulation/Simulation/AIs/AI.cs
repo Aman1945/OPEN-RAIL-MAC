@@ -67,9 +67,9 @@ namespace Orts.Simulation.AIs
             Simulator = simulator;
 
 #if WITH_PATH_DEBUG
-            if (File.Exists(@"C:\temp\checkpath.txt"))
+            if (File.Exists(@"C:/temp/checkpath.txt"))
             {
-                File.Delete(@"C:\temp\checkpath.txt");
+                File.Delete(@"C:/temp/checkpath.txt");
             }
 #endif
             if (simulator.Activity != null && simulator.Activity.Tr_Activity.Tr_Activity_File.Traffic_Definition != null)
@@ -799,7 +799,7 @@ namespace Orts.Simulation.AIs
                     break;
                 }
             }
-            ServiceFile srvFile = new ServiceFile(Simulator.RoutePath + @"\SERVICES\" + sd.Name + ".SRV"); // Read service file
+            ServiceFile srvFile = new ServiceFile(Simulator.RoutePath + @"/SERVICES/" + sd.Name + ".SRV"); // Read service file
             AITrain train = CreateAITrainDetail(sd, trfDef, srvFile, isTimetableMode, false);
             if (train != null)
             {
@@ -818,9 +818,9 @@ namespace Orts.Simulation.AIs
         public AITrain CreateAITrainDetail(Service_Definition sd, Traffic_Service_Definition trfDef, ServiceFile srvFile, bool isTimetableMode, bool isInitialPlayerTrain)
         {
             // Read consist file
-            string consistFileName = Simulator.BasePath + @"\TRAINS\CONSISTS\" + srvFile.Train_Config + ".CON";
+            string consistFileName = Simulator.BasePath + @"/TRAINS/CONSISTS/" + srvFile.Train_Config + ".CON";
             ConsistFile conFile = new ConsistFile(consistFileName);
-            string pathFileName = Simulator.RoutePath + @"\PATHS\" + srvFile.PathID + ".PAT";
+            string pathFileName = Simulator.RoutePath + @"/PATHS/" + srvFile.PathID + ".PAT";
 
             // Patch Placingproblem - JeroenP
 #if ACTIVITY_EDITOR
@@ -865,15 +865,15 @@ namespace Orts.Simulation.AIs
             foreach (Wagon wagon in conFile.Train.TrainCfg.WagonList)
             {
 
-                string wagonFolder = Simulator.BasePath + @"\trains\trainset\" + wagon.Folder;
-                string wagonFilePath = wagonFolder + @"\" + wagon.Name + ".wag";
+                string wagonFolder = Simulator.BasePath + @"/trains/trainset/" + wagon.Folder;
+                string wagonFilePath = wagonFolder + @"/" + wagon.Name + ".wag";
                 ;
                 if (wagon.IsEngine)
                     wagonFilePath = Path.ChangeExtension(wagonFilePath, ".eng");
                 else if (wagon.IsEOT)
                 {
-                    wagonFolder = Simulator.BasePath + @"\trains\orts_eot\" + wagon.Folder;
-                    wagonFilePath = wagonFolder + @"\" + wagon.Name + ".eot";
+                    wagonFolder = Simulator.BasePath + @"/trains/orts_eot/" + wagon.Folder;
+                    wagonFilePath = wagonFolder + @"/" + wagon.Name + ".eot";
                 }
 
                 if (!File.Exists(wagonFilePath))
@@ -963,7 +963,7 @@ namespace Orts.Simulation.AIs
             // Patch placingproblem JeroenP (1 line)
             train.RearTDBTraveller = new Traveller(Simulator.TSectionDat, Simulator.TDB.TrackDB.TrackNodes, aiPath); // Create traveller
 #if WITH_PATH_DEBUG
-            File.AppendAllText(@"C:\temp\checkpath.txt", "-----  New AI Train  -----\n");
+            File.AppendAllText(@"C:/temp/checkpath.txt", "-----  New AI Train  -----\n");
 #endif
             train.CreateRoute(false); // Create route without use of FrontTDBtraveller
             train.CheckFreight();     // Check if train is freight or passenger
@@ -1043,20 +1043,20 @@ namespace Orts.Simulation.AIs
             }
 
 #if DEBUG_DEADLOCK
-            File.AppendAllText(@"C:\Temp\deadlock.txt", "Added Train : " + thisTrain.Number.ToString() + " , accepted : " + validPosition.ToString()+"\n");
+            File.AppendAllText(@"C:/Temp/deadlock.txt", "Added Train : " + thisTrain.Number.ToString() + " , accepted : " + validPosition.ToString()+"\n");
 
             foreach (TrackCircuitSection thisSection in Simulator.Signals.TrackCircuitList)
             {
                 if (thisSection.DeadlockTraps.Count > 0)
                 {
-                    File.AppendAllText(@"C:\Temp\deadlock.txt", "Section : " + thisSection.Index.ToString() + "\n");
+                    File.AppendAllText(@"C:/Temp/deadlock.txt", "Section : " + thisSection.Index.ToString() + "\n");
                     foreach (KeyValuePair<int, List<int>> thisDeadlock in thisSection.DeadlockTraps)
                     {
-                        File.AppendAllText(@"C:\Temp\deadlock.txt", "    Train : " + thisDeadlock.Key.ToString() + "\n");
-                        File.AppendAllText(@"C:\Temp\deadlock.txt", "       With : " + "\n");
+                        File.AppendAllText(@"C:/Temp/deadlock.txt", "    Train : " + thisDeadlock.Key.ToString() + "\n");
+                        File.AppendAllText(@"C:/Temp/deadlock.txt", "       With : " + "\n");
                         foreach (int otherTrain in thisDeadlock.Value)
                         {
-                            File.AppendAllText(@"C:\Temp\deadlock.txt", "          " + otherTrain.ToString() + "\n");
+                            File.AppendAllText(@"C:/Temp/deadlock.txt", "          " + otherTrain.ToString() + "\n");
                         }
                     }
                 }
@@ -1169,7 +1169,7 @@ namespace Orts.Simulation.AIs
             {
                 if (thisTrain.CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Train added to world : " + thisTrain.Number + " ; type = " + thisTrain.TrainType + "\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Train added to world : " + thisTrain.Number + " ; type = " + thisTrain.TrainType + "\n");
                 }
 
                 thisTrain.actualWaitTimeS = 0; // Reset wait counter
@@ -1214,20 +1214,20 @@ namespace Orts.Simulation.AIs
                 }
             }
 #if DEBUG_DEADLOCK
-            File.AppendAllText(@"C:\Temp\deadlock.txt", "Added Train : " + thisTrain.Number.ToString() + " , accepted : " + validPosition.ToString() + "\n");
+            File.AppendAllText(@"C:/Temp/deadlock.txt", "Added Train : " + thisTrain.Number.ToString() + " , accepted : " + validPosition.ToString() + "\n");
 
             foreach (TrackCircuitSection thisSection in Simulator.Signals.TrackCircuitList)
             {
                 if (thisSection.DeadlockTraps.Count > 0)
                 {
-                    File.AppendAllText(@"C:\Temp\deadlock.txt", "Section : " + thisSection.Index.ToString() + "\n");
+                    File.AppendAllText(@"C:/Temp/deadlock.txt", "Section : " + thisSection.Index.ToString() + "\n");
                     foreach (KeyValuePair<int, List<int>> thisDeadlock in thisSection.DeadlockTraps)
                     {
-                        File.AppendAllText(@"C:\Temp\deadlock.txt", "    Train : " + thisDeadlock.Key.ToString() + "\n");
-                        File.AppendAllText(@"C:\Temp\deadlock.txt", "       With : " + "\n");
+                        File.AppendAllText(@"C:/Temp/deadlock.txt", "    Train : " + thisDeadlock.Key.ToString() + "\n");
+                        File.AppendAllText(@"C:/Temp/deadlock.txt", "       With : " + "\n");
                         foreach (int otherTrain in thisDeadlock.Value)
                         {
-                            File.AppendAllText(@"C:\Temp\deadlock.txt", "          " + otherTrain.ToString() + "\n");
+                            File.AppendAllText(@"C:/Temp/deadlock.txt", "          " + otherTrain.ToString() + "\n");
                         }
                     }
                 }

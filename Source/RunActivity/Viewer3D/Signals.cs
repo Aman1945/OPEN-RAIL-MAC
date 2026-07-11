@@ -275,7 +275,7 @@ namespace Orts.Viewer3D
 
                     if (Viewer.Simulator.TRK.Tr_RouteFile.DefaultSignalSMS != null)
                     {
-                        var soundPath = Viewer.Simulator.RoutePath + @"\\sound\\" + Viewer.Simulator.TRK.Tr_RouteFile.DefaultSignalSMS;
+                        var soundPath = Viewer.Simulator.RoutePath + @"//sound//" + Viewer.Simulator.TRK.Tr_RouteFile.DefaultSignalSMS;
                         try
                         {
                             Sound = new SoundSource(Viewer, SignalShape.Location.WorldLocation, Events.Source.MSTSSignal, soundPath);

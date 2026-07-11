@@ -145,11 +145,13 @@ namespace ORTS.Settings
             ScanToVirtualEx = 3,
         }
 
+#if WINDOWS
         [DllImport("user32.dll")]
         static extern int MapVirtualKey(int code, MapVirtualKeyType type);
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         static extern int GetKeyNameText(int scanCode, [Out] char[] name, int nameLength);
+#endif
         #endregion
 
         // Keyboard scancodes are basically constant; some keyboards have extra buttons (e.g. UK ones tend to have an
@@ -342,6 +344,20 @@ namespace ORTS.Settings
             Commands[(int)UserCommand.CameraVibrate] = new UserCommandKeyInput(0x2F, KeyModifiers.Control);
             Commands[(int)UserCommand.CameraZoomIn] = new UserCommandModifiableKeyInput(0x49, Commands[(int)UserCommand.CameraMoveFast], Commands[(int)UserCommand.CameraMoveSlow]);
             Commands[(int)UserCommand.CameraZoomOut] = new UserCommandModifiableKeyInput(0x51, Commands[(int)UserCommand.CameraMoveFast], Commands[(int)UserCommand.CameraMoveSlow]);
+#if !WINDOWS
+            // Mac/Linux laptops have no numeric keypad, so the default camera bindings (NumPad 8/2/4/6) are
+            // unreachable. Re-bind camera rotation to the arrow keys. Bind by virtual key (their scan codes are
+            // outside the 1-127 range the scan-code path allows).
+            Commands[(int)UserCommand.CameraRotateUp] = new UserCommandModifiableKeyInput(Keys.Up, KeyModifiers.None, Commands[(int)UserCommand.CameraMoveFast], Commands[(int)UserCommand.CameraMoveSlow]);
+            Commands[(int)UserCommand.CameraRotateDown] = new UserCommandModifiableKeyInput(Keys.Down, KeyModifiers.None, Commands[(int)UserCommand.CameraMoveFast], Commands[(int)UserCommand.CameraMoveSlow]);
+            Commands[(int)UserCommand.CameraRotateLeft] = new UserCommandModifiableKeyInput(Keys.Left, KeyModifiers.None, Commands[(int)UserCommand.CameraMoveFast], Commands[(int)UserCommand.CameraMoveSlow]);
+            Commands[(int)UserCommand.CameraRotateRight] = new UserCommandModifiableKeyInput(Keys.Right, KeyModifiers.None, Commands[(int)UserCommand.CameraMoveFast], Commands[(int)UserCommand.CameraMoveSlow]);
+            // And camera panning to Alt+arrows.
+            Commands[(int)UserCommand.CameraPanUp] = new UserCommandModifiableKeyInput(Keys.Up, KeyModifiers.Alt, Commands[(int)UserCommand.CameraMoveFast], Commands[(int)UserCommand.CameraMoveSlow]);
+            Commands[(int)UserCommand.CameraPanDown] = new UserCommandModifiableKeyInput(Keys.Down, KeyModifiers.Alt, Commands[(int)UserCommand.CameraMoveFast], Commands[(int)UserCommand.CameraMoveSlow]);
+            Commands[(int)UserCommand.CameraPanLeft] = new UserCommandModifiableKeyInput(Keys.Left, KeyModifiers.Alt, Commands[(int)UserCommand.CameraMoveFast], Commands[(int)UserCommand.CameraMoveSlow]);
+            Commands[(int)UserCommand.CameraPanRight] = new UserCommandModifiableKeyInput(Keys.Right, KeyModifiers.Alt, Commands[(int)UserCommand.CameraMoveFast], Commands[(int)UserCommand.CameraMoveSlow]);
+#endif
             Commands[(int)UserCommand.ControlAIFireOn] = new UserCommandKeyInput(0x23, KeyModifiers.Alt);
             Commands[(int)UserCommand.ControlAIFireOff] = new UserCommandKeyInput(0x23, KeyModifiers.Control);
             Commands[(int)UserCommand.ControlAIFireReset] = new UserCommandKeyInput(0x23, KeyModifiers.Control | KeyModifiers.Alt);
@@ -644,19 +660,55 @@ namespace ORTS.Settings
             return String.Join(" + ", parts);
         }
 
+#if !WINDOWS
+        // Standard PC scan code set 1 (non-extended range), matching what Win32's
+        // MapVirtualKey(sc, MAPVK_VSC_TO_VK_EX) returns. All of Open Rails' default
+        // key bindings use scan codes in this 0x01-0x58 range.
+        static readonly Dictionary<int, Keys> ScanCodeToKeysTable = new Dictionary<int, Keys>
+        {
+            { 0x01, Keys.Escape }, { 0x02, Keys.D1 }, { 0x03, Keys.D2 }, { 0x04, Keys.D3 },
+            { 0x05, Keys.D4 }, { 0x06, Keys.D5 }, { 0x07, Keys.D6 }, { 0x08, Keys.D7 },
+            { 0x09, Keys.D8 }, { 0x0A, Keys.D9 }, { 0x0B, Keys.D0 }, { 0x0C, Keys.OemMinus },
+            { 0x0D, Keys.OemPlus }, { 0x0E, Keys.Back }, { 0x0F, Keys.Tab }, { 0x10, Keys.Q },
+            { 0x11, Keys.W }, { 0x12, Keys.E }, { 0x13, Keys.R }, { 0x14, Keys.T },
+            { 0x15, Keys.Y }, { 0x16, Keys.U }, { 0x17, Keys.I }, { 0x18, Keys.O },
+            { 0x19, Keys.P }, { 0x1A, Keys.OemOpenBrackets }, { 0x1B, Keys.OemCloseBrackets }, { 0x1C, Keys.Enter },
+            { 0x1D, Keys.LeftControl }, { 0x1E, Keys.A }, { 0x1F, Keys.S }, { 0x20, Keys.D },
+            { 0x21, Keys.F }, { 0x22, Keys.G }, { 0x23, Keys.H }, { 0x24, Keys.J },
+            { 0x25, Keys.K }, { 0x26, Keys.L }, { 0x27, Keys.OemSemicolon }, { 0x28, Keys.OemQuotes },
+            { 0x29, Keys.OemTilde }, { 0x2A, Keys.LeftShift }, { 0x2B, Keys.OemBackslash }, { 0x2C, Keys.Z },
+            { 0x2D, Keys.X }, { 0x2E, Keys.C }, { 0x2F, Keys.V }, { 0x30, Keys.B },
+            { 0x31, Keys.N }, { 0x32, Keys.M }, { 0x33, Keys.OemComma }, { 0x34, Keys.OemPeriod },
+            { 0x35, Keys.OemQuestion }, { 0x36, Keys.RightShift }, { 0x37, Keys.Multiply }, { 0x38, Keys.LeftAlt },
+            { 0x39, Keys.Space }, { 0x3A, Keys.CapsLock }, { 0x3B, Keys.F1 }, { 0x3C, Keys.F2 },
+            { 0x3D, Keys.F3 }, { 0x3E, Keys.F4 }, { 0x3F, Keys.F5 }, { 0x40, Keys.F6 },
+            { 0x41, Keys.F7 }, { 0x42, Keys.F8 }, { 0x43, Keys.F9 }, { 0x44, Keys.F10 },
+            { 0x45, Keys.NumLock }, { 0x46, Keys.Scroll }, { 0x47, Keys.NumPad7 }, { 0x48, Keys.NumPad8 },
+            { 0x49, Keys.NumPad9 }, { 0x4A, Keys.Subtract }, { 0x4B, Keys.NumPad4 }, { 0x4C, Keys.NumPad5 },
+            { 0x4D, Keys.NumPad6 }, { 0x4E, Keys.Add }, { 0x4F, Keys.NumPad1 }, { 0x50, Keys.NumPad2 },
+            { 0x51, Keys.NumPad3 }, { 0x52, Keys.NumPad0 }, { 0x53, Keys.Decimal }, { 0x57, Keys.F11 },
+            { 0x58, Keys.F12 },
+        };
+#endif
+
         public static Keys GetScanCodeKeys(int scanCode)
         {
+#if WINDOWS
             var sc = scanCode;
             if (scanCode >= 0x0100)
                 sc = 0xE100 | (scanCode & 0x7F);
             else if (scanCode >= 0x0080)
                 sc = 0xE000 | (scanCode & 0x7F);
             return (Keys)MapVirtualKey(sc, MapVirtualKeyType.ScanToVirtualEx);
+#else
+            return ScanCodeToKeysTable.TryGetValue(scanCode, out var key) ? key : Keys.None;
+#endif
         }
 
         public static string GetScanCodeKeyName(int scanCode)
         {
             var xnaName = Enum.GetName(typeof(Keys), GetScanCodeKeys(scanCode));
+#if WINDOWS
             var keyNameBuffer = new char[32];
             var keyNameLength = GetKeyNameText(scanCode << 16, keyNameBuffer, keyNameBuffer.Length);
             var keyName = new string(keyNameBuffer, 0, keyNameLength);
@@ -671,6 +723,10 @@ namespace ORTS.Settings
 
                 return keyName;
             }
+#else
+            if (!String.IsNullOrEmpty(xnaName))
+                return xnaName;
+#endif
 
             // If we failed to convert the scan code to a name, show the scan code for debugging.
             return String.Format(" [sc=0x{0:X2}]", scanCode);
@@ -908,6 +964,13 @@ namespace ORTS.Settings
 
         public UserCommandModifiableKeyInput(int scanCode, params UserCommandInput[] combine)
             : this(scanCode, KeyModifiers.None, combine)
+        {
+        }
+
+        // Bind directly by virtual key (e.g. Keys.Up) rather than a hardware scan code — used on non-Windows
+        // platforms for keys (like the arrow keys) whose scan codes fall outside the 1-127 range.
+        public UserCommandModifiableKeyInput(Keys virtualKey, KeyModifiers modifiers, params UserCommandInput[] combine)
+            : this(0, virtualKey, modifiers, combine)
         {
         }
 

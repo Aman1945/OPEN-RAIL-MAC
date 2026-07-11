@@ -28,14 +28,15 @@ namespace ORTS.Common
     /// </summary>
 	public abstract class SettingsBase
 	{
-        public const string DefaultRegistryKey = "SOFTWARE\\OpenRails\\ORTS";
+        public const string DefaultRegistryKey = "SOFTWARE/OpenRails/ORTS";
         public const string DefaultSettingsFileName = "OpenRails.ini";
 
-        public static string RegistryKey { get; private set; }        // ie @"SOFTWARE\OpenRails\ORTS"
-        public static string SettingsFilePath { get; private set; }   // ie @"C:\Program Files\Open Rails\OpenRails.ini"
+        public static string RegistryKey { get; private set; }        // ie @"SOFTWARE/OpenRails/ORTS"
+        public static string SettingsFilePath { get; private set; }   // ie @"C:/Program Files/Open Rails/OpenRails.ini"
 
         static SettingsBase()
         {
+#if WINDOWS
             // Only one of these is allowed; if the INI file exists, we use that, otherwise we use the registry.
             RegistryKey = DefaultRegistryKey;
             SettingsFilePath = Path.Combine(ApplicationInfo.ProcessDirectory, DefaultSettingsFileName);
@@ -43,6 +44,11 @@ namespace ORTS.Common
                 RegistryKey = null;
             else
                 SettingsFilePath = null;
+#else
+            // No registry available; always use the INI file (created on first write if it doesn't exist yet).
+            RegistryKey = null;
+            SettingsFilePath = Path.Combine(ApplicationInfo.ProcessDirectory, DefaultSettingsFileName);
+#endif
         }
 
         /// <summary>

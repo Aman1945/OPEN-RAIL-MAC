@@ -18,23 +18,29 @@
 using System;
 using System.IO;
 using System.Linq;
+#if WINDOWS
 using System.Management;
+#endif
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Diagnostics;
+#if WINDOWS
 using SharpDX.DXGI;
+#endif
 
 namespace ORTS.Common
 {
     public static class SystemInfo
     {
         static readonly Regex NameAndVersionRegex = new Regex("^(.*?) +([0-9.]+)$");
+#if WINDOWS
         static readonly NativeStructs.MemoryStatusExtended MemoryStatusExtended = new NativeStructs.MemoryStatusExtended()
         {
             Size = 64
         };
+#endif
 
         static SystemInfo()
         {
@@ -52,6 +58,7 @@ namespace ORTS.Common
                 Version = runtime.Groups[2].Value,
             };
 
+#if WINDOWS
             try
             {
                 // Almost nothing will correctly identify Windows 11 at this point, so we have to use WMI.
@@ -130,6 +137,17 @@ namespace ORTS.Common
                 catch (EntryPointNotFoundException) { }
                 catch (DllNotFoundException) { }
             }
+#else
+            OperatingSystem = new Platform
+            {
+                Name = RuntimeInformation.OSDescription,
+                Version = System.Environment.OSVersion.Version.ToString(),
+                Architecture = RuntimeInformation.OSArchitecture.ToString(),
+                Language = CultureInfo.CurrentUICulture.IetfLanguageTag,
+                Languages = new[] { CultureInfo.CurrentUICulture.IetfLanguageTag },
+            };
+            InstalledMemoryMB = 0;
+#endif
         }
 
         public static readonly Platform Application;
@@ -177,6 +195,7 @@ namespace ORTS.Common
             public uint MemoryMB;
         }
 
+#if WINDOWS
         static class NativeStructs
         {
             [StructLayout(LayoutKind.Sequential, Size = 64)]
@@ -228,5 +247,6 @@ namespace ORTS.Common
                 IntPtr immediateContext
             );
         }
+#endif
     }
 }

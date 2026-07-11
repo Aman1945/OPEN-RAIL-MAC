@@ -68,7 +68,7 @@ namespace Orts.Processes
             // should always fail but will appear in Process Monitor's log against the correct thread.
             try
             {
-                File.ReadAllBytes($@"DEBUG\THREAD\{Name} Process");
+                File.ReadAllBytes($@"DEBUG/THREAD/{Name} Process");
             }
             catch { }
 

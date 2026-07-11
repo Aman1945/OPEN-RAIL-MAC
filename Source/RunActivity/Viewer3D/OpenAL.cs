@@ -436,6 +436,7 @@ namespace Orts.Viewer3D
         /// </summary>
         private static void CheckMaxSourcesConfig()
         {
+#if WINDOWS
             string configFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "alsoft.ini");
             try
             {
@@ -459,6 +460,7 @@ namespace Orts.Viewer3D
             {
                 Trace.TraceError("Couldn't check or set OpenAL max sound sources in %AppData%\\Roaming\\alsoft.ini: ", ex.Message);
             }
+#endif
         }
     }
 

@@ -57,6 +57,12 @@ namespace Orts.Viewer3D.Processes
             State.WaitTillFinished();
         }
 
+        /// <summary>Waits up to the given timeout for the current update to complete; true if it did.</summary>
+        public bool WaitTillFinished(int millisecondsTimeout)
+        {
+            return State.WaitTillFinished(millisecondsTimeout);
+        }
+
         [ThreadName("Updater")]
         void UpdaterThread()
         {

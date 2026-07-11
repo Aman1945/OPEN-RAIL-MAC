@@ -266,7 +266,7 @@ namespace Orts.Viewer3D
 
             // determine file path to the WFile at the specified tile coordinates
             var WFileName = WorldFileNameFromTileCoordinates(tileX, tileZ);
-            var WFilePath = viewer.Simulator.RoutePath + @"\World\" + WFileName;
+            var WFilePath = viewer.Simulator.RoutePath + @"/World/" + WFileName;
 
             // if there isn't a file, then return with an empty WorldFile object
             if (!File.Exists(WFilePath))
@@ -331,7 +331,7 @@ namespace Orts.Viewer3D
                 var fileNameIsNotShape = (worldObject is TransferObj || worldObject is HazardObj);
 
                 // Determine the file path to the shape file for this scenery object and check it exists as expected.
-                var shapeFilePath = fileNameIsNotShape || String.IsNullOrEmpty(worldObject.FileName) ? null : global ? viewer.Simulator.BasePath + @"\Global\Shapes\" + worldObject.FileName : viewer.Simulator.RoutePath + @"\Shapes\" + worldObject.FileName;
+                var shapeFilePath = fileNameIsNotShape || String.IsNullOrEmpty(worldObject.FileName) ? null : global ? viewer.Simulator.BasePath + @"/Global/Shapes/" + worldObject.FileName : viewer.Simulator.RoutePath + @"/Shapes/" + worldObject.FileName;
                 if (shapeFilePath != null)
                 {
                     try
@@ -540,7 +540,7 @@ namespace Orts.Viewer3D
                     {
                         if (Viewer.SpeedpostDatFile == null)
                         {
-                            Trace.TraceWarning(String.Format("{0} missing; speed posts for temporary speed restrictions in tile {1} {2} will not be visible.", Viewer.Simulator.RoutePath + @"\speedpost.dat", TileX, TileZ));
+                            Trace.TraceWarning(String.Format("{0} missing; speed posts for temporary speed restrictions in tile {1} {2} will not be visible.", Viewer.Simulator.RoutePath + @"/speedpost.dat", TileX, TileZ));
                             break;
                         }
                         else

@@ -40,7 +40,8 @@ namespace Orts.Formats.Msts
             try
             {
                 // Parse the tile location out of the filename.
-                var p = filename.ToUpper().LastIndexOf("\\WORLD\\W");
+                // Normalize separators so this works with both '\' (Windows) and '/' (other platforms) paths.
+                var p = filename.ToUpper().Replace('\\', '/').LastIndexOf("/WORLD/W");
                 TileX = int.Parse(filename.Substring(p + 8, 7));
                 TileZ = int.Parse(filename.Substring(p + 15, 7));
 

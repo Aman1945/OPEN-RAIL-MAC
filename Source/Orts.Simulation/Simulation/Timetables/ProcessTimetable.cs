@@ -118,7 +118,7 @@ namespace Orts.Simulation.Timetables
                 var fileContents = new TimetableReader(filePath);
 
 #if DEBUG_TIMETABLE
-                File.AppendAllText(@"C:\temp\timetableproc.txt", "\nProcessing file : " + filePath + "\n");
+                File.AppendAllText(@"C:/temp/timetableproc.txt", "\nProcessing file : " + filePath + "\n");
 #endif
 
                 // Convert to train info
@@ -296,15 +296,15 @@ namespace Orts.Simulation.Timetables
             }
 
 #if DEBUG_TIMETABLE
-            if (File.Exists(@"C:\temp\timetableproc.txt"))
+            if (File.Exists(@"C:/temp/timetableproc.txt"))
             {
-                File.Delete(@"C:\temp\timetableproc.txt");
+                File.Delete(@"C:/temp/timetableproc.txt");
             }
 
-            File.AppendAllText(@"C:\temp\timetableproc.txt", "Files : \n");
+            File.AppendAllText(@"C:/temp/timetableproc.txt", "Files : \n");
             foreach (string ttfile in filenames)
             {
-                File.AppendAllText(@"C:\temp\timetableproc.txt", ttfile + "\n");
+                File.AppendAllText(@"C:/temp/timetableproc.txt", ttfile + "\n");
             }
 #endif
             return filenames;
@@ -541,9 +541,9 @@ namespace Orts.Simulation.Timetables
             }
 
 #if DEBUG_TIMETABLE
-            File.AppendAllText(@"C:\temp\timetableproc.txt", "\n Row and Column details : \n");
+            File.AppendAllText(@"C:/temp/timetableproc.txt", "\n Row and Column details : \n");
 
-            File.AppendAllText(@"C:\temp\timetableproc.txt", "\n Columns : \n");
+            File.AppendAllText(@"C:/temp/timetableproc.txt", "\n Columns : \n");
             for (int iColumn = 0; iColumn <= ColInfo.Length - 1; iColumn++)
             {
                 columnType ctype = ColInfo[iColumn];
@@ -555,10 +555,10 @@ namespace Orts.Simulation.Timetables
                     stbuild.AppendFormat(" = train : {0}", trainHeaders[iColumn]);
                 }
                 stbuild.Append("\n");
-                File.AppendAllText(@"C:\temp\timetableproc.txt", stbuild.ToString());
+                File.AppendAllText(@"C:/temp/timetableproc.txt", stbuild.ToString());
             }
 
-            File.AppendAllText(@"C:\temp\timetableproc.txt", "\n Rows : \n");
+            File.AppendAllText(@"C:/temp/timetableproc.txt", "\n Rows : \n");
             for (int iRow = 0; iRow <= RowInfo.Length - 1; iRow++)
             {
                 rowType rtype = RowInfo[iRow];
@@ -570,7 +570,7 @@ namespace Orts.Simulation.Timetables
                     stbuild.AppendFormat(" = station {0}", stationNames[iRow]);
                 }
                 stbuild.Append("\n");
-                File.AppendAllText(@"C:\temp\timetableproc.txt", stbuild.ToString());
+                File.AppendAllText(@"C:/temp/timetableproc.txt", stbuild.ToString());
             }
 #endif
 
@@ -2464,8 +2464,8 @@ namespace Orts.Simulation.Timetables
                         wagonFilePath = Path.ChangeExtension(wagonFilePath, ".eng");
                     else if (wagon.IsEOT)
                     {
-                        wagonFolder = simulator.BasePath + @"\trains\orts_eot\" + wagon.Folder;
-                        wagonFilePath = wagonFolder + @"\" + wagon.Name + ".eot";
+                        wagonFolder = simulator.BasePath + @"/trains/orts_eot/" + wagon.Folder;
+                        wagonFilePath = wagonFolder + @"/" + wagon.Name + ".eot";
                     }
 
                     if (!File.Exists(wagonFilePath))

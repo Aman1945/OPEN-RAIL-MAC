@@ -827,12 +827,12 @@ namespace Orts.Simulation.Timetables
 
                 if (train.CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Required Pool Exit : " + PoolName + "\n");
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Pool overflow : train length : " + train.Length + "\n");
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "                pool lengths : \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Required Pool Exit : " + PoolName + "\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Pool overflow : train length : " + train.Length + "\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "                pool lengths : \n");
                     foreach (PoolDetails thisStorage in StoragePool)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt", "                  path : " + thisStorage.StorageName + " ; stored units : " +
+                        File.AppendAllText(@"C:/temp/checktrain.txt", "                  path : " + thisStorage.StorageName + " ; stored units : " +
                             thisStorage.StoredUnits.Count + " ; rem length : " + thisStorage.RemLength + "\n");
                     }
                 }
@@ -848,8 +848,8 @@ namespace Orts.Simulation.Timetables
 
                 if (train.CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Required Pool Exit : " + PoolName + "\n");
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "No valid pool found \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Required Pool Exit : " + PoolName + "\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "No valid pool found \n");
                 }
 
                 // Train will be abandoned when reaching end of path
@@ -990,7 +990,7 @@ namespace Orts.Simulation.Timetables
                         totalno += selStorage.StoredUnits.Count;
                     }
                     sob.AppendFormat("           stored units {0} : {1} (total {2})", PoolName, thisStorage.StoredUnits.Count, totalno);
-                    File.AppendAllText(@"C:\temp\PoolAnal.csv", sob.ToString() + "\n");
+                    File.AppendAllText(@"C:/temp/PoolAnal.csv", sob.ToString() + "\n");
 #endif
                 }
                 else if (thisStorage.RemLength > train.Length && !maxUnitsReached)
@@ -1082,7 +1082,7 @@ namespace Orts.Simulation.Timetables
                 }
 
                 sob.AppendFormat("           stored units {0} : {1} (total {2})", PoolName, thisPool.StoredUnits.Count, totalno);
-                File.AppendAllText(@"C:\temp\PoolAnal.csv", sob.ToString() + "\n");
+                File.AppendAllText(@"C:/temp/PoolAnal.csv", sob.ToString() + "\n");
 #endif
 
 #if DEBUG_TRACEINFO
@@ -1206,7 +1206,7 @@ namespace Orts.Simulation.Timetables
             DateTime actTime = baseDT.AddSeconds(train.AI.clockTime);
 
             sob.AppendFormat("{0} : Pool {1} : request for train {2} ({3})", actTime.ToString("HH:mm:ss"), PoolName, train.Number, train.Name);
-            File.AppendAllText(@"C:\temp\PoolAnal.csv", sob.ToString() + "\n");
+            File.AppendAllText(@"C:/temp/PoolAnal.csv", sob.ToString() + "\n");
 #endif
             // Check if any engines available
             int selectedTrainNumber = -1;
@@ -1254,7 +1254,7 @@ namespace Orts.Simulation.Timetables
 #if DEBUG_POOLINFO
                     sob = new StringBuilder();
                     sob.AppendFormat("Pool {0} : train {1} ({2}) : no units available, engine force created", PoolName, train.Number, train.Name);
-                    File.AppendAllText(@"C:\temp\PoolAnal.csv", sob.ToString() + "\n");
+                    File.AppendAllText(@"C:/temp/PoolAnal.csv", sob.ToString() + "\n");
 #endif
                     return TrainFromPool.ForceCreated;
                 }
@@ -1265,7 +1265,7 @@ namespace Orts.Simulation.Timetables
 #if DEBUG_POOLINFO
                     sob = new StringBuilder();
                     sob.AppendFormat("Pool {0} : train {1} ({2}) : no units available, enigne not created", PoolName, train.Number, train.Name);
-                    File.AppendAllText(@"C:\temp\PoolAnal.csv", sob.ToString() + "\n");
+                    File.AppendAllText(@"C:/temp/PoolAnal.csv", sob.ToString() + "\n");
 #endif
                     return TrainFromPool.NotCreated;
                 }
@@ -1348,7 +1348,7 @@ namespace Orts.Simulation.Timetables
                             totalno1 += selStorage.StoredUnits.Count;
                         }
                         sob.AppendFormat("           stored units {0} : {1} (total {2})", PoolName, reqStorage.StoredUnits.Count, totalno1);
-                        File.AppendAllText(@"C:\temp\PoolAnal.csv", sob.ToString() + "\n");
+                        File.AppendAllText(@"C:/temp/PoolAnal.csv", sob.ToString() + "\n");
 #endif
                         break;
                     }
@@ -1380,7 +1380,7 @@ namespace Orts.Simulation.Timetables
                     totalno2 += selStorage.StoredUnits.Count;
                 }
                 sob.AppendFormat("           stored units {0} : {1} (total {2})", PoolName, reqStorage.StoredUnits.Count, totalno2);
-                File.AppendAllText(@"C:\temp\PoolAnal.csv", sob.ToString() + "\n");
+                File.AppendAllText(@"C:/temp/PoolAnal.csv", sob.ToString() + "\n");
 #endif
                 return TrainFromPool.Delayed;
             }
@@ -1404,7 +1404,7 @@ namespace Orts.Simulation.Timetables
                 totalno += selStorage.StoredUnits.Count;
             }
             sob.AppendFormat("           stored units {0} : {1} (total {2})", PoolName, reqStorage.StoredUnits.Count, totalno);
-            File.AppendAllText(@"C:\temp\PoolAnal.csv", sob.ToString() + "\n");
+            File.AppendAllText(@"C:/temp/PoolAnal.csv", sob.ToString() + "\n");
 #endif
 
 #if DEBUG_TRACEINFO

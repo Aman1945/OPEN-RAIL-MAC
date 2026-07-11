@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework Condition="'$(BuildDotNet)' == 'true'">net6-windows</TargetFramework>
-    <TargetFramework Condition="'$(TargetFramework)' == ''">net472</TargetFramework>
+    <TargetFramework Condition="'$(MacBuild)' == 'true'">net8.0</TargetFramework>
+    <TargetFramework Condition="'$(BuildDotNet)' == 'true' AND '$(MacBuild)' != 'true'">net6-windows</TargetFramework>
+    <TargetFramework Condition="'$(TargetFramework)' == '' AND '$(MacBuild)' != 'true'">net472</TargetFramework>
     <OutputType>Library</OutputType>
     <IsPublishable>False</IsPublishable>
     <AssemblyTitle>Open Rails MSTS Formats Library</AssemblyTitle>
@@ -23,6 +24,7 @@
     <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.355802">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.0.1641" />
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.0.1641" Condition="'$(MacBuild)' != 'true'" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.0.1641" Condition="'$(MacBuild)' == 'true'" />
   </ItemGroup>
 </Project>

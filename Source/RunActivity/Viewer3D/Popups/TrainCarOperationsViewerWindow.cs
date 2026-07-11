@@ -214,7 +214,7 @@ namespace Orts.Viewer3D.Popups
             if (Coupler == null)
             {
                 var GraphicsDeviceRender = Owner.Viewer.RenderProcess.GraphicsDevice;
-                var TrainOperationsPath = System.IO.Path.Combine(Owner.Viewer.ContentPath, "TrainOperations\\TrainOperationsMap32.png");
+                var TrainOperationsPath = System.IO.Path.Combine(Owner.Viewer.ContentPath, "TrainOperations/TrainOperationsMap32.png");
 
                 // TODO: This should happen on the loader thread.
                 //                                                                           texture rectangles : X, Y, width, height

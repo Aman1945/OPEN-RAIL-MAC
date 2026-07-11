@@ -183,33 +183,52 @@ namespace Orts.Viewer3D
             path = path.ToLowerInvariant();
             var ext = Path.GetExtension(path);
 
-            using (var stream = File.OpenRead(path))
+            if (ext == ".bmp" || ext == ".png")
             {
-                if (ext == ".bmp" || ext == ".png")
+#if WINDOWS
+                using (var stream = File.OpenRead(path))
+                using (var image = System.Drawing.Image.FromStream(stream))
+                using (var memoryStream = new MemoryStream())
                 {
-                    using (var image = System.Drawing.Image.FromStream(stream))
+                    var mapRectangle = new System.Drawing.Rectangle
                     {
-                        using (var memoryStream = new MemoryStream())
+                        Height = MapRectangle.Height,
+                        Width = MapRectangle.Width,
+                        X = MapRectangle.X,
+                        Y = MapRectangle.Y
+                    };
+                    var imageRect = new Bitmap(image).Clone(mapRectangle, image.PixelFormat);
+                    imageRect.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
+                    memoryStream.Seek(0, SeekOrigin.Begin);
+                    return Texture2D.FromStream(graphicsDevice, memoryStream);
+                }
+#else
+                // Cross-platform: decode the PNG/BMP on the CPU with SkiaSharp and copy out the requested
+                // sub-rectangle, then upload via SetData. (System.Drawing is unavailable on macOS/Linux, and
+                // Texture2D.GetData may only run on the UI thread whereas texture loading runs on the Loader thread.)
+                using (var bmp = SkiaSharp.SKBitmap.Decode(path))
+                {
+                    var w = MapRectangle.Width;
+                    var h = MapRectangle.Height;
+                    var region = new Microsoft.Xna.Framework.Color[w * h];
+                    for (var y = 0; y < h; y++)
+                    {
+                        for (var x = 0; x < w; x++)
                         {
-                            var mapRectangle = new System.Drawing.Rectangle
-                            {
-                                Height = MapRectangle.Height,
-                                Width = MapRectangle.Width,
-                                X = MapRectangle.X,
-                                Y = MapRectangle.Y
-                            };
-                            var imageRect = new Bitmap(image).Clone(mapRectangle, image.PixelFormat);
-                            imageRect.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
-                            memoryStream.Seek(0, SeekOrigin.Begin);
-                            return Texture2D.FromStream(graphicsDevice, memoryStream);
+                            var c = bmp.GetPixel(MapRectangle.X + x, MapRectangle.Y + y);
+                            region[y * w + x] = new Microsoft.Xna.Framework.Color(c.Red, c.Green, c.Blue, c.Alpha);
                         }
                     }
+                    var cropped = new Texture2D(graphicsDevice, w, h);
+                    cropped.SetData(region);
+                    return cropped;
                 }
-                else
-                {
-                    Trace.TraceWarning("Unsupported texture format: {0}", path);
-                    return SharedMaterialManager.MissingTexture;
-                }
+#endif
+            }
+            else
+            {
+                Trace.TraceWarning("Unsupported texture format: {0}", path);
+                return SharedMaterialManager.MissingTexture;
             }
         }
 
@@ -281,7 +300,7 @@ namespace Orts.Viewer3D
             PopupWindowShader = new PopupWindowShader(viewer, viewer.RenderProcess.GraphicsDevice);
             PrecipitationShader = new PrecipitationShader(viewer.RenderProcess.GraphicsDevice);
             SceneryShader = new SceneryShader(viewer.RenderProcess.GraphicsDevice);
-            var microtexPath = viewer.Simulator.RoutePath + @"\TERRTEX\microtex";
+            var microtexPath = viewer.Simulator.RoutePath + @"/TERRTEX/microtex";
             try
             {
                 if (File.Exists(microtexPath + ".dds"))
@@ -310,9 +329,9 @@ namespace Orts.Viewer3D
             MissingTexture = SharedTextureManager.GetInternalMissingTexture(viewer.RenderProcess.GraphicsDevice);
 
             // Managing default snow textures
-            var defaultSnowTexturePath = viewer.Simulator.RoutePath + @"\TERRTEX\SNOW\ORTSDefaultSnow.ace";
+            var defaultSnowTexturePath = viewer.Simulator.RoutePath + @"/TERRTEX/SNOW/ORTSDefaultSnow.ace";
             DefaultSnowTexture = Viewer.TextureManager.Get(defaultSnowTexturePath);
-            var defaultDMSnowTexturePath = viewer.Simulator.RoutePath + @"\TERRTEX\SNOW\ORTSDefaultDMSnow.ace";
+            var defaultDMSnowTexturePath = viewer.Simulator.RoutePath + @"/TERRTEX/SNOW/ORTSDefaultDMSnow.ace";
             DefaultDMSnowTexture = Viewer.TextureManager.Get(defaultDMSnowTexturePath);
 
         }
@@ -752,7 +771,7 @@ namespace Orts.Viewer3D
             NightTexture = SharedMaterialManager.MissingTexture;
             // <CSComment> if "trainset" is in the path (true for night textures for 3DCabs) deferred load of night textures is disabled 
             if (!String.IsNullOrEmpty(texturePath) && (Options & SceneryMaterialOptions.NightTexture) != 0 && ((!viewer.IsDaytime && !viewer.IsNighttime)
-                || TexturePath.Contains(@"\trainset\")))
+                || TexturePath.Contains(@"/trainset/")))
             {
                 var nightTexturePath = Helpers.GetNightTextureFile(Viewer.Simulator, texturePath);
                 if (!String.IsNullOrEmpty(nightTexturePath))

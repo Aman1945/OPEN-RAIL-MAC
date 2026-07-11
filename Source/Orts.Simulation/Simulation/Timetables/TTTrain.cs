@@ -988,13 +988,13 @@ namespace Orts.Simulation.Timetables
 #if DEBUG_REPORTS
                     if (newStop != null)
                     {
-                        File.AppendAllText(@"C:\temp\printproc.txt", "Train " + Number.ToString() +
+                        File.AppendAllText(@"C:/temp/printproc.txt", "Train " + Number.ToString() +
                         " : alternative stop required for " + orgStop.PlatformItem.Name +
                         " ; found : " + newStop.PlatformReference + "\n");
                     }
                     else
                     {
-                        File.AppendAllText(@"C:\temp\printproc.txt", "Train " + Number.ToString() +
+                        File.AppendAllText(@"C:/temp/printproc.txt", "Train " + Number.ToString() +
                         " : alternative stop required for " + orgStop.PlatformItem.Name +
                         " ; not found \n");
                     }
@@ -1004,13 +1004,13 @@ namespace Orts.Simulation.Timetables
                         {
                             if (newStop != null)
                             {
-                                File.AppendAllText(@"C:\temp\checktrain.txt", "Train " + Number.ToString() +
+                                File.AppendAllText(@"C:/temp/checktrain.txt", "Train " + Number.ToString() +
                                 " : alternative stop required for " + orgStop.PlatformItem.Name +
                                 " ; found : " + newStop.PlatformReference + "\n");
                             }
                             else
                             {
-                                File.AppendAllText(@"C:\temp\checktrain.txt", "Train " + Number.ToString() +
+                                File.AppendAllText(@"C:/temp/checktrain.txt", "Train " + Number.ToString() +
                                 " : alternative stop required for " + orgStop.PlatformItem.Name +
                                 " ; not found \n");
                             }
@@ -1048,10 +1048,10 @@ namespace Orts.Simulation.Timetables
                     DateTime baseDT = new DateTime();
                     DateTime actTime = baseDT.AddSeconds(AI.clockTime);
 
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "--------\n");
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Activated : ");
-                    File.AppendAllText(@"C:\temp\checktrain.txt", actTime.ToString("HH:mm:ss") + "\n");
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "--------\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "--------\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Activated : ");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", actTime.ToString("HH:mm:ss") + "\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "--------\n");
 
                     CheckTrain = true;
                 }
@@ -1210,7 +1210,7 @@ namespace Orts.Simulation.Timetables
                         NextStopDistanceM = 0.0f;
 
 #if DEBUG_REPORTS
-                File.AppendAllText(@"C:\temp\printproc.txt", "Train " +
+                File.AppendAllText(@"C:/temp/printproc.txt", "Train " +
                      Number.ToString() + " initial at station " +
                      StationStops[0].PlatformItem.Name + "\n");
 #endif
@@ -1230,38 +1230,38 @@ namespace Orts.Simulation.Timetables
                 DateTime baseDT = new DateTime();
                 DateTime actTime = baseDT.AddSeconds(AI.clockTime);
 
-                File.AppendAllText(@"C:\temp\checktrain.txt", "--------\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt", "PostInit at " + actTime.ToString("HH:mm:ss") + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt", "Train : " + Number.ToString() + " ( AI : " + OrgAINumber.ToString() + " )\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt", "Name  : " + Name + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt", "Frght : " + IsFreight.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt", "Length: " + Length.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt", "MaxSpd: " + TrainMaxSpeedMpS.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt", "Start : " + (StartTime.HasValue ? StartTime.Value.ToString() : "--:--:--") + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt", "Active: " + (ActivateTime.HasValue ? ActivateTime.Value.ToString() : "------") + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt", "ActTrg: " + TriggeredActivationRequired.ToString());
-                File.AppendAllText(@"C:\temp\checktrain.txt", "State : " + MovementState.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt", "AtStat: " + atStation.ToString() + "\n");
+                File.AppendAllText(@"C:/temp/checktrain.txt", "--------\n");
+                File.AppendAllText(@"C:/temp/checktrain.txt", "PostInit at " + actTime.ToString("HH:mm:ss") + "\n");
+                File.AppendAllText(@"C:/temp/checktrain.txt", "Train : " + Number.ToString() + " ( AI : " + OrgAINumber.ToString() + " )\n");
+                File.AppendAllText(@"C:/temp/checktrain.txt", "Name  : " + Name + "\n");
+                File.AppendAllText(@"C:/temp/checktrain.txt", "Frght : " + IsFreight.ToString() + "\n");
+                File.AppendAllText(@"C:/temp/checktrain.txt", "Length: " + Length.ToString() + "\n");
+                File.AppendAllText(@"C:/temp/checktrain.txt", "MaxSpd: " + TrainMaxSpeedMpS.ToString() + "\n");
+                File.AppendAllText(@"C:/temp/checktrain.txt", "Start : " + (StartTime.HasValue ? StartTime.Value.ToString() : "--:--:--") + "\n");
+                File.AppendAllText(@"C:/temp/checktrain.txt", "Active: " + (ActivateTime.HasValue ? ActivateTime.Value.ToString() : "------") + "\n");
+                File.AppendAllText(@"C:/temp/checktrain.txt", "ActTrg: " + TriggeredActivationRequired.ToString());
+                File.AppendAllText(@"C:/temp/checktrain.txt", "State : " + MovementState.ToString() + "\n");
+                File.AppendAllText(@"C:/temp/checktrain.txt", "AtStat: " + atStation.ToString() + "\n");
                 if (Delay.HasValue)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Delay : " + Delay.Value.TotalMinutes.ToString() + "\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Delay : " + Delay.Value.TotalMinutes.ToString() + "\n");
                 }
                 else
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Delay : - \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Delay : - \n");
                 }
-                File.AppendAllText(@"C:\temp\checktrain.txt", "ValPos: " + validPosition.ToString() + "\n");
+                File.AppendAllText(@"C:/temp/checktrain.txt", "ValPos: " + validPosition.ToString() + "\n");
 
-                File.AppendAllText(@"C:\temp\checktrain.txt", "Occupied sections : \n");
+                File.AppendAllText(@"C:/temp/checktrain.txt", "Occupied sections : \n");
                 foreach (TrackCircuitSection section in OccupiedTrack)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "    Section : " + section.Index + "\n\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "    Section : " + section.Index + "\n\n");
                 }
 
                 if (!String.IsNullOrEmpty(ExitPool))
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "    Exit to Pool : " + ExitPool + "\n");
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "    From section : " + PoolAccessSection + "\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "    Exit to Pool : " + ExitPool + "\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "    From section : " + PoolAccessSection + "\n");
                 }
             }
 
@@ -1283,10 +1283,10 @@ namespace Orts.Simulation.Timetables
                     DateTime baseDT = new DateTime();
                     DateTime actTime = baseDT.AddSeconds(AI.clockTime);
 
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "--------\n");
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Activated : ");
-                    File.AppendAllText(@"C:\temp\checktrain.txt", actTime.ToString("HH:mm:ss") + "\n");
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "--------\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "--------\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Activated : ");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", actTime.ToString("HH:mm:ss") + "\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "--------\n");
 
                     CheckTrain = true;
                 }
@@ -2111,37 +2111,37 @@ namespace Orts.Simulation.Timetables
             }
 
 #if DEBUG_TEST
-            File.AppendAllText(@"C:\temp\TCSections.txt", "\nSTATION STOPS\n\n");
+            File.AppendAllText(@"C:/temp/TCSections.txt", "\nSTATION STOPS\n\n");
 
             if (StationStops.Count <= 0)
             {
-                File.AppendAllText(@"C:\temp\TCSections.txt", " No stops\n");
+                File.AppendAllText(@"C:/temp/TCSections.txt", " No stops\n");
             }
             else
             {
                 foreach (StationStop thisStation in StationStops)
                 {
-                    File.AppendAllText(@"C:\temp\TCSections.txt", "\n");
+                    File.AppendAllText(@"C:/temp/TCSections.txt", "\n");
                     if (thisStation.PlatformItem == null)
                     {
-                        File.AppendAllText(@"C:\temp\TCSections.txt", "Waiting Point");
+                        File.AppendAllText(@"C:/temp/TCSections.txt", "Waiting Point");
                     }
                     else
                     {
-                        File.AppendAllText(@"C:\temp\TCSections.txt", "Station : " + thisStation.PlatformItem.Name + "\n");
+                        File.AppendAllText(@"C:/temp/TCSections.txt", "Station : " + thisStation.PlatformItem.Name + "\n");
                         DateTime baseDT = new DateTime();
                         DateTime arrTime = baseDT.AddSeconds(thisStation.ArrivalTime);
-                        File.AppendAllText(@"C:\temp\TCSections.txt", "Arrive  : " + arrTime.ToString("HH:mm:ss") + "\n");
+                        File.AppendAllText(@"C:/temp/TCSections.txt", "Arrive  : " + arrTime.ToString("HH:mm:ss") + "\n");
                         DateTime depTime = baseDT.AddSeconds(thisStation.DepartTime);
-                        File.AppendAllText(@"C:\temp\TCSections.txt", "Depart  : " + depTime.ToString("HH:mm:ss") + "\n");
+                        File.AppendAllText(@"C:/temp/TCSections.txt", "Depart  : " + depTime.ToString("HH:mm:ss") + "\n");
                     }
-                    File.AppendAllText(@"C:\temp\TCSections.txt", "Exit Sig: " + thisStation.ExitSignal.ToString() + "\n");
-                    File.AppendAllText(@"C:\temp\TCSections.txt", "Hold Sig: " + thisStation.HoldSignal.ToString() + "\n");
-                    File.AppendAllText(@"C:\temp\TCSections.txt", "Subpath : " + thisStation.SubrouteIndex.ToString() + "\n");
-                    File.AppendAllText(@"C:\temp\TCSections.txt", "Index   : " + lastRouteIndex.ToString() + "\n");
-                    File.AppendAllText(@"C:\temp\TCSections.txt", "Section : " + thisStation.TCSectionIndex.ToString() + "\n");
-                    File.AppendAllText(@"C:\temp\TCSections.txt", "Direct  : " + thisStation.Direction.ToString() + "\n");
-                    File.AppendAllText(@"C:\temp\TCSections.txt", "Stop    : " + thisStation.StopOffset.ToString("###0.00") + "\n");
+                    File.AppendAllText(@"C:/temp/TCSections.txt", "Exit Sig: " + thisStation.ExitSignal.ToString() + "\n");
+                    File.AppendAllText(@"C:/temp/TCSections.txt", "Hold Sig: " + thisStation.HoldSignal.ToString() + "\n");
+                    File.AppendAllText(@"C:/temp/TCSections.txt", "Subpath : " + thisStation.SubrouteIndex.ToString() + "\n");
+                    File.AppendAllText(@"C:/temp/TCSections.txt", "Index   : " + lastRouteIndex.ToString() + "\n");
+                    File.AppendAllText(@"C:/temp/TCSections.txt", "Section : " + thisStation.TCSectionIndex.ToString() + "\n");
+                    File.AppendAllText(@"C:/temp/TCSections.txt", "Direct  : " + thisStation.Direction.ToString() + "\n");
+                    File.AppendAllText(@"C:/temp/TCSections.txt", "Stop    : " + thisStation.StopOffset.ToString("###0.00") + "\n");
                 }
             }
 #endif
@@ -2190,7 +2190,7 @@ namespace Orts.Simulation.Timetables
                 NextStopDistanceM = 0.0f;
 
 #if DEBUG_REPORTS
-                File.AppendAllText(@"C:\temp\printproc.txt", "Train " +
+                File.AppendAllText(@"C:/temp/printproc.txt", "Train " +
                      Number.ToString() + " initial at station " +
                      StationStops[0].PlatformItem.Name + "\n");
 #endif
@@ -2334,7 +2334,7 @@ namespace Orts.Simulation.Timetables
 #if DEBUG_REPORTS
                     if (StationStops[0].ActualStopType == StationStop.STOPTYPE.STATION_STOP)
                     {
-                        File.AppendAllText(@"C:\temp\printproc.txt", "Insert for train " +
+                        File.AppendAllText(@"C:/temp/printproc.txt", "Insert for train " +
                             Number.ToString() + ", type STATION_STOP (" +
                             StationStops[0].PlatformItem.Name + "), at " +
                             distancesM[0].ToString() + ", trigger at " +
@@ -2343,7 +2343,7 @@ namespace Orts.Simulation.Timetables
                     }
                     else if (StationStops[0].ActualStopType == StationStop.STOPTYPE.WAITING_POINT)
                     {
-                        File.AppendAllText(@"C:\temp\printproc.txt", "Insert for train " +
+                        File.AppendAllText(@"C:/temp/printproc.txt", "Insert for train " +
                                     Number.ToString() + ", type WAITING_POINT (" +
                                     distancesM[0].ToString() + ", trigger at " +
                                     distancesM[1].ToString() + " (now at " +
@@ -2355,7 +2355,7 @@ namespace Orts.Simulation.Timetables
                     {
                         if (StationStops[0].ActualStopType == StationStop.STOPTYPE.STATION_STOP)
                         {
-                            File.AppendAllText(@"C:\temp\checktrain.txt", "Insert for train " +
+                            File.AppendAllText(@"C:/temp/checktrain.txt", "Insert for train " +
                                     Number.ToString() + ", type STATION_STOP (" +
                                     StationStops[0].PlatformItem.Name + "), at " +
                                     distancesM[0].ToString() + ", trigger at " +
@@ -2364,7 +2364,7 @@ namespace Orts.Simulation.Timetables
                         }
                         else if (StationStops[0].ActualStopType == StationStop.STOPTYPE.WAITING_POINT)
                         {
-                            File.AppendAllText(@"C:\temp\checktrain.txt", "Insert for train " +
+                            File.AppendAllText(@"C:/temp/checktrain.txt", "Insert for train " +
                                         Number.ToString() + ", type WAITING_POINT (" +
                                         distancesM[0].ToString() + ", trigger at " +
                                         distancesM[1].ToString() + " (now at " +
@@ -2577,7 +2577,7 @@ namespace Orts.Simulation.Timetables
             if (distanceM > NextStopDistanceM)
             {
 #if DEBUG_REPORTS
-                File.AppendAllText(@"C:\temp\printproc.txt", "Train " +
+                File.AppendAllText(@"C:/temp/printproc.txt", "Train " +
                     Number.ToString() + " forced stop : calculated " +
                     FormatStrings.FormatSpeed(SpeedMpS, true) + " > " +
                     FormatStrings.FormatDistance(distanceM, true) + " set to " +
@@ -2587,7 +2587,7 @@ namespace Orts.Simulation.Timetables
 
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Train " +
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Train " +
                         Number.ToString() + " forced stop : calculated " +
                         FormatStrings.FormatSpeed(SpeedMpS, true) + " > " +
                         // TODO: Remove?
@@ -2694,10 +2694,10 @@ namespace Orts.Simulation.Timetables
                     DateTime baseDT = new DateTime();
                     DateTime actTime = baseDT.AddSeconds(AI.clockTime);
 
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "--------\n");
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Activated : ");
-                    File.AppendAllText(@"C:\temp\checktrain.txt", actTime.ToString("HH:mm:ss") + "\n");
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "--------\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "--------\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Activated : ");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", actTime.ToString("HH:mm:ss") + "\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "--------\n");
 
                     CheckTrain = true;
                 }
@@ -2775,7 +2775,7 @@ namespace Orts.Simulation.Timetables
                     UpdateRouteClearanceAhead(SignalObjIndex, movedBackward, elapsedClockSeconds); // Update route clearance
                     if (CheckTrain)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt", "MovementState : " + MovementState.ToString() + " ; End Authority : " + EndAuthorityType[0].ToString() + "\n");
+                        File.AppendAllText(@"C:/temp/checktrain.txt", "MovementState : " + MovementState.ToString() + " ; End Authority : " + EndAuthorityType[0].ToString() + "\n");
                     }
 
                     if (MovementState != AI_MOVEMENT_STATE.TURNTABLE)
@@ -2818,8 +2818,8 @@ namespace Orts.Simulation.Timetables
 
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "State check if train ahead is beyond turntable\n");
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "    Train Ahead : " + DistanceToEndNodeAuthorityM[0] + " ; Distance to turntable : " + lengthToGoM + "\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "State check if train ahead is beyond turntable\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "    Train Ahead : " + DistanceToEndNodeAuthorityM[0] + " ; Distance to turntable : " + lengthToGoM + "\n");
                 }
 
                 if (lengthToGoM < DistanceToEndNodeAuthorityM[0])
@@ -2893,10 +2893,10 @@ namespace Orts.Simulation.Timetables
                     DateTime baseDT = new DateTime();
                     DateTime actTime = baseDT.AddSeconds(AI.clockTime);
 
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "--------\n");
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Activated : ");
-                    File.AppendAllText(@"C:\temp\checktrain.txt", actTime.ToString("HH:mm:ss") + "\n");
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "--------\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "--------\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Activated : ");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", actTime.ToString("HH:mm:ss") + "\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "--------\n");
 
                     CheckTrain = true;
                 }
@@ -2905,7 +2905,7 @@ namespace Orts.Simulation.Timetables
 
             if (CheckTrain)
             {
-                File.AppendAllText(@"C:\temp\checktrain.txt", "Train update AI state : " + Number + " ; type : " + TrainType + "\n");
+                File.AppendAllText(@"C:/temp/checktrain.txt", "Train update AI state : " + Number + " ; type : " + TrainType + "\n");
             }
 
             // Start if start time is reached
@@ -2993,10 +2993,10 @@ namespace Orts.Simulation.Timetables
                     DateTime baseDT = new DateTime();
                     DateTime actTime = baseDT.AddSeconds(AI.clockTime);
 
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "--------\n");
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Train " + Number + " activated \n");
-                    File.AppendAllText(@"C:\temp\checktrain.txt", actTime.ToString("HH:mm:ss") + "\n");
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "--------\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "--------\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Train " + Number + " activated \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", actTime.ToString("HH:mm:ss") + "\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "--------\n");
                 }
 
                 foreach (var car in Cars)
@@ -3013,7 +3013,7 @@ namespace Orts.Simulation.Timetables
                 {
                     if (CheckTrain)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt", "Train promoted to PLAYER : " + Number + "\n");
+                        File.AppendAllText(@"C:/temp/checktrain.txt", "Train promoted to PLAYER : " + Number + "\n");
                     }
 
                     TrainType = TRAINTYPE.PLAYER;
@@ -3155,11 +3155,11 @@ namespace Orts.Simulation.Timetables
 
                 if (CheckTrain && DelayedStart)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Train " + Number + " delayed start : " + RestdelayS.ToString() + "\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Train " + Number + " delayed start : " + RestdelayS.ToString() + "\n");
                 }
                 else if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Train " + Number + " : start moving \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Train " + Number + " : start moving \n");
                 }
 
                 return MovementState;
@@ -3276,7 +3276,7 @@ namespace Orts.Simulation.Timetables
 
                                 if (CheckTrain)
                                 {
-                                    File.AppendAllText(@"C:\temp\checktrain.txt", "Train " + Number + " assumed to be in station : " +
+                                    File.AppendAllText(@"C:/temp/checktrain.txt", "Train " + Number + " assumed to be in station : " +
                                         StationStops[0].PlatformItem.Name + " as stopped behind other train in station (other train : " + OtherTrain.Name + "[" + OtherTrain.Number + "] \n");
                                 }
                             }
@@ -3299,7 +3299,7 @@ namespace Orts.Simulation.Timetables
 
                             if (CheckTrain)
                             {
-                                File.AppendAllText(@"C:\temp\checktrain.txt", "Train " + Number + " assumed to be in station : " +
+                                File.AppendAllText(@"C:/temp/checktrain.txt", "Train " + Number + " assumed to be in station : " +
                                     StationStops[0].PlatformItem.Name + "( present section = " + PresentPosition[0].TCSectionIndex +
                                     " ; station section = " + StationStops[0].TCSectionIndex + " )\n");
                             }
@@ -3447,7 +3447,7 @@ namespace Orts.Simulation.Timetables
 
                         if (CheckTrain)
                         {
-                            File.AppendAllText(@"C:\temp\checktrain.txt", "Train " + Number + " assumed to be in station : " +
+                            File.AppendAllText(@"C:/temp/checktrain.txt", "Train " + Number + " assumed to be in station : " +
                                 StationStops[0].PlatformItem.Name + "( present section = " + PresentPosition[0].TCSectionIndex +
                                 " ; station section = " + StationStops[0].TCSectionIndex + " )\n");
                         }
@@ -3459,7 +3459,7 @@ namespace Orts.Simulation.Timetables
 
                         if (CheckTrain)
                         {
-                            File.AppendAllText(@"C:\temp\checktrain.txt", "Train " + Number + " departing from station stop to next stop : " +
+                            File.AppendAllText(@"C:/temp/checktrain.txt", "Train " + Number + " departing from station stop to next stop : " +
                                 StationStops[0].PlatformItem.Name + "( next section = " + PresentPosition[0].TCSectionIndex +
                                 " ; station section = " + StationStops[0].TCSectionIndex + " )\n");
                         }
@@ -3473,14 +3473,14 @@ namespace Orts.Simulation.Timetables
                     }
 
 #if DEBUG_REPORTS
-                    File.AppendAllText(@"C:\temp\printproc.txt", "Train " +
+                    File.AppendAllText(@"C:/temp/printproc.txt", "Train " +
                                 Number.ToString() + " , forced to BRAKING from invalid stop (now at " +
                                 FormatStrings.FormatDistance(PresentPosition[0].DistanceTravelledM, true) + ")\n");
 #endif
 
                     if (CheckTrain)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt", "Train " +
+                        File.AppendAllText(@"C:/temp/checktrain.txt", "Train " +
                                 Number.ToString() + " , forced to BRAKING from invalid stop (now at " +
                                 // FormatStrings.FormatDistance(PresentPosition[0].DistanceTravelledM, true) + ")\n"); // TODO: Remove?
                                 PresentPosition[0].DistanceTravelledM.ToString() + ")\n");
@@ -3508,14 +3508,14 @@ namespace Orts.Simulation.Timetables
 
                     if (CheckTrain)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt", "Train " + Number + " : restart moving in turntable mode\n");
+                        File.AppendAllText(@"C:/temp/checktrain.txt", "Train " + Number + " : restart moving in turntable mode\n");
                     }
                 }
                 else
                 {
                     if (CheckTrain && DelayedStart)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt", "Train " + Number + " delayed start (turntable mode) : " + RestdelayS.ToString() + "\n");
+                        File.AppendAllText(@"C:/temp/checktrain.txt", "Train " + Number + " delayed start (turntable mode) : " + RestdelayS.ToString() + "\n");
                     }
                     return;
                 }
@@ -3528,7 +3528,7 @@ namespace Orts.Simulation.Timetables
                 MovementState = AI_MOVEMENT_STATE.STOPPED; // Set state to stopped to revert to normal working
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "TURNTABLE : exit from table, distance to go : " + NextStopDistanceM + "\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "TURNTABLE : exit from table, distance to go : " + NextStopDistanceM + "\n");
                 }
                 return;
             }
@@ -3567,7 +3567,7 @@ namespace Orts.Simulation.Timetables
 
                     if (thisStation.ActualArrival < 0)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt", "Train " +
+                        File.AppendAllText(@"C:/temp/checktrain.txt", "Train " +
                              Number.ToString() + " at station " +
                              StationStops[0].PlatformItem.Name + " ; no arrival time set; now at " +
                              prsTimeCT.ToString("HH:mm:ss") + "\n");
@@ -3576,7 +3576,7 @@ namespace Orts.Simulation.Timetables
                     {
                         DateTime arrTimeCT = baseDTCT.AddSeconds(thisStation.ActualArrival);
 
-                        File.AppendAllText(@"C:\temp\checktrain.txt", "Train " +
+                        File.AppendAllText(@"C:/temp/checktrain.txt", "Train " +
                              Number.ToString() + " at station " +
                              StationStops[0].PlatformItem.Name + " with arrival time " +
                              arrTimeCT.ToString("HH:mm:ss") + " ; now at " +
@@ -3594,7 +3594,7 @@ namespace Orts.Simulation.Timetables
                     DateTime baseDT = new DateTime();
                     DateTime arrTime = baseDT.AddSeconds(presentTime);
 
-                    File.AppendAllText(@"C:\temp\printproc.txt", "Train " +
+                    File.AppendAllText(@"C:/temp/printproc.txt", "Train " +
                          Number.ToString() + " arrives station " +
                          StationStops[0].PlatformItem.Name + " at " +
                          arrTime.ToString("HH:mm:ss") + "\n");
@@ -3605,7 +3605,7 @@ namespace Orts.Simulation.Timetables
                         DateTime arrTimeCT = baseDTCT.AddSeconds(presentTime);
                         DateTime depTimeCT = baseDTCT.AddSeconds(thisStation.ActualDepart);
 
-                        File.AppendAllText(@"C:\temp\checktrain.txt", "Train " +
+                        File.AppendAllText(@"C:/temp/checktrain.txt", "Train " +
                              Number.ToString() + " arrives station " +
                              StationStops[0].PlatformItem.Name + " at " +
                              arrTimeCT.ToString("HH:mm:ss") + " ; dep. at " +
@@ -3784,7 +3784,7 @@ namespace Orts.Simulation.Timetables
 
                     if (CheckTrain)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt", "Train " +
+                        File.AppendAllText(@"C:/temp/checktrain.txt", "Train " +
                              Number.ToString() + " clearing hold signal " + nextSignal.thisRef.ToString() + " at station " +
                              StationStops[0].PlatformItem.Name + "\n");
                     }
@@ -4074,27 +4074,27 @@ namespace Orts.Simulation.Timetables
 
             if (thisStation.ActualStopType == StationStop.STOPTYPE.STATION_STOP)
             {
-                File.AppendAllText(@"C:\temp\printproc.txt", "Train " +
+                File.AppendAllText(@"C:/temp/printproc.txt", "Train " +
                             Number.ToString() + " departs station " +
                             StationStops[0].PlatformItem.Name + " at " +
                             depTime.ToString("HH:mm:ss") + "\n");
             }
             else if (thisStation.ActualStopType == StationStop.STOPTYPE.WAITING_POINT)
             {
-                File.AppendAllText(@"C:\temp\printproc.txt", "Train " +
+                File.AppendAllText(@"C:/temp/printproc.txt", "Train " +
                             Number.ToString() + " departs waiting point at " +
                             depTime.ToString("HH:mm:ss") + "\n");
             }
 
             if (thisStation.ExitSignal >= 0)
             {
-                File.AppendAllText(@"C:\temp\printproc.txt", "Exit signal : " + thisStation.ExitSignal.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\printproc.txt", "Holding signals : \n");
+                File.AppendAllText(@"C:/temp/printproc.txt", "Exit signal : " + thisStation.ExitSignal.ToString() + "\n");
+                File.AppendAllText(@"C:/temp/printproc.txt", "Holding signals : \n");
                 foreach (int thisSignal in HoldingSignals)
                 {
-                    File.AppendAllText(@"C:\temp\printproc.txt", "Signal : " + thisSignal.ToString() + "\n");
+                    File.AppendAllText(@"C:/temp/printproc.txt", "Signal : " + thisSignal.ToString() + "\n");
                 }
-                File.AppendAllText(@"C:\temp\printproc.txt", "\n");
+                File.AppendAllText(@"C:/temp/printproc.txt", "\n");
             }
 #endif
 
@@ -4110,27 +4110,27 @@ namespace Orts.Simulation.Timetables
 
                 if (thisStation.ActualStopType == StationStop.STOPTYPE.STATION_STOP)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Train " +
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Train " +
                                 Number.ToString() + " departs station " +
                                 thisStation.PlatformItem.Name + " at " +
                                 depTimeCT.ToString("HH:mm:ss") + "\n");
                 }
                 else if (thisStation.ActualStopType == StationStop.STOPTYPE.WAITING_POINT)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Train " +
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Train " +
                                 Number.ToString() + " departs waiting point at " +
                                 depTimeCT.ToString("HH:mm:ss") + "\n");
                 }
 
                 if (thisStation.ExitSignal >= 0)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Exit signal : " + thisStation.ExitSignal.ToString() + "\n");
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Holding signals : \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Exit signal : " + thisStation.ExitSignal.ToString() + "\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Holding signals : \n");
                     foreach (int thisSignal in HoldingSignals)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt", "Signal : " + thisSignal.ToString() + "\n");
+                        File.AppendAllText(@"C:/temp/checktrain.txt", "Signal : " + thisSignal.ToString() + "\n");
                     }
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "\n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "\n");
                 }
             }
 
@@ -4203,7 +4203,7 @@ namespace Orts.Simulation.Timetables
                         {
                             if (CheckTrain)
                             {
-                                File.AppendAllText(@"C:\temp\checktrain.txt",
+                                File.AppendAllText(@"C:/temp/checktrain.txt",
                                                         "Brake mode - auto node - passed distance moving - set brakes\n");
                             }
                             AdjustControlsBrakeMore(MaxDecelMpSS, elapsedClockSeconds, 50);
@@ -4214,7 +4214,7 @@ namespace Orts.Simulation.Timetables
                     {
                         if (CheckTrain)
                         {
-                            File.AppendAllText(@"C:\temp\checktrain.txt",
+                            File.AppendAllText(@"C:/temp/checktrain.txt",
                                                     "Brake mode - auto node - passed distance stopped - to stop state\n");
                         }
                         MovementState = AI_MOVEMENT_STATE.STOPPED;
@@ -4234,7 +4234,7 @@ namespace Orts.Simulation.Timetables
                         MovementState = AI_MOVEMENT_STATE.RUNNING;
                         if (CheckTrain)
                         {
-                            File.AppendAllText(@"C:\temp\checktrain.txt",
+                            File.AppendAllText(@"C:/temp/checktrain.txt",
                                                     "Brake mode - auto node - action clear while moving - to running state\n");
                         }
                     }
@@ -4243,7 +4243,7 @@ namespace Orts.Simulation.Timetables
                         MovementState = AI_MOVEMENT_STATE.STOPPED;
                         if (CheckTrain)
                         {
-                            File.AppendAllText(@"C:\temp\checktrain.txt",
+                            File.AppendAllText(@"C:/temp/checktrain.txt",
                                                     "Brake mode - auto node - action cleared while stopped - to stop state\n");
                         }
                     }
@@ -4258,7 +4258,7 @@ namespace Orts.Simulation.Timetables
                     clearAction = true;
 
 #if DEBUG_REPORTS
-                    File.AppendAllText(@"C:\temp\printproc.txt", "Train " +
+                    File.AppendAllText(@"C:/temp/printproc.txt", "Train " +
                           Number.ToString() + " : signal " +
                           nextActionInfo.ActiveItem.ObjectDetails.thisRef.ToString() + " : speed : " +
                           FormatStrings.FormatSpeed(nextActionInfo.ActiveItem.actual_speed, true) + " >= limit : " +
@@ -4269,7 +4269,7 @@ namespace Orts.Simulation.Timetables
 #endif
                     if (CheckTrain)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt", "Train " +
+                        File.AppendAllText(@"C:/temp/checktrain.txt", "Train " +
                               Number.ToString() + " : signal " +
                               nextActionInfo.ActiveItem.ObjectDetails.thisRef.ToString() + " : speed : " +
                               FormatStrings.FormatSpeed(nextActionInfo.ActiveItem.actual_speed, true) + " >= limit : " +
@@ -4287,7 +4287,7 @@ namespace Orts.Simulation.Timetables
                     clearAction = true;
 
 #if DEBUG_REPORTS
-                    File.AppendAllText(@"C:\temp\printproc.txt", "Train " +
+                    File.AppendAllText(@"C:/temp/printproc.txt", "Train " +
                           Number.ToString() + " : signal " +
                           nextActionInfo.ActiveItem.ObjectDetails.thisRef.ToString() + " : speed : " +
                           FormatStrings.FormatSpeed(nextActionInfo.ActiveItem.actual_speed, true) + " cleared at " +
@@ -4297,7 +4297,7 @@ namespace Orts.Simulation.Timetables
 #endif
                     if (CheckTrain)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt", "Train " +
+                        File.AppendAllText(@"C:/temp/checktrain.txt", "Train " +
                               Number.ToString() + " : signal " +
                               nextActionInfo.ActiveItem.ObjectDetails.thisRef.ToString() + " : speed : " +
                               FormatStrings.FormatSpeed(nextActionInfo.ActiveItem.actual_speed, true) + " cleared at " +
@@ -4315,7 +4315,7 @@ namespace Orts.Simulation.Timetables
                     clearAction = true;
 
 #if DEBUG_REPORTS
-                    File.AppendAllText(@"C:\temp\printproc.txt", "Train " +
+                    File.AppendAllText(@"C:/temp/printproc.txt", "Train " +
                           Number.ToString() + " : signal " +
                           nextActionInfo.ActiveItem.ObjectDetails.thisRef.ToString() + " at " +
                           FormatStrings.FormatDistance(nextActionInfo.ActivateDistanceM, true) + " cleared (now at " +
@@ -4324,7 +4324,7 @@ namespace Orts.Simulation.Timetables
 #endif
                     if (CheckTrain)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt", "Train " +
+                        File.AppendAllText(@"C:/temp/checktrain.txt", "Train " +
                               Number.ToString() + " : signal " +
                               nextActionInfo.ActiveItem.ObjectDetails.thisRef.ToString() + " at " +
 							  // TODO: Remove?
@@ -4343,7 +4343,7 @@ namespace Orts.Simulation.Timetables
                     {
                         clearAction = true;
 #if DEBUG_REPORTS
-                        File.AppendAllText(@"C:\temp\printproc.txt",
+                        File.AppendAllText(@"C:/temp/printproc.txt",
                           Number.ToString() + " : signal " +
                           nextActionInfo.ActiveItem.ObjectDetails.thisRef.ToString() + " at " +
                           FormatStrings.FormatDistance(nextActionInfo.ActivateDistanceM, true) + " cleared (now at " +
@@ -4352,7 +4352,7 @@ namespace Orts.Simulation.Timetables
 #endif
                         if (CheckTrain)
                         {
-                            File.AppendAllText(@"C:\temp\checktrain.txt",
+                            File.AppendAllText(@"C:/temp/checktrain.txt",
                               Number.ToString() + " : signal " +
                               nextActionInfo.ActiveItem.ObjectDetails.thisRef.ToString() + " at " +
 							  // TODO: Remove?
@@ -4374,7 +4374,7 @@ namespace Orts.Simulation.Timetables
                 {
                     clearAction = true;
 #if DEBUG_REPORTS
-                    File.AppendAllText(@"C:\temp\printproc.txt",
+                    File.AppendAllText(@"C:/temp/printproc.txt",
                       Number.ToString() + " : signal " +
                       nextActionInfo.ActiveItem.ObjectDetails.thisRef.ToString() + " at " +
                       FormatStrings.FormatDistance(nextActionInfo.ActivateDistanceM, true) + " cleared (now at " +
@@ -4383,7 +4383,7 @@ namespace Orts.Simulation.Timetables
 #endif
                     if (CheckTrain)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt",
+                        File.AppendAllText(@"C:/temp/checktrain.txt",
                           Number.ToString() + " : signal " +
                           nextActionInfo.ActiveItem.ObjectDetails.thisRef.ToString() + " at " +
 						  // TODO: Remove?
@@ -4411,7 +4411,7 @@ namespace Orts.Simulation.Timetables
                     clearAction = true;
 
 #if DEBUG_REPORTS
-                    File.AppendAllText(@"C:\temp\printproc.txt", "Train " +
+                    File.AppendAllText(@"C:/temp/printproc.txt", "Train " +
                           Number.ToString() + " : speed : " +
                           FormatStrings.FormatSpeed(nextActionInfo.RequiredSpeedMpS, true) + " >= limit : " +
                           FormatStrings.FormatSpeed(AllowedMaxSpeedMpS, true) + " at " +
@@ -4421,7 +4421,7 @@ namespace Orts.Simulation.Timetables
 #endif
                     if (CheckTrain)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt", "Train " +
+                        File.AppendAllText(@"C:/temp/checktrain.txt", "Train " +
                               Number.ToString() + " : speed : " +
                               FormatStrings.FormatSpeed(nextActionInfo.RequiredSpeedMpS, true) + " >= limit : " +
                               FormatStrings.FormatSpeed(AllowedMaxSpeedMpS, true) + " at " +
@@ -4436,7 +4436,7 @@ namespace Orts.Simulation.Timetables
                     clearAction = true;
 
 #if DEBUG_REPORTS
-                    File.AppendAllText(@"C:\temp\printproc.txt", "Train " +
+                    File.AppendAllText(@"C:/temp/printproc.txt", "Train " +
                           Number.ToString() + " : speed : " +
                           FormatStrings.FormatSpeed(nextActionInfo.RequiredSpeedMpS, true) + " changed to : " +
                           FormatStrings.FormatSpeed(nextActionInfo.ActiveItem.actual_speed, true) + " at " +
@@ -4446,7 +4446,7 @@ namespace Orts.Simulation.Timetables
 #endif
                     if (CheckTrain)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt", "Train " +
+                        File.AppendAllText(@"C:/temp/checktrain.txt", "Train " +
                               Number.ToString() + " : speed : " +
                               FormatStrings.FormatSpeed(nextActionInfo.RequiredSpeedMpS, true) + " changed to : " +
                               FormatStrings.FormatSpeed(nextActionInfo.ActiveItem.actual_speed, true) + " at " +
@@ -4468,13 +4468,13 @@ namespace Orts.Simulation.Timetables
                         if ((nextActionInfo.ActivateDistanceM - PresentPosition[0].DistanceTravelledM) < StationStops[0].ReqStopDetails.visDistance)
                         {
 #if DEBUG_REPORTS
-                            File.AppendAllText(@"C:\temp\printproc.txt", "Train " + Name + " = " +
+                            File.AppendAllText(@"C:/temp/printproc.txt", "Train " + Name + " = " +
                                       Number.ToString() + " : station : " + StationStops[0].PlatformItem.Name +
                                       " : no pick-up or set-down required, station skipped \n");
 #endif
                             if (CheckTrain)
                             {
-                                File.AppendAllText(@"C:\temp\checktrain.txt", "Train " + Name + " = " +
+                                File.AppendAllText(@"C:/temp/checktrain.txt", "Train " + Name + " = " +
                                       Number.ToString() + " : station : " + StationStops[0].PlatformItem.Name +
                                       " : no pick-up or set-down required, station skipped \n");
                             }
@@ -4547,7 +4547,7 @@ namespace Orts.Simulation.Timetables
                         {
                             if (CheckTrain)
                             {
-                                File.AppendAllText(@"C:\temp\checktrain.txt", "Train " +
+                                File.AppendAllText(@"C:/temp/checktrain.txt", "Train " +
                                      Number.ToString() + " stop distance at station " + StationStops[0].PlatformItem.Name + " : " + distanceToGoM.ToString() +
                                      " corrected to " + (DistanceToSignal.Value - reqsignaldistance) + "\n");
                             }
@@ -4568,7 +4568,7 @@ namespace Orts.Simulation.Timetables
                                 DateTime baseDT = new DateTime();
                                 DateTime arrTime = baseDT.AddSeconds(presentTime);
 
-                                File.AppendAllText(@"C:\temp\printproc.txt", "Train " +
+                                File.AppendAllText(@"C:/temp/printproc.txt", "Train " +
                                      Number.ToString() + " arrives station " +
                                      StationStops[0].PlatformItem.Name + " at " +
                                      arrTime.ToString("HH:mm:ss") + "\n");
@@ -4578,7 +4578,7 @@ namespace Orts.Simulation.Timetables
                                 DateTime baseDTCT = new DateTime();
                                 DateTime arrTimeCT = baseDTCT.AddSeconds(presentTime);
 
-                                File.AppendAllText(@"C:\temp\checktrain.txt", "Train " +
+                                File.AppendAllText(@"C:/temp/checktrain.txt", "Train " +
                                      Number.ToString() + " arrives station " +
                                      StationStops[0].PlatformItem.Name + " at " +
                                      arrTimeCT.ToString("HH:mm:ss") + "\n");
@@ -4613,7 +4613,7 @@ namespace Orts.Simulation.Timetables
                         Alpha10 = 5;
                         if (CheckTrain)
                         {
-                            File.AppendAllText(@"C:\temp\checktrain.txt",
+                            File.AppendAllText(@"C:/temp/checktrain.txt",
                                                     "Speed limit reached : " +
                                            "Speed : " + FormatStrings.FormatSpeed(SpeedMpS, true) +
                                            " ; Reqd : " + FormatStrings.FormatSpeed(nextActionInfo.RequiredSpeedMpS, true) + "\n");
@@ -4664,7 +4664,7 @@ namespace Orts.Simulation.Timetables
 
                         if (CheckTrain)
                         {
-                            File.AppendAllText(@"C:\temp\checktrain.txt",
+                            File.AppendAllText(@"C:/temp/checktrain.txt",
                                                     "Signal Approach reached : " +
                                            "Speed : " + FormatStrings.FormatSpeed(SpeedMpS, true) + "\n");
                         }
@@ -4679,7 +4679,7 @@ namespace Orts.Simulation.Timetables
 #endif
                             if (CheckTrain)
                             {
-                                File.AppendAllText(@"C:\temp\checktrain.txt",
+                                File.AppendAllText(@"C:/temp/checktrain.txt",
                                                         "Signal forced stop : " +
                                                "Speed : " + FormatStrings.FormatSpeed(SpeedMpS, true) + "\n");
                             }
@@ -4788,35 +4788,35 @@ namespace Orts.Simulation.Timetables
 
             if (CheckTrain)
             {
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                         "Brake calculation details : \n");
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                "     Actual: " + SpeedMpS.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                "     Allwd : " + AllowedMaxSpeedMpS.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                "     MaxDec: " + MaxDecelMpSS.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                "     MaxPos: " + maxPossSpeedMpS.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                "     Reqd  : " + requiredSpeedMpS.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                "     Ideal : " + idealSpeedMpS.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                "     lowest: " + lowestSpeedMpS.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                "     3high : " + ideal3HighBandMpS.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                "     high  : " + idealHighBandMpS.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                "     low   : " + idealLowBandMpS.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                "     3low  : " + ideal3LowBandMpS.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                "     alpha : " + Alpha10.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                "     dist  : " + distanceToGoM.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                "     A&B(S): " + AITrainThrottlePercent.ToString() + " - " + AITrainBrakePercent.ToString() + "\n");
             }
 
@@ -4826,7 +4826,7 @@ namespace Orts.Simulation.Timetables
             {
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Section : SpeedMpS > AllowedMaxSpeedMpS \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Section : SpeedMpS > AllowedMaxSpeedMpS \n");
                 }
 
                 if (AITrainThrottlePercent > 0)
@@ -4849,7 +4849,7 @@ namespace Orts.Simulation.Timetables
             {
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Section : SpeedMpS > requiredSpeedMpS && distanceToGoM < 0 \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Section : SpeedMpS > requiredSpeedMpS && distanceToGoM < 0 \n");
                 }
 
                 // If required to stop then force stop
@@ -4857,7 +4857,7 @@ namespace Orts.Simulation.Timetables
                 {
                     if (CheckTrain)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt",
+                        File.AppendAllText(@"C:/temp/checktrain.txt",
                         "Train : " + Name + "(" + Number + ") forced to stop, " +
                         " at " + DistanceTravelledM.ToString() + ", and speed " + SpeedMpS.ToString() + "\n");
                     }
@@ -4876,7 +4876,7 @@ namespace Orts.Simulation.Timetables
             {
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Section : SpeedMpS > ideal3HighBandMpS \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Section : SpeedMpS > ideal3HighBandMpS \n");
                 }
 
                 if (AITrainThrottlePercent > 0)
@@ -4907,7 +4907,7 @@ namespace Orts.Simulation.Timetables
             {
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Section : SpeedMpS > idealHighBandMpS \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Section : SpeedMpS > idealHighBandMpS \n");
                 }
 
                 if (LastSpeedMpS > SpeedMpS)
@@ -4963,7 +4963,7 @@ namespace Orts.Simulation.Timetables
             {
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Section : SpeedMpS > idealLowBandMpS \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Section : SpeedMpS > idealLowBandMpS \n");
                 }
 
                 if (SpeedMpS > LastSpeedMpS)
@@ -5002,7 +5002,7 @@ namespace Orts.Simulation.Timetables
             {
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Section : SpeedMpS > ideal3LowBandMpS \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Section : SpeedMpS > ideal3LowBandMpS \n");
                 }
 
                 if (AITrainBrakePercent > 50)
@@ -5030,7 +5030,7 @@ namespace Orts.Simulation.Timetables
             {
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Section : SpeedMpS < requiredSpeedMpS \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Section : SpeedMpS < requiredSpeedMpS \n");
                 }
 
                 AdjustControlsBrakeOff();
@@ -5049,7 +5049,7 @@ namespace Orts.Simulation.Timetables
             {
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Section : distanceToGoM > 4 * preferredBrakingDistanceM && SpeedMpS < idealLowBandMpS \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Section : distanceToGoM > 4 * preferredBrakingDistanceM && SpeedMpS < idealLowBandMpS \n");
                 }
 
                 if (AITrainBrakePercent > 0)
@@ -5065,7 +5065,7 @@ namespace Orts.Simulation.Timetables
             {
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Section : distanceToGoM > preferredBrakingDistanceM && SpeedMpS < ideal3LowBandMpS \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Section : distanceToGoM > preferredBrakingDistanceM && SpeedMpS < ideal3LowBandMpS \n");
                 }
 
                 if (AITrainBrakePercent > 0)
@@ -5081,7 +5081,7 @@ namespace Orts.Simulation.Timetables
             {
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Section : requiredSpeedMpS == 0 && distanceToGoM > creepDistanceM && SpeedMpS < idealLowBandMpS \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Section : requiredSpeedMpS == 0 && distanceToGoM > creepDistanceM && SpeedMpS < idealLowBandMpS \n");
                 }
 
                 if (AITrainBrakePercent > 0)
@@ -5097,7 +5097,7 @@ namespace Orts.Simulation.Timetables
             {
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Section : requiredSpeedMpS == 0 && distanceToGoM > signalApproachDistanceM && SpeedMpS < ideal3LowBandMpS \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Section : requiredSpeedMpS == 0 && distanceToGoM > signalApproachDistanceM && SpeedMpS < ideal3LowBandMpS \n");
                 }
 
                 if (AITrainBrakePercent > 0)
@@ -5118,7 +5118,7 @@ namespace Orts.Simulation.Timetables
                 {
                     if (CheckTrain)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt", "Speed forced down : position " + distanceToGoM.ToString() + ", speed " + SpeedMpS.ToString() + " \n");
+                        File.AppendAllText(@"C:/temp/checktrain.txt", "Speed forced down : position " + distanceToGoM.ToString() + ", speed " + SpeedMpS.ToString() + " \n");
                     }
 
                     SpeedMpS = 0.5f * SpeedMpS;
@@ -5127,7 +5127,7 @@ namespace Orts.Simulation.Timetables
 
             if (CheckTrain)
             {
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                      "     A&B(E): " + AITrainThrottlePercent.ToString() + " - " + AITrainBrakePercent.ToString() + "\n");
             }
         }
@@ -5164,7 +5164,7 @@ namespace Orts.Simulation.Timetables
         {
             if (CheckTrain)
             {
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                         "Update Train Ahead - now at : " +
                                         PresentPosition[0].TCSectionIndex.ToString() + " " +
                                         //                                        FormatStrings.FormatDistance(PresentPosition[0].TCOffset, true) +
@@ -5176,7 +5176,7 @@ namespace Orts.Simulation.Timetables
             {
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Train ahead is cleared \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Train ahead is cleared \n");
                 }
                 MovementState = AI_MOVEMENT_STATE.RUNNING;
                 ResetActions(true);
@@ -5238,7 +5238,7 @@ namespace Orts.Simulation.Timetables
 
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt",
+                    File.AppendAllText(@"C:/temp/checktrain.txt",
                                         "Train count in section " + sectionIndex.ToString() + " = " + trainInfo.Count.ToString() + "\n");
                 }
 
@@ -5270,13 +5270,13 @@ namespace Orts.Simulation.Timetables
 
                         if (CheckTrain)
                         {
-                            File.AppendAllText(@"C:\temp\checktrain.txt",
+                            File.AppendAllText(@"C:/temp/checktrain.txt",
                                                     "Other train : " + OtherTrain.Number.ToString() + " at : " +
                                                     OtherTrain.PresentPosition[0].TCSectionIndex.ToString() + " " +
                                                     //                                                    FormatStrings.FormatDistance(OtherTrain.PresentPosition[0].TCOffset, true) +
                                                     OtherTrain.PresentPosition[0].TCOffset.ToString() +
                                                     " ; speed : " + FormatStrings.FormatSpeed(OtherTrain.SpeedMpS, true) + "\n");
-                            File.AppendAllText(@"C:\temp\checktrain.txt",
+                            File.AppendAllText(@"C:/temp/checktrain.txt",
                                                             //                                                            "DistAhd: " + FormatStrings.FormatDistance(DistanceToEndNodeAuthorityM[0], true) + "\n");
                                                             "DistAhd: " + DistanceToEndNodeAuthorityM[0].ToString() + "\n");
                         }
@@ -5309,7 +5309,7 @@ namespace Orts.Simulation.Timetables
 
                         if (CheckTrain)
                         {
-                            File.AppendAllText(@"C:\temp\checktrain.txt", "attach : " + attachToTrain.ToString() + " ; pickup : " + pickUpTrain.ToString() +
+                            File.AppendAllText(@"C:/temp/checktrain.txt", "attach : " + attachToTrain.ToString() + " ; pickup : " + pickUpTrain.ToString() +
                                                " ; transfer : " + transferTrain.ToString() + "\n");
                         }
 
@@ -5387,7 +5387,7 @@ namespace Orts.Simulation.Timetables
                             float reqMinSpeedMpS = SpeedSettings.attachSpeedMpS.Value;
                             if (CheckTrain)
                             {
-                                File.AppendAllText(@"C:\temp\checktrain.txt", "Checked couple position : result : " + atCouplePosition.ToString() + "\n");
+                                File.AppendAllText(@"C:/temp/checktrain.txt", "Checked couple position : result : " + atCouplePosition.ToString() + "\n");
                             }
 
                             if (attachToTrain)
@@ -5523,7 +5523,7 @@ namespace Orts.Simulation.Timetables
 
                                     if (CheckTrain && StationStops.Count > 0)
                                     {
-                                        File.AppendAllText(@"C:\temp\checktrain.txt", "Train " +
+                                        File.AppendAllText(@"C:/temp/checktrain.txt", "Train " +
                                              Number.ToString() + " checking station " +
                                              StationStops[0].PlatformItem.Name +
                                              " \n   -- other train movement state : " + OtherAITrain.MovementState.ToString() + " ; at station : " + otherTrainInStation.ToString() +
@@ -5532,7 +5532,7 @@ namespace Orts.Simulation.Timetables
                                     }
                                     else if (CheckTrain)
                                     {
-                                        File.AppendAllText(@"C:\temp\checktrain.txt", "Train " +
+                                        File.AppendAllText(@"C:/temp/checktrain.txt", "Train " +
                                              Number.ToString() + " ; Station List : " + StationStops.Count + "\n");
                                     }
 
@@ -5548,7 +5548,7 @@ namespace Orts.Simulation.Timetables
                                             DateTime baseDT = new DateTime();
                                             DateTime arrTime = baseDT.AddSeconds(presentTime);
 
-                                            File.AppendAllText(@"C:\temp\printproc.txt", "Train " +
+                                            File.AppendAllText(@"C:/temp/printproc.txt", "Train " +
                                                  Number.ToString() + " arrives station " +
                                                  StationStops[0].PlatformItem.Name + " at " +
                                                  arrTime.ToString("HH:mm:ss") + "\n");
@@ -5558,7 +5558,7 @@ namespace Orts.Simulation.Timetables
                                                 DateTime baseDTCT = new DateTime();
                                                 DateTime arrTimeCT = baseDTCT.AddSeconds(presentTime);
 
-                                                File.AppendAllText(@"C:\temp\checktrain.txt", "Train " +
+                                                File.AppendAllText(@"C:/temp/checktrain.txt", "Train " +
                                                      Number.ToString() + " arrives station " +
                                                      StationStops[0].PlatformItem.Name + " at " +
                                                      arrTimeCT.ToString("HH:mm:ss") + "\n");
@@ -5598,7 +5598,7 @@ namespace Orts.Simulation.Timetables
                                             DateTime baseDT = new DateTime();
                                             DateTime arrTime = baseDT.AddSeconds(presentTime);
 
-                                            File.AppendAllText(@"C:\temp\printproc.txt", "Train " +
+                                            File.AppendAllText(@"C:/temp/printproc.txt", "Train " +
                                                 Number.ToString() + " arrives waiting point at " +
                                                 arrTime.ToString("HH:mm:ss") + "\n");
 #endif
@@ -5607,7 +5607,7 @@ namespace Orts.Simulation.Timetables
                                                 DateTime baseDTCT = new DateTime();
                                                 DateTime arrTimeCT = baseDTCT.AddSeconds(presentTime);
 
-                                                File.AppendAllText(@"C:\temp\checktrain.txt", "Train " +
+                                                File.AppendAllText(@"C:/temp/checktrain.txt", "Train " +
                                                      Number.ToString() + " arrives waiting point at " +
                                                      arrTimeCT.ToString("HH:mm:ss") + "\n");
                                             }
@@ -5661,23 +5661,23 @@ namespace Orts.Simulation.Timetables
 
             if (CheckTrain)
             {
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                         "Running calculation details : \n");
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                "     Actual: " + SpeedMpS.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                "     Allwd : " + AllowedMaxSpeedMpS.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                "     MaxDec: " + MaxDecelMpSS.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                "     low   : " + lowBand.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                "     middle: " + highBand.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                "     high  : " + topBand.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                "     alpha : " + Alpha10.ToString() + "\n");
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                                "     A&B(S): " + AITrainThrottlePercent.ToString() + " - " + AITrainBrakePercent.ToString() + "\n");
             }
 
@@ -5687,7 +5687,7 @@ namespace Orts.Simulation.Timetables
             {
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Section : > AllowedMaxSpeedMps \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Section : > AllowedMaxSpeedMps \n");
                 }
 
                 if (AITrainThrottlePercent > 0)
@@ -5706,7 +5706,7 @@ namespace Orts.Simulation.Timetables
             {
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Section : > topBand \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Section : > topBand \n");
                 }
 
                 if (LastSpeedMpS > SpeedMpS)
@@ -5745,7 +5745,7 @@ namespace Orts.Simulation.Timetables
             {
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Section : > highBand \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Section : > highBand \n");
                 }
 
                 if (LastSpeedMpS > SpeedMpS)
@@ -5787,7 +5787,7 @@ namespace Orts.Simulation.Timetables
             {
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Section : > lowBand \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Section : > lowBand \n");
                 }
 
                 {
@@ -5811,7 +5811,7 @@ namespace Orts.Simulation.Timetables
             {
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Section : lowest section \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Section : lowest section \n");
                 }
 
                 AdjustControlsBrakeOff();
@@ -5989,7 +5989,7 @@ namespace Orts.Simulation.Timetables
 
                     if (CheckTrain)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt", "Forced speed increase : was " + LastSpeedMpS + " - now " + SpeedMpS + "\n");
+                        File.AppendAllText(@"C:/temp/checktrain.txt", "Forced speed increase : was " + LastSpeedMpS + " - now " + SpeedMpS + "\n");
                     }
                 }
             }
@@ -6210,7 +6210,7 @@ namespace Orts.Simulation.Timetables
             {
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Start position of end of train {" + Number + "} ({" + Name + "}) not on route ");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Start position of end of train {" + Number + "} ({" + Name + "}) not on route ");
                 }
                 rearIndex = 0;
             }
@@ -6542,7 +6542,7 @@ namespace Orts.Simulation.Timetables
 
             if (CheckTrain)
             {
-                File.AppendAllText(@"C:\temp\checktrain.txt", "Check couple position : preupdate : " + PreUpdate.ToString() + "\n");
+                File.AppendAllText(@"C:/temp/checktrain.txt", "Check couple position : preupdate : " + PreUpdate.ToString() + "\n");
             }
 
             //if (PreUpdate) return (true); // In pre-update, being in the same section is good enough
@@ -6551,7 +6551,7 @@ namespace Orts.Simulation.Timetables
             float dist = usedTraveller.OverlapDistanceM(otherTraveller, false);
             if (CheckTrain)
             {
-                File.AppendAllText(@"C:\temp\checktrain.txt", "Check couple position : distance : " + dist.ToString() + "\n");
+                File.AppendAllText(@"C:/temp/checktrain.txt", "Check couple position : distance : " + dist.ToString() + "\n");
             }
 
             return dist < 0.1f;
@@ -6842,7 +6842,7 @@ namespace Orts.Simulation.Timetables
             {
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Train " + Name + "(" +
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Train " + Name + "(" +
                          Number.ToString() + ") at section " + sectionIndex + " exits to pool " + ExitPool + "\n");
                 }
 
@@ -6859,7 +6859,7 @@ namespace Orts.Simulation.Timetables
 
                     if (CheckTrain)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt", "Train " + Name + "(" +
+                        File.AppendAllText(@"C:/temp/checktrain.txt", "Train " + Name + "(" +
                              Number.ToString() + ") exits to pool " + ExitPool + "; pool valid, path extended \n");
                     }
 
@@ -6897,7 +6897,7 @@ namespace Orts.Simulation.Timetables
                 {
                     if (CheckTrain)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt", "Train " + Name + "(" +
+                        File.AppendAllText(@"C:/temp/checktrain.txt", "Train " + Name + "(" +
                              Number.ToString() + ") exits to pool " + ExitPool + "; pool claimed, path not extended \n");
                     }
 
@@ -6909,7 +6909,7 @@ namespace Orts.Simulation.Timetables
                 {
                     if (CheckTrain)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt", "Train " + Name + "(" +
+                        File.AppendAllText(@"C:/temp/checktrain.txt", "Train " + Name + "(" +
                              Number.ToString() + ") exits to pool " + ExitPool + "; pool overflow, pool exit removed \n");
                     }
 
@@ -9239,12 +9239,12 @@ namespace Orts.Simulation.Timetables
             if (nextPart[1])   // Next route available
             {
 #if DEBUG_REPORTS
-                File.AppendAllText(@"C:\temp\printproc.txt", "Train " +
+                File.AppendAllText(@"C:/temp/printproc.txt", "Train " +
                      Number.ToString() + " continued, part : " + TCRoute.activeSubpath.ToString() + "\n");
 #endif
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Train " +
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Train " +
                          Number.ToString() + " continued, part : " + TCRoute.activeSubpath.ToString() + "\n");
                 }
 
@@ -9253,7 +9253,7 @@ namespace Orts.Simulation.Timetables
                     ReverseFormation(TrainType == TRAINTYPE.PLAYER);
 
 #if DEBUG_REPORTS
-                    File.AppendAllText(@"C:\temp\printproc.txt", "Train " +
+                    File.AppendAllText(@"C:/temp/printproc.txt", "Train " +
                          Number.ToString() + " reversed\n");
 #endif
                 }
@@ -9262,14 +9262,14 @@ namespace Orts.Simulation.Timetables
                     ReverseFormation(TrainType == TRAINTYPE.PLAYER);
 
 #if DEBUG_REPORTS
-                    File.AppendAllText(@"C:\temp\printproc.txt", "Train " +
+                    File.AppendAllText(@"C:/temp/printproc.txt", "Train " +
                          Number.ToString() + " reversed\n");
 #endif
                 }
 
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Train " +
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Train " +
                          Number.ToString() + " reversed\n");
                 }
 
@@ -9431,7 +9431,7 @@ namespace Orts.Simulation.Timetables
             {
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Train " +
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Train " +
                          Number.ToString() + " waiting to attach to " + AttachDetails.AttachTrainName + "\n");
                 }
             }
@@ -9439,7 +9439,7 @@ namespace Orts.Simulation.Timetables
             {
                 if (CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Train " +
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Train " +
                          Number.ToString() + " removed\n");
                 }
                 RemoveTrain();
@@ -9660,7 +9660,7 @@ namespace Orts.Simulation.Timetables
         {
             if (CheckTrain)
             {
-                File.AppendAllText(@"C:\temp\checktrain.txt", "Check end of route (TT) ; MovementState : " + MovementState + "\n");
+                File.AppendAllText(@"C:/temp/checktrain.txt", "Check end of route (TT) ; MovementState : " + MovementState + "\n");
             }
 
             bool endOfRoute = false;
@@ -9679,7 +9679,7 @@ namespace Orts.Simulation.Timetables
                 {
                     if (CheckTrain)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt", "Pool Access required ; poolAccessRouteIndex : " + poolAccessRouteIndex + "\n");
+                        File.AppendAllText(@"C:/temp/checktrain.txt", "Pool Access required ; poolAccessRouteIndex : " + poolAccessRouteIndex + "\n");
                     }
                     return endOfRoute;
                 }
@@ -9713,8 +9713,8 @@ namespace Orts.Simulation.Timetables
                         MovementState = AI_MOVEMENT_STATE.TURNTABLE;
                         if (CheckTrain)
                         {
-                            File.AppendAllText(@"C:\temp\checktrain.txt", "TURNTABLE : Pool : " + thisTurntablePool.PoolName + " : Table state set to " + ActiveTurntable.MovingTableState.ToString() + "\n");
-                            File.AppendAllText(@"C:\temp\checktrain.txt", "Moving table access ; Movement State : " + MovementState + "\n");
+                            File.AppendAllText(@"C:/temp/checktrain.txt", "TURNTABLE : Pool : " + thisTurntablePool.PoolName + " : Table state set to " + ActiveTurntable.MovingTableState.ToString() + "\n");
+                            File.AppendAllText(@"C:/temp/checktrain.txt", "Moving table access ; Movement State : " + MovementState + "\n");
                         }
                         return endOfRoute;
                     }
@@ -10059,20 +10059,20 @@ namespace Orts.Simulation.Timetables
             }
 
 #if DEBUG_DEADLOCK
-            File.AppendAllText(@"C:\Temp\deadlock.txt", "\n === Remove train : " + Number + " - Clearing Deadlocks : \n");
+            File.AppendAllText(@"C:/Temp/deadlock.txt", "\n === Remove train : " + Number + " - Clearing Deadlocks : \n");
 
             foreach (TrackCircuitSection thisSection in Simulator.Signals.TrackCircuitList)
             {
                 if (thisSection.DeadlockTraps.Count > 0)
                 {
-                    File.AppendAllText(@"C:\Temp\deadlock.txt", "Section : " + thisSection.Index.ToString() + "\n");
+                    File.AppendAllText(@"C:/Temp/deadlock.txt", "Section : " + thisSection.Index.ToString() + "\n");
                     foreach (KeyValuePair<int, List<int>> thisDeadlock in thisSection.DeadlockTraps)
                     {
-                        File.AppendAllText(@"C:\Temp\deadlock.txt", "    Train : " + thisDeadlock.Key.ToString() + "\n");
-                        File.AppendAllText(@"C:\Temp\deadlock.txt", "       With : " + "\n");
+                        File.AppendAllText(@"C:/Temp/deadlock.txt", "    Train : " + thisDeadlock.Key.ToString() + "\n");
+                        File.AppendAllText(@"C:/Temp/deadlock.txt", "       With : " + "\n");
                         foreach (int otherTrain in thisDeadlock.Value)
                         {
-                            File.AppendAllText(@"C:\Temp\deadlock.txt", "          " + otherTrain.ToString() + "\n");
+                            File.AppendAllText(@"C:/Temp/deadlock.txt", "          " + otherTrain.ToString() + "\n");
                         }
                     }
                 }
@@ -11772,7 +11772,7 @@ namespace Orts.Simulation.Timetables
             // Set message for checktrain
             if (attachTrain.CheckTrain || CheckTrain)
             {
-                File.AppendAllText(@"C:\temp\checktrain.txt", "Attaching : " + Number + " ; to : " + attachTrain.Number + " ; at front : " + attachTrainFront.ToString() + "\n");
+                File.AppendAllText(@"C:/temp/checktrain.txt", "Attaching : " + Number + " ; to : " + attachTrain.Number + " ; at front : " + attachTrainFront.ToString() + "\n");
             }
 
             // Check on reverse formation
@@ -11951,7 +11951,7 @@ namespace Orts.Simulation.Timetables
 
                             if (attachTrain.CheckTrain)
                             {
-                                File.AppendAllText(@"C:\temp\checktrain.txt", "Train " + attachTrain.Number + " assumed to be in station : " +
+                                File.AppendAllText(@"C:/temp/checktrain.txt", "Train " + attachTrain.Number + " assumed to be in station : " +
                                     attachTrain.StationStops[0].PlatformItem.Name + "( present section = " + attachTrain.PresentPosition[0].TCSectionIndex +
                                     " ; station section = " + attachTrain.StationStops[0].TCSectionIndex + " )\n");
                             }
@@ -12911,7 +12911,7 @@ namespace Orts.Simulation.Timetables
             sob.AppendFormat("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12}",
                 Number, presentDTA.ToString("HH:mm:ss"), Name, Delay, thisStation.PlatformItem.Name, arrstring, depstring,
                 arrTimeA.ToString("HH:mm:ss"), depTimeA.ToString("HH:mm:ss"), "", "", "", "");
-            File.AppendAllText(@"C:\temp\TTAnalysis.csv", sob.ToString() + "\n");
+            File.AppendAllText(@"C:/temp/TTAnalysis.csv", sob.ToString() + "\n");
         }
 
         public void TTAnalysisUpdateStationState2()
@@ -12974,7 +12974,7 @@ namespace Orts.Simulation.Timetables
 
                 var sob = new StringBuilder();
                 sob.AppendFormat("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12}", Number, stopTime.ToString("HH:mm:ss"), Name, Delay, "", "", "", "", "", "", stopTime.ToString("HH:mm:ss"), signalstring.ToString(), waitforstring.ToString());
-                File.AppendAllText(@"C:\temp\TTAnalysis.csv", sob.ToString() + "\n");
+                File.AppendAllText(@"C:/temp/TTAnalysis.csv", sob.ToString() + "\n");
             }
         }
 
@@ -13038,7 +13038,7 @@ namespace Orts.Simulation.Timetables
 
                     var sob = new StringBuilder();
                     sob.AppendFormat("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12}", Number, stopTime.ToString("HH:mm:ss"), Name, Delay, "", "", "", "", "", "", stopTime.ToString("HH:mm:ss"), signalstring.ToString(), waitforstring.ToString());
-                    File.AppendAllText(@"C:\temp\TTAnalysis.csv", sob.ToString() + "\n");
+                    File.AppendAllText(@"C:/temp/TTAnalysis.csv", sob.ToString() + "\n");
                 }
             }
         }
@@ -13109,7 +13109,7 @@ namespace Orts.Simulation.Timetables
 
                 var sob = new StringBuilder();
                 sob.AppendFormat("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12}", Number, stopTime.ToString("HH:mm:ss"), Name, Delay, "", "", "", "", "", "", stopTime.ToString("HH:mm:ss"), signalstring.ToString(), waitforstring.ToString());
-                File.AppendAllText(@"C:\temp\TTAnalysis.csv", sob.ToString() + "\n");
+                File.AppendAllText(@"C:/temp/TTAnalysis.csv", sob.ToString() + "\n");
             }
         }
 
@@ -13121,7 +13121,7 @@ namespace Orts.Simulation.Timetables
             var sob = new StringBuilder();
             sob.AppendFormat("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12}",
                 Number, moveTimeA.ToString("HH:mm:ss"), Name, Delay, "", "", "", "", "", moveTimeA.ToString("HH:mm:ss"), "", "", info);
-            File.AppendAllText(@"C:\temp\TTAnalysis.csv", sob.ToString() + "\n");
+            File.AppendAllText(@"C:/temp/TTAnalysis.csv", sob.ToString() + "\n");
             ttanalysisreport = String.Empty;
         }
 
@@ -13872,7 +13872,7 @@ namespace Orts.Simulation.Timetables
 
             if (train.CheckTrain)
             {
-                File.AppendAllText(@"C:\temp\checktrain.txt", "Detaching from : " + train.Number + " ; units : " + iunits + " ; from front position : " + frontpos.ToString() + "\n");
+                File.AppendAllText(@"C:/temp/checktrain.txt", "Detaching from : " + train.Number + " ; units : " + iunits + " ; from front position : " + frontpos.ToString() + "\n");
             }
 
             // Check if anything to detach and anything left on train
@@ -13892,7 +13892,7 @@ namespace Orts.Simulation.Timetables
                 Trace.TraceInformation("Train {0} : detach to train {1} : no units to detach \n", train.Name, DetachFormedTrainName);
                 if (train.CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Detaching from : " + train.Number + " to " + DetachFormedTrainName + " no units to detach \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Detaching from : " + train.Number + " to " + DetachFormedTrainName + " no units to detach \n");
                 }
             }
             else if (iunits == train.Cars.Count)
@@ -13900,7 +13900,7 @@ namespace Orts.Simulation.Timetables
                 Trace.TraceInformation("Train {0} : detach to train {1} : no units remaining on train \n", train.Name, DetachFormedTrainName);
                 if (train.CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt", "Detaching from : " + train.Number + " to " + DetachFormedTrainName + " no units remaining on train \n");
+                    File.AppendAllText(@"C:/temp/checktrain.txt", "Detaching from : " + train.Number + " to " + DetachFormedTrainName + " no units remaining on train \n");
                 }
             }
             else
@@ -14113,7 +14113,7 @@ namespace Orts.Simulation.Timetables
 
                     if (train.CheckTrain)
                     {
-                        File.AppendAllText(@"C:\temp\checktrain.txt",
+                        File.AppendAllText(@"C:/temp/checktrain.txt",
                             "Detaching from : " + train.Number + "( = " + newTrain.Name + ") ; to : " + newTrain.Number + "( = " + newTrain.Name + ")\n");
                     }
                 }
@@ -14205,7 +14205,7 @@ namespace Orts.Simulation.Timetables
 
             if (train.CheckTrain)
             {
-                File.AppendAllText(@"C:\temp\checktrain.txt", "Detaching from : " + train.Number + " ; units : " + iunits + " ; from front position : " + frontpos.ToString() + "\n");
+                File.AppendAllText(@"C:/temp/checktrain.txt", "Detaching from : " + train.Number + " ; units : " + iunits + " ; from front position : " + frontpos.ToString() + "\n");
             }
 
             // Check if anything to detach and anything left on train

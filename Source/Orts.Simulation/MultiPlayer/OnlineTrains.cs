@@ -143,8 +143,8 @@ namespace Orts.MultiPlayer
             }
             p.url = player.url;
             p.LeadingLocomotiveID = player.leadingID;
-            p.con = MPManager.Simulator.BasePath + "\\TRAINS\\CONSISTS\\" + player.con;
-            p.path = MPManager.Simulator.RoutePath + "\\PATHS\\" + player.path;
+            p.con = MPManager.Simulator.BasePath + "/TRAINS/CONSISTS/" + player.con;
+            p.path = MPManager.Simulator.RoutePath + "/PATHS/" + player.path;
             Train train = new Train(MPManager.Simulator);
             train.TrainType = Train.TRAINTYPE.REMOTE;
             if (MPManager.IsServer()) //server needs to worry about correct train number
@@ -188,7 +188,7 @@ namespace Orts.MultiPlayer
             List<LoadData> loadDataList = new List<LoadData>();
             for (var i = 0; i < player.cars.Length; i++)// cars.Length-1; i >= 0; i--) {
             {
-                string wagonFilePath = MPManager.Simulator.BasePath + @"\trains\trainset\" + player.cars[i];
+                string wagonFilePath = MPManager.Simulator.BasePath + @"/trains/trainset/" + player.cars[i];
                 TrainCar car;
 
                 try

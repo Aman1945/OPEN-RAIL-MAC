@@ -143,7 +143,7 @@ namespace Orts.Viewer3D
                 return;
 
             string[] pathArray = {Viewer.Simulator.RoutePath, Viewer.Simulator.BasePath};            
-            var fullPath = ORTSPaths.GetFileFromFolders(pathArray, @"SOUND\" + filename);
+            var fullPath = ORTSPaths.GetFileFromFolders(pathArray, @"SOUND/" + filename);
             if (fullPath == null)
             {
                 Trace.TraceWarning("Skipped missing track sound {0}", filename);
@@ -3047,8 +3047,8 @@ namespace Orts.Viewer3D
             //<CJComment>SMSFolder is often same as BasePath, which means this searches the more general folder 
             // before the more specific folder. This is surely not intended.</CJComment>
             string[] pathArray = {ORTSStream.SoundSource.SMSFolder, 
-                                     Program.Simulator.RoutePath + @"\SOUND", 
-                                     Program.Simulator.BasePath + @"\SOUND"};
+                                     Program.Simulator.RoutePath + @"/SOUND", 
+                                     Program.Simulator.BasePath + @"/SOUND"};
             var fullPath = ORTSPaths.GetFileFromFolders(pathArray, Files[iFile]);
             return (fullPath != null) ? fullPath : "";
         }
@@ -3254,7 +3254,7 @@ namespace Orts.Viewer3D
 
         public void AddByTile(int TileX, int TileZ)
         {
-            string name = Viewer.Simulator.RoutePath + @"\WORLD\" + WorldFile.WorldFileNameFromTileCoordinates(TileX, TileZ) + "s";
+            string name = Viewer.Simulator.RoutePath + @"/WORLD/" + WorldFile.WorldFileNameFromTileCoordinates(TileX, TileZ) + "s";
             WorldSoundFile wf = new WorldSoundFile(name, Viewer.Simulator.TDB.TrackDB.TrItemTable);
             if (wf.TR_WorldSoundFile != null)
             {
@@ -3264,7 +3264,7 @@ namespace Orts.Viewer3D
                 foreach (var fss in wf.TR_WorldSoundFile.SoundSources)
                 {
                     WorldLocation wl = new WorldLocation(TileX, TileZ, fss.X, fss.Y, fss.Z);
-                    var fullPath = ORTSPaths.GetFileFromFolders(pathArray, @"Sound\" + fss.SoundSourceFileName);
+                    var fullPath = ORTSPaths.GetFileFromFolders(pathArray, @"Sound/" + fss.SoundSourceFileName);
                     if (fullPath != null)
                     {
                         ss = new SoundSource(Viewer, wl, Events.Source.None, fullPath, true);
@@ -3286,7 +3286,7 @@ namespace Orts.Viewer3D
 
         public void RemoveByTile(int TileX, int TileZ)
         {
-            string name = Viewer.Simulator.RoutePath + @"\WORLD\" + WorldFile.WorldFileNameFromTileCoordinates(TileX, TileZ) + "s";
+            string name = Viewer.Simulator.RoutePath + @"/WORLD/" + WorldFile.WorldFileNameFromTileCoordinates(TileX, TileZ) + "s";
             Viewer.SoundProcess.RemoveSoundSources(name);
             lock (SoundRegions)
             {

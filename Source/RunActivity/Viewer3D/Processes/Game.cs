@@ -26,7 +26,9 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
+#if WINDOWS
 using System.Windows.Forms;
+#endif
 
 namespace Orts.Viewer3D.Processes
 {
@@ -242,7 +244,14 @@ namespace Orts.Viewer3D.Processes
             Exit();
             // Show the user that it's all gone horribly wrong.
             if (Settings.ShowErrorDialogs)
-                System.Windows.Forms.MessageBox.Show(error.ToString(), Application.ProductName + " " + VersionInfo.VersionOrBuild);
+            {
+#if WINDOWS
+                MessageBox.Show(error.ToString(), Application.ProductName + " " + VersionInfo.VersionOrBuild);
+#else
+                Console.Error.WriteLine(ApplicationInfo.ProductName + " " + VersionInfo.VersionOrBuild);
+                Console.Error.WriteLine(error.ToString());
+#endif
+            }
         }
     }
 }

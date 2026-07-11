@@ -831,7 +831,7 @@ namespace Orts.Viewer3D
                 else if (viewer.Simulator.TRK.Tr_RouteFile.DefaultCrossingSMS != null) soundFileName = viewer.Simulator.TRK.Tr_RouteFile.DefaultCrossingSMS;
                 if (soundFileName != "")
                 {
-                    var soundPath = viewer.Simulator.RoutePath + @"\\sound\\" + soundFileName;
+                    var soundPath = viewer.Simulator.RoutePath + @"//sound//" + soundFileName;
                     try
                     {
                         Sound = new SoundSource(viewer, position.WorldLocation, Events.Source.MSTSCrossing, soundPath);
@@ -839,7 +839,7 @@ namespace Orts.Viewer3D
                     }
                     catch
                     {
-                        soundPath = viewer.Simulator.BasePath + @"\\sound\\" + soundFileName;
+                        soundPath = viewer.Simulator.BasePath + @"//sound//" + soundFileName;
                         try
                         {
                             Sound = new SoundSource(viewer, position.WorldLocation, Events.Source.MSTSCrossing, soundPath);
@@ -930,7 +930,7 @@ namespace Orts.Viewer3D
         {
             var h = viewer.Simulator.HazzardManager.AddHazzardIntoGame(hObj.itemId, hObj.FileName);
             if (h == null) return null;
-            return new HazzardShape(viewer, viewer.Simulator.BasePath + @"\Global\Shapes\" + h.HazFile.Tr_HazardFile.FileName + "\0" + viewer.Simulator.BasePath + @"\Global\Textures", position, shapeFlags, hObj, h);
+            return new HazzardShape(viewer, viewer.Simulator.BasePath + @"/Global/Shapes/" + h.HazFile.Tr_HazardFile.FileName + "\0" + viewer.Simulator.BasePath + @"/Global/Textures", position, shapeFlags, hObj, h);
 
         }
 
@@ -1041,7 +1041,7 @@ namespace Orts.Viewer3D
         {
             if (Viewer.Simulator.TRK.Tr_RouteFile.DefaultDieselTowerSMS != null && FuelPickupItemObj.PickupType == 7) // Testing for Diesel PickupType
             {
-                var soundPath = Viewer.Simulator.RoutePath + @"\\sound\\" + Viewer.Simulator.TRK.Tr_RouteFile.DefaultDieselTowerSMS;
+                var soundPath = Viewer.Simulator.RoutePath + @"//sound//" + Viewer.Simulator.TRK.Tr_RouteFile.DefaultDieselTowerSMS;
                 try
                 {
                     Sound = new SoundSource(Viewer, Position.WorldLocation, Events.Source.MSTSFuelTower, soundPath);
@@ -1049,7 +1049,7 @@ namespace Orts.Viewer3D
                 }
                 catch
                 {
-                    soundPath = Viewer.Simulator.BasePath + @"\\sound\\" + Viewer.Simulator.TRK.Tr_RouteFile.DefaultDieselTowerSMS;
+                    soundPath = Viewer.Simulator.BasePath + @"//sound//" + Viewer.Simulator.TRK.Tr_RouteFile.DefaultDieselTowerSMS;
                     try
                     {
                         Sound = new SoundSource(Viewer, Position.WorldLocation, Events.Source.MSTSFuelTower, soundPath);
@@ -1063,7 +1063,7 @@ namespace Orts.Viewer3D
             }
             if (Viewer.Simulator.TRK.Tr_RouteFile.DefaultWaterTowerSMS != null && FuelPickupItemObj.PickupType == 5) // Testing for Water PickupType
             {
-                var soundPath = Viewer.Simulator.RoutePath + @"\\sound\\" + Viewer.Simulator.TRK.Tr_RouteFile.DefaultWaterTowerSMS;
+                var soundPath = Viewer.Simulator.RoutePath + @"//sound//" + Viewer.Simulator.TRK.Tr_RouteFile.DefaultWaterTowerSMS;
                 try
                 {
                     Sound = new SoundSource(Viewer, Position.WorldLocation, Events.Source.MSTSFuelTower, soundPath);
@@ -1071,7 +1071,7 @@ namespace Orts.Viewer3D
                 }
                 catch
                 {
-                    soundPath = Viewer.Simulator.BasePath + @"\\sound\\" + Viewer.Simulator.TRK.Tr_RouteFile.DefaultWaterTowerSMS;
+                    soundPath = Viewer.Simulator.BasePath + @"//sound//" + Viewer.Simulator.TRK.Tr_RouteFile.DefaultWaterTowerSMS;
                     try
                     {
                         Sound = new SoundSource(Viewer, Position.WorldLocation, Events.Source.MSTSFuelTower, soundPath);
@@ -1085,7 +1085,7 @@ namespace Orts.Viewer3D
             }
             if (Viewer.Simulator.TRK.Tr_RouteFile.DefaultCoalTowerSMS != null && (FuelPickupItemObj.PickupType == 6 || FuelPickupItemObj.PickupType == 2))
             {
-                var soundPath = Viewer.Simulator.RoutePath + @"\\sound\\" + Viewer.Simulator.TRK.Tr_RouteFile.DefaultCoalTowerSMS;
+                var soundPath = Viewer.Simulator.RoutePath + @"//sound//" + Viewer.Simulator.TRK.Tr_RouteFile.DefaultCoalTowerSMS;
                 try
                 {
                     Sound = new SoundSource(Viewer, Position.WorldLocation, Events.Source.MSTSFuelTower, soundPath);
@@ -1093,7 +1093,7 @@ namespace Orts.Viewer3D
                 }
                 catch
                 {
-                    soundPath = Viewer.Simulator.BasePath + @"\\sound\\" + Viewer.Simulator.TRK.Tr_RouteFile.DefaultCoalTowerSMS;
+                    soundPath = Viewer.Simulator.BasePath + @"//sound//" + Viewer.Simulator.TRK.Tr_RouteFile.DefaultCoalTowerSMS;
                     try
                     {
                         Sound = new SoundSource(Viewer, Position.WorldLocation, Events.Source.MSTSFuelTower, soundPath);
@@ -1225,7 +1225,7 @@ namespace Orts.Viewer3D
             AnimationKeyZ = Math.Abs((0 - ((linear_key)controllerZ[0]).Z) / (((linear_key)controllerZ[1]).Z - ((linear_key)controllerZ[0]).Z)) * controllerZ[1].Frame;
             if (FuelPickupItemObj.CraneSound != null)
             {
-                var soundPath = Viewer.Simulator.RoutePath + @"\\sound\\" + FuelPickupItemObj.CraneSound;
+                var soundPath = Viewer.Simulator.RoutePath + @"//sound//" + FuelPickupItemObj.CraneSound;
                 try
                 {
                     Sound = new SoundSource(Viewer, Position.WorldLocation, Events.Source.ORTSContainerCrane, soundPath);
@@ -1233,7 +1233,7 @@ namespace Orts.Viewer3D
                 }
                 catch
                 {
-                    soundPath = Viewer.Simulator.BasePath + @"\\sound\\containercrane.sms";
+                    soundPath = Viewer.Simulator.BasePath + @"//sound//containercrane.sms";
                     try
                     {
                         Sound = new SoundSource(Viewer, Position.WorldLocation, Events.Source.ORTSContainerCrane, soundPath);
@@ -1247,7 +1247,7 @@ namespace Orts.Viewer3D
             }
             else
             {
-                var soundPath = Viewer.Simulator.BasePath + @"\\sound\\containercrane.sms";
+                var soundPath = Viewer.Simulator.BasePath + @"//sound//containercrane.sms";
                 try
                 {
                     Sound = new SoundSource(Viewer, Position.WorldLocation, Events.Source.ORTSContainerCrane, soundPath);
@@ -1558,7 +1558,7 @@ namespace Orts.Viewer3D
             }
             if (viewer.Simulator.TRK.Tr_RouteFile.DefaultTurntableSMS != null)
             {
-                var soundPath = viewer.Simulator.RoutePath + @"\\sound\\" + viewer.Simulator.TRK.Tr_RouteFile.DefaultTurntableSMS;
+                var soundPath = viewer.Simulator.RoutePath + @"//sound//" + viewer.Simulator.TRK.Tr_RouteFile.DefaultTurntableSMS;
                 try
                 {
                     Sound = new SoundSource(viewer, initialPosition.WorldLocation, Events.Source.ORTSTurntable, soundPath);
@@ -1566,7 +1566,7 @@ namespace Orts.Viewer3D
                 }
                 catch
                 {
-                    soundPath = viewer.Simulator.BasePath + @"\\sound\\" + viewer.Simulator.TRK.Tr_RouteFile.DefaultTurntableSMS;
+                    soundPath = viewer.Simulator.BasePath + @"//sound//" + viewer.Simulator.TRK.Tr_RouteFile.DefaultTurntableSMS;
                     try
                     {
                         Sound = new SoundSource(viewer, initialPosition.WorldLocation, Events.Source.ORTSTurntable, soundPath);
@@ -1679,7 +1679,7 @@ namespace Orts.Viewer3D
             }
             if (viewer.Simulator.TRK.Tr_RouteFile.DefaultTurntableSMS != null)
             {
-                var soundPath = viewer.Simulator.RoutePath + @"\\sound\\" + viewer.Simulator.TRK.Tr_RouteFile.DefaultTurntableSMS;
+                var soundPath = viewer.Simulator.RoutePath + @"//sound//" + viewer.Simulator.TRK.Tr_RouteFile.DefaultTurntableSMS;
                 try
                 {
                     Sound = new SoundSource(viewer, initialPosition.WorldLocation, Events.Source.ORTSTurntable, soundPath);
@@ -1687,7 +1687,7 @@ namespace Orts.Viewer3D
                 }
                 catch
                 {
-                    soundPath = viewer.Simulator.BasePath + @"\\sound\\" + viewer.Simulator.TRK.Tr_RouteFile.DefaultTurntableSMS;
+                    soundPath = viewer.Simulator.BasePath + @"//sound//" + viewer.Simulator.TRK.Tr_RouteFile.DefaultTurntableSMS;
                     try
                     {
                         Sound = new SoundSource(viewer, initialPosition.WorldLocation, Events.Source.ORTSTurntable, soundPath);

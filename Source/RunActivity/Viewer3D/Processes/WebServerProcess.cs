@@ -75,7 +75,14 @@ namespace Orts.Viewer3D.Processes
             EndPointManager.UseIpv6 = true;
             try
             {
-                using (EmbedIO.WebServer server = WebServer.CreateWebServer($"http://*:{Game.Settings.WebServerPort}", myWebContentPath()))
+                // The "*" wildcard host prefix only binds under Windows' HTTP.sys. On other platforms
+                // bind explicitly to localhost so the in-game web server (HUD/cab APIs) starts.
+#if WINDOWS
+                var urlPrefix = $"http://*:{Game.Settings.WebServerPort}";
+#else
+                var urlPrefix = $"http://127.0.0.1:{Game.Settings.WebServerPort}";
+#endif
+                using (EmbedIO.WebServer server = WebServer.CreateWebServer(urlPrefix, myWebContentPath()))
                     server.RunAsync(StopServer.Token).Wait();
             }
             catch(AggregateException ex)

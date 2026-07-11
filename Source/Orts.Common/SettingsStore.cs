@@ -21,9 +21,11 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
+#if WINDOWS
+using System.Runtime.InteropServices;
 using Microsoft.Win32;
+#endif
 
 namespace ORTS.Common
 {
@@ -162,14 +164,21 @@ namespace ORTS.Common
         /// <returns>The created SettingsStore</returns>
 		public static SettingsStore GetSettingStore(string filePath, string registryKey, string section)
 		{
+#if WINDOWS
 			if (!String.IsNullOrEmpty(filePath) && File.Exists(filePath))
 				return new SettingsStoreLocalIni(filePath, section);
 			if (!String.IsNullOrEmpty(registryKey))
 				return new SettingsStoreRegistry(registryKey, section);
 			throw new ArgumentException("Neither 'filePath' nor 'registryKey' arguments are valid.");
+#else
+			if (!String.IsNullOrEmpty(filePath))
+				return new SettingsStoreLocalIniCrossPlatform(filePath, section);
+			throw new ArgumentException("'filePath' argument is required on this platform.");
+#endif
 		}
 	}
 
+#if WINDOWS
 	/// <summary>
     /// Registry implementation of <see cref="SettingsStore"/>.
 	/// </summary>
@@ -644,4 +653,173 @@ namespace ORTS.Common
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern int WritePrivateProfileString(string sectionName, string keyName, string value, string fileName);
     }
+#else
+    /// <summary>
+    /// Cross-platform (non-Windows) INI-style file implementation of <see cref="SettingsStore"/>.
+    /// Uses plain managed file I/O instead of the Windows-only kernel32 profile APIs.
+    /// File format is "[Section]" headers followed by "key=type:value" lines, one store instance per section.
+    /// </summary>
+    public sealed class SettingsStoreLocalIniCrossPlatform : SettingsStore
+    {
+        const string DefaultSection = "ORTS";
+
+        readonly string FilePath;
+
+        internal SettingsStoreLocalIniCrossPlatform(string filePath, string section)
+            : base(String.IsNullOrEmpty(section) ? DefaultSection : section)
+        {
+            FilePath = filePath;
+        }
+
+        public string[] GetSectionNames()
+        {
+            return ReadAllSections().Keys.ToArray();
+        }
+
+        // Loads the whole file into section -> (key -> rawValue) each time; settings I/O is infrequent so this is fine.
+        Dictionary<string, Dictionary<string, string>> ReadAllSections()
+        {
+            var sections = new Dictionary<string, Dictionary<string, string>>(StringComparer.OrdinalIgnoreCase);
+            if (!File.Exists(FilePath))
+                return sections;
+
+            string currentSection = null;
+            foreach (var rawLine in File.ReadAllLines(FilePath, Encoding.UTF8))
+            {
+                var line = rawLine.Trim();
+                if (line.Length == 0 || line.StartsWith(";"))
+                    continue;
+                if (line.StartsWith("[") && line.EndsWith("]"))
+                {
+                    currentSection = line.Substring(1, line.Length - 2);
+                    if (!sections.ContainsKey(currentSection))
+                        sections[currentSection] = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                    continue;
+                }
+                if (currentSection == null)
+                    continue;
+                var eq = line.IndexOf('=');
+                if (eq < 0)
+                    continue;
+                sections[currentSection][line.Substring(0, eq)] = line.Substring(eq + 1);
+            }
+            return sections;
+        }
+
+        void WriteAllSections(Dictionary<string, Dictionary<string, string>> sections)
+        {
+            var directory = Path.GetDirectoryName(FilePath);
+            if (!String.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+
+            using (var writer = new StreamWriter(FilePath, false, Encoding.UTF8))
+            {
+                foreach (var section in sections)
+                {
+                    writer.WriteLine("[{0}]", section.Key);
+                    foreach (var kvp in section.Value)
+                        writer.WriteLine("{0}={1}", kvp.Key, kvp.Value);
+                    writer.WriteLine();
+                }
+            }
+        }
+
+        void SetRawValue(string name, string rawValue)
+        {
+            var sections = ReadAllSections();
+            if (!sections.TryGetValue(Section, out var values))
+            {
+                values = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                sections[Section] = values;
+            }
+            values[name] = rawValue;
+            WriteAllSections(sections);
+        }
+
+        public override string[] GetUserNames()
+        {
+            var sections = ReadAllSections();
+            return sections.TryGetValue(Section, out var values) ? values.Keys.ToArray() : new string[0];
+        }
+
+        public override object GetUserValue(string name, Type expectedType)
+        {
+            AssertGetUserValueType(expectedType);
+
+            var sections = ReadAllSections();
+            if (!sections.TryGetValue(Section, out var values) || !values.TryGetValue(name, out var raw) || String.IsNullOrEmpty(raw))
+                return null;
+
+            var parts = raw.Split(new[] { ':' }, 2);
+            if (parts.Length != 2)
+            {
+                Trace.TraceWarning("Setting {0} contains invalid value {1}.", name, raw);
+                return null;
+            }
+
+            try
+            {
+                object userValue = null;
+                switch (parts[0])
+                {
+                    case "bool":
+                        userValue = parts[1].Equals("true", StringComparison.InvariantCultureIgnoreCase);
+                        break;
+                    case "int":
+                        userValue = int.Parse(Uri.UnescapeDataString(parts[1]), CultureInfo.InvariantCulture);
+                        break;
+                    case "long":
+                        userValue = long.Parse(Uri.UnescapeDataString(parts[1]), CultureInfo.InvariantCulture);
+                        break;
+                    case "DateTime":
+                        userValue = DateTime.FromBinary(long.Parse(Uri.UnescapeDataString(parts[1]), CultureInfo.InvariantCulture));
+                        break;
+                    case "TimeSpan":
+                        userValue = TimeSpan.FromTicks(long.Parse(Uri.UnescapeDataString(parts[1]), CultureInfo.InvariantCulture));
+                        break;
+                    case "string":
+                        userValue = Uri.UnescapeDataString(parts[1]);
+                        break;
+                    case "int[]":
+                        userValue = parts[1].Length == 0 ? new int[0] : parts[1].Split(',').Select(v => int.Parse(Uri.UnescapeDataString(v), CultureInfo.InvariantCulture)).ToArray();
+                        break;
+                    case "string[]":
+                        userValue = parts[1].Length == 0 ? new string[0] : parts[1].Split(',').Select(v => Uri.UnescapeDataString(v)).ToArray();
+                        break;
+                    default:
+                        Trace.TraceWarning("Setting {0} contains invalid type {1}.", name, parts[0]);
+                        break;
+                }
+
+                return Convert.ChangeType(userValue, expectedType);
+            }
+            catch
+            {
+                Trace.TraceWarning("Setting {0} contains invalid value {1}.", name, parts.Length > 1 ? parts[1] : raw);
+                return null;
+            }
+        }
+
+        public override void SetUserValue(string name, bool value) => SetRawValue(name, "bool:" + (value ? "true" : "false"));
+        public override void SetUserValue(string name, int value) => SetRawValue(name, "int:" + Uri.EscapeDataString(value.ToString(CultureInfo.InvariantCulture)));
+        public override void SetUserValue(string name, long value) => SetRawValue(name, "long:" + Uri.EscapeDataString(value.ToString(CultureInfo.InvariantCulture)));
+        public override void SetUserValue(string name, DateTime value) => SetRawValue(name, "DateTime:" + Uri.EscapeDataString(value.ToBinary().ToString(CultureInfo.InvariantCulture)));
+        public override void SetUserValue(string name, TimeSpan value) => SetRawValue(name, "TimeSpan:" + Uri.EscapeDataString(value.Ticks.ToString(CultureInfo.InvariantCulture)));
+        public override void SetUserValue(string name, string value) => SetRawValue(name, "string:" + Uri.EscapeDataString(value));
+        public override void SetUserValue(string name, int[] value) => SetRawValue(name, "int[]:" + String.Join(",", value.Select(v => Uri.EscapeDataString(v.ToString(CultureInfo.InvariantCulture))).ToArray()));
+        public override void SetUserValue(string name, string[] value) => SetRawValue(name, "string[]:" + String.Join(",", value.Select(v => Uri.EscapeDataString(v)).ToArray()));
+
+        public override void DeleteUserValue(string name)
+        {
+            var sections = ReadAllSections();
+            if (sections.TryGetValue(Section, out var values) && values.Remove(name))
+                WriteAllSections(sections);
+        }
+
+        public override String GetStoreName()
+        {
+            return String.IsNullOrEmpty(FilePath) ? "None (file)" : FilePath;
+        }
+    }
+#endif
 }

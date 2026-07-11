@@ -93,7 +93,7 @@ namespace Orts.Formats.Msts
         }
     }
 
-    // TODO fails on = "c:\\program files\\microsoft games\\train simulator\\ROUTES\\EUROPE1\\Tiles\\-11cc0604.t") Line 330 + 0x18 bytes	C#
+    // TODO fails on = "c:/program files/microsoft games/train simulator/ROUTES/EUROPE1/Tiles/-11cc0604.t") Line 330 + 0x18 bytes	C#
 
     public class terrain_samples
     {

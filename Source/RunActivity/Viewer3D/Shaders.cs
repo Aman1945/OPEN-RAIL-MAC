@@ -21,7 +21,6 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Graphics;
 using ORTS.Common;
 using Orts.Viewer3D.Processes;
@@ -42,6 +41,7 @@ namespace Orts.Viewer3D
         }
     }
 
+#if WINDOWS
     class ProcessorContext : ContentProcessorContext
     {
         public override TargetPlatform TargetPlatform { get { return TargetPlatform.Windows; } }
@@ -74,6 +74,7 @@ namespace Orts.Viewer3D
         public override void LogImportantMessage(string message, params object[] messageArgs) => Trace.TraceInformation(message, messageArgs);
         public override void LogWarning(string helpLink, ContentIdentity contentIdentity, string message, params object[] messageArgs) => Trace.TraceWarning(message, messageArgs);
     }
+#endif
 
     [CallOnThread("Render")]
     public class SceneryShader : Shader

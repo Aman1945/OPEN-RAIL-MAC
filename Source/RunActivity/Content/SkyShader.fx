@@ -192,7 +192,9 @@ float4 PSSky(VERTEX_OUTPUT In) : COLOR
 	
 	// Calculate angular difference between LightVector and vertex normal, radians
 	float dotproduct = dot(LightVector.xyz, In.Normal);
-	float angleRcp = 1 / acos(dotproduct * LightVector.w / length(In.Normal));
+	// clamp() the acos argument to [-1,1]: GLSL returns NaN for out-of-range inputs (from float
+	// imprecision), which propagates to a blown-out white sky. HLSL/DirectX tolerated it.
+	float angleRcp = 1 / acos(clamp(dotproduct * LightVector.w / length(In.Normal), -1.0, 1.0));
 	
 	// Sun glow
 	// Coefficients selected by the author to achieve the desired appearance - fot limits the effect
@@ -287,21 +289,21 @@ float4 PSClouds(VERTEX_OUTPUT In) : COLOR
 
 technique Sky {
    pass Pass_0 {
-	  VertexShader = compile vs_4_0_level_9_1 VSSky();
-	  PixelShader = compile ps_4_0_level_9_1 PSSky();
+	  VertexShader = compile vs_3_0 VSSky();
+	  PixelShader = compile ps_3_0 PSSky();
    }
 }
 
 technique Moon {
    pass Pass_0 {
-	  VertexShader = compile vs_4_0_level_9_1 VSMoon();
-	  PixelShader = compile ps_4_0_level_9_1 PSMoon();
+	  VertexShader = compile vs_3_0 VSMoon();
+	  PixelShader = compile ps_3_0 PSMoon();
    }
 }
 
 technique Clouds {
    pass Pass_0 {
-	  VertexShader = compile vs_4_0_level_9_1 VSSky();
-	  PixelShader = compile ps_4_0_level_9_1 PSClouds();
+	  VertexShader = compile vs_3_0 VSSky();
+	  PixelShader = compile ps_3_0 PSClouds();
    }
 }

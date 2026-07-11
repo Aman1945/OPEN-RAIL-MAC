@@ -44,7 +44,7 @@ namespace Orts.Common
             if (String.IsNullOrEmpty(path))
                 return "";
 
-            return Path.GetDirectoryName(path) + @"\OpenRails\" + Path.GetFileName(path);
+            return Path.GetDirectoryName(path) + @"/OpenRails/" + Path.GetFileName(path);
         }
 
         /// <summary>

@@ -65,7 +65,7 @@ namespace Orts.Viewer3D.RollingStock
         {
             Locomotive = car;
 
-            string wagonFolderSlash = Path.GetDirectoryName(Locomotive.WagFilePath) + "\\";
+            string wagonFolderSlash = Path.GetDirectoryName(Locomotive.WagFilePath) + "/";
             if (Locomotive.CabSoundFileName != null) LoadCarSound(wagonFolderSlash, Locomotive.CabSoundFileName);
 
             //Viewer.SoundProcess.AddSoundSource(this, new TrackSoundSource(MSTSWagon, Viewer));
@@ -944,6 +944,12 @@ namespace Orts.Viewer3D.RollingStock
         {
             //Trace.TraceInformation("Disassembling {0} {1} frames in {2}x{3}; control {4}x{5}, frame {6}x{7}, copy {8}x{9}.", texture.Format, frameCount, frameGrid.X, frameGrid.Y, controlSize.X, controlSize.Y, frameSize.X, frameSize.Y, copySize.X, copySize.Y);
             var frameIndex = 0;
+#if !WINDOWS
+            // Texture2D.GetData() must run on the render thread under MonoGame DesktopGL; the cab-texture
+            // disassembly happens on the Loader thread, so marshal the whole GPU copy loop across.
+            Orts.Viewer3D.UIThreadMarshal.Run(() =>
+            {
+#endif
             for (var y = 0; y < frameGrid.Y; y++)
             {
                 for (var x = 0; x < frameGrid.X; x++)
@@ -956,6 +962,9 @@ namespace Orts.Viewer3D.RollingStock
                     }
                 }
             }
+#if !WINDOWS
+            });
+#endif
             return frameIndex;
         }
 
@@ -3851,7 +3860,7 @@ namespace Orts.Viewer3D.RollingStock
         Material FindMaterial(bool Alert)
         {
             string imageName = "";
-            string globalText = Viewer.Simulator.BasePath + @"\GLOBAL\TEXTURES\";
+            string globalText = Viewer.Simulator.BasePath + @"/GLOBAL/TEXTURES/";
             CABViewControlTypes controltype = CVFR.GetControlType().Type;
             Material material = null;
 
@@ -3892,13 +3901,13 @@ namespace Orts.Viewer3D.RollingStock
             }
             else
             {
-                if (!File.Exists(TrainCarShape.SharedShape.ReferencePath + @"\" + imageName))
+                if (!File.Exists(TrainCarShape.SharedShape.ReferencePath + @"/" + imageName))
                 {
                     Trace.TraceInformation("Ignored missing " + imageName + " using default. You can copy the " + imageName + " from OR\'s AddOns folder to " + globalText +
                         ", or place it under " + TrainCarShape.SharedShape.ReferencePath);
                     material = Viewer.MaterialManager.Load("Scenery", Helpers.GetTextureFile(Viewer.Simulator, Helpers.TextureFlags.None, globalText, imageName), (int)(options), 0);
                 }
-                else material = Viewer.MaterialManager.Load("Scenery", Helpers.GetTextureFile(Viewer.Simulator, Helpers.TextureFlags.None, TrainCarShape.SharedShape.ReferencePath + @"\", imageName), (int)(options), 0);
+                else material = Viewer.MaterialManager.Load("Scenery", Helpers.GetTextureFile(Viewer.Simulator, Helpers.TextureFlags.None, TrainCarShape.SharedShape.ReferencePath + @"/", imageName), (int)(options), 0);
             }
 
             return material;

@@ -2203,7 +2203,7 @@ namespace Orts.Simulation.Signalling
         {
 
 #if DEBUG_REPORTS
-			File.AppendAllText(@"C:\temp\printproc.txt",
+			File.AppendAllText(@"C:/temp/printproc.txt",
 				String.Format("Request for clear signal from train {0} at section {1} for signal {2}\n",
 				thisTrain.Train.Number,
 				thisTrain.Train.PresentPosition[thisTrain.TrainRouteDirectionIndex].TCSectionIndex,
@@ -2211,7 +2211,7 @@ namespace Orts.Simulation.Signalling
 #endif
             if (thisTrain.Train.CheckTrain)
             {
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                     String.Format("Request for clear signal from train {0} at section {1} for signal {2}\n",
                     thisTrain.Train.Number,
                     thisTrain.Train.PresentPosition[thisTrain.TrainRouteDirectionIndex].TCSectionIndex,
@@ -2329,7 +2329,7 @@ namespace Orts.Simulation.Signalling
 
                         if (thisTrain.Train.CheckTrain)
                         {
-                            File.AppendAllText(@"C:\temp\checktrain.txt",
+                            File.AppendAllText(@"C:/temp/checktrain.txt",
                                 String.Format("Reset signal for pool access : {0} \n", thisRef));
                         }
 
@@ -3198,7 +3198,7 @@ namespace Orts.Simulation.Signalling
                 {
 
 #if DEBUG_DEADLOCK
-                File.AppendAllText(@"C:\Temp\deadlock.txt",
+                File.AppendAllText(@"C:/Temp/deadlock.txt",
                     "\n **** Get block state for section " + lastElement.TCSectionIndex.ToString() + " for train : " + thisTrain.Train.Number.ToString() + "\n");
 #endif
                     TrackCircuitSection lastSection = signalRef.TrackCircuitList[lastElement.TCSectionIndex];
@@ -3206,8 +3206,8 @@ namespace Orts.Simulation.Signalling
                     List<int> availableRoutes = sectionDeadlockInfo.CheckDeadlockPathAvailability(lastSection, thisTrain.Train);
 
 #if DEBUG_DEADLOCK
-                File.AppendAllText(@"C:\Temp\deadlock.txt", "\nReturned no. of available paths : " + availableRoutes.Count.ToString() + "\n");
-                File.AppendAllText(@"C:\Temp\deadlock.txt", "****\n\n");
+                File.AppendAllText(@"C:/Temp/deadlock.txt", "\nReturned no. of available paths : " + availableRoutes.Count.ToString() + "\n");
+                File.AppendAllText(@"C:/Temp/deadlock.txt", "****\n\n");
 #endif
 
                     if (availableRoutes.Count >= 1)
@@ -3447,23 +3447,23 @@ namespace Orts.Simulation.Signalling
             }
 
 #if DEBUG_REPORTS
-            File.AppendAllText(@"C:\temp\printproc.txt",
+            File.AppendAllText(@"C:/temp/printproc.txt",
 				String.Format("Signal {0} reset on Junction Change\n",
 				thisRef));
 
             if (enabledTrain != null)
             {
-				File.AppendAllText(@"C:\temp\printproc.txt",
+				File.AppendAllText(@"C:/temp/printproc.txt",
 					String.Format("Train {0} affected; new NORMAL signal : {1}\n",
 					enabledTrain.Train.Number, sigfound[(int)MstsSignalFunction.NORMAL]));
             }
 #endif
             if (enabledTrain != null && enabledTrain.Train.CheckTrain)
             {
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                     String.Format("Signal {0} reset on Junction Change\n",
                     thisRef));
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                     String.Format("Train {0} affected; new NORMAL signal : {1}\n",
                     enabledTrain.Train.Number, sigfound[SignalFunction.NORMAL]));
             }

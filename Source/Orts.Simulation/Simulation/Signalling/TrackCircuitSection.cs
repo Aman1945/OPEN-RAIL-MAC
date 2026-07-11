@@ -570,14 +570,14 @@ namespace Orts.Simulation.Signalling
                         if (DeadlockReference >= 0 && thisElement.FacingPoint)
                         {
 #if DEBUG_DEADLOCK
-                            File.AppendAllText(@"C:\Temp\deadlock.txt",
+                            File.AppendAllText(@"C:/Temp/deadlock.txt",
                                 "\n **** Check IfAvailable for section " + Index.ToString() + " for train : " + thisTrain.Train.Number.ToString() + "\n");
 #endif
                             DeadlockInfo sectionDeadlockInfo = signalRef.DeadlockInfoList[DeadlockReference];
                             List<int> pathAvail = sectionDeadlockInfo.CheckDeadlockPathAvailability(this, thisTrain.Train);
 #if DEBUG_DEADLOCK
-                            File.AppendAllText(@"C:\Temp\deadlock.txt", "\nReturned no. of available paths : " + pathAvail.Count.ToString() + "\n");
-                            File.AppendAllText(@"C:\Temp\deadlock.txt", "****\n\n");
+                            File.AppendAllText(@"C:/Temp/deadlock.txt", "\nReturned no. of available paths : " + pathAvail.Count.ToString() + "\n");
+                            File.AppendAllText(@"C:/Temp/deadlock.txt", "****\n\n");
 #endif
                             if (pathAvail.Count <= 0) return (false);
                         }
@@ -610,20 +610,20 @@ namespace Orts.Simulation.Signalling
         {
 
 #if DEBUG_REPORTS
-            File.AppendAllText(@"C:\temp\printproc.txt",
+            File.AppendAllText(@"C:/temp/printproc.txt",
                 String.Format("Reserve section {0} for train {1}\n",
                 this.Index,
                 thisTrain.Train.Number));
 #endif
 #if DEBUG_DEADLOCK
-            File.AppendAllText(@"C:\temp\deadlock.txt",
+            File.AppendAllText(@"C:/temp/deadlock.txt",
                 String.Format("Reserve section {0} for train {1}\n",
                 this.Index,
                 thisTrain.Train.Number));
 #endif
             if (thisTrain.Train.CheckTrain)
             {
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                     String.Format("Reserve section {0} for train {1}\n",
                     this.Index,
                     thisTrain.Train.Number));
@@ -818,20 +818,20 @@ namespace Orts.Simulation.Signalling
             {
 
 #if DEBUG_REPORTS
-			File.AppendAllText(@"C:\temp\printproc.txt",
+			File.AppendAllText(@"C:/temp/printproc.txt",
 				String.Format("Claim section {0} for train {1}\n",
 				this.Index,
 				thisTrain.Train.Number));
 #endif
 #if DEBUG_DEADLOCK
-                File.AppendAllText(@"C:\temp\deadlock.txt",
+                File.AppendAllText(@"C:/temp/deadlock.txt",
                     String.Format("Claim section {0} for train {1}\n",
                     this.Index,
                     thisTrain.Train.Number));
 #endif
                 if (thisTrain.Train.CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt",
+                    File.AppendAllText(@"C:/temp/checktrain.txt",
                         String.Format("Claim section {0} for train {1}\n",
                         this.Index,
                         thisTrain.Train.Number));
@@ -870,20 +870,20 @@ namespace Orts.Simulation.Signalling
         public void SetOccupied(Train.TrainRouted thisTrain, int reqDistanceTravelledM)
         {
 #if DEBUG_REPORTS
-			File.AppendAllText(@"C:\temp\printproc.txt",
+			File.AppendAllText(@"C:/temp/printproc.txt",
 				String.Format("Occupy section {0} for train {1}\n",
 				this.Index,
 				thisTrain.Train.Number));
 #endif
 #if DEBUG_DEADLOCK
-            File.AppendAllText(@"C:\temp\deadlock.txt",
+            File.AppendAllText(@"C:/temp/deadlock.txt",
                 String.Format("Occupy section {0} for train {1}\n",
                 this.Index,
                 thisTrain.Train.Number));
 #endif
             if (thisTrain.Train.CheckTrain)
             {
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                     String.Format("Occupy section {0} for train {1}\n",
                     this.Index,
                     thisTrain.Train.Number));
@@ -976,7 +976,7 @@ namespace Orts.Simulation.Signalling
 
             if (thisTrain.Train.CheckTrain)
             {
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                     "Set clear action : section : " + Index + " : distance to clear : " + distanceToClear + "\n");
             }
 
@@ -1014,14 +1014,14 @@ namespace Orts.Simulation.Signalling
         {
 
 #if DEBUG_REPORTS
-			File.AppendAllText(@"C:\temp\printproc.txt",
+			File.AppendAllText(@"C:/temp/printproc.txt",
 				String.Format("Clear section {0} for train {1}\n",
 				this.Index,
 				thisTrain.Train.Number));
 #endif
             if (thisTrain.Train.CheckTrain)
             {
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                     String.Format("Clear section {0} for train {1}\n",
                     this.Index,
                     thisTrain.Train.Number));
@@ -1135,7 +1135,7 @@ namespace Orts.Simulation.Signalling
 
                 if (thisTrain.Train.CheckTrain)
                 {
-                    File.AppendAllText(@"C:\temp\checktrain.txt",
+                    File.AppendAllText(@"C:/temp/checktrain.txt",
                         "Reset Occupy for section : " + Index + "\n");
                 }
             }
@@ -1157,14 +1157,14 @@ namespace Orts.Simulation.Signalling
         public void RemoveTrain(Train.TrainRouted thisTrain, bool resetEndSignal)
         {
 #if DEBUG_REPORTS
-			File.AppendAllText(@"C:\temp\printproc.txt",
+			File.AppendAllText(@"C:/temp/printproc.txt",
 				String.Format("Remove train from section {0} for train {1}\n",
 				this.Index,
 				thisTrain.Train.Number));
 #endif
             if (thisTrain.Train.CheckTrain)
             {
-                File.AppendAllText(@"C:\temp\checktrain.txt",
+                File.AppendAllText(@"C:/temp/checktrain.txt",
                     String.Format("Remove train from section {0} for train {1}\n",
                     this.Index,
                     thisTrain.Train.Number));
@@ -2014,7 +2014,7 @@ namespace Orts.Simulation.Signalling
         {
 
 #if DEBUG_DEADLOCK
-                File.AppendAllText(@"C:\Temp\deadlock.txt",
+                File.AppendAllText(@"C:/Temp/deadlock.txt",
                     "\n **** Set deadlock " + Index + " for train : " + thisTrainNumber.ToString() + " with train :  " + otherTrainNumber.ToString() + "\n");
 #endif
 
@@ -2049,7 +2049,7 @@ namespace Orts.Simulation.Signalling
             {
 
 #if DEBUG_DEADLOCK
-                File.AppendAllText(@"C:\Temp\deadlock.txt",
+                File.AppendAllText(@"C:/Temp/deadlock.txt",
                     "\n **** Clearing deadlocks " + Index + " for train : " + thisTrainNumber.ToString() + "\n");
 #endif
 
@@ -2075,7 +2075,7 @@ namespace Orts.Simulation.Signalling
             DeadlockAwaited.Remove(thisTrainNumber);
 
 #if DEBUG_DEADLOCK
-            File.AppendAllText(@"C:\Temp\deadlock.txt",
+            File.AppendAllText(@"C:/Temp/deadlock.txt",
                 "\n **** \n");
 #endif
         }

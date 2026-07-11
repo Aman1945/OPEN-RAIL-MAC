@@ -27,9 +27,9 @@ namespace ORTS.Settings
 {
     public class UserSettings : PropertySettingsBase
     {
-        public static readonly string UserDataFolder;     // ie @"C:\Users\Wayne\AppData\Roaming\Open Rails"
-        public static readonly string DeletedSaveFolder;  // ie @"C:\Users\Wayne\AppData\Roaming\Open Rails\Deleted Saves"
-        public static readonly string SavePackFolder;     // ie @"C:\Users\Wayne\AppData\Roaming\Open Rails\Save Packs"
+        public static readonly string UserDataFolder;     // ie @"C:/Users/Wayne/AppData/Roaming/Open Rails"
+        public static readonly string DeletedSaveFolder;  // ie @"C:/Users/Wayne/AppData/Roaming/Open Rails/Deleted Saves"
+        public static readonly string SavePackFolder;     // ie @"C:/Users/Wayne/AppData/Roaming/Open Rails/Save Packs"
 
         static UserSettings()
         {
@@ -156,11 +156,22 @@ namespace ORTS.Settings
         public int ExternalSoundPassThruPercent { get; set; } // higher = louder sound
 
         // Video settings:
+#if WINDOWS
         [Default(true)]
+#else
+        // MonoGame's DesktopGL backend does not support the Rg32 render target format used for shadow maps.
+        [Default(false)]
+#endif
         public bool DynamicShadows { get; set; }
         [Default(false)]
         public bool ShadowAllShapes { get; set; }
+#if WINDOWS
         [Default(true)]
+#else
+        // The DesktopGL SceneryShader build skips the per-instance matrix transform (it reads garbage for
+        // non-instanced draws), so instanced rendering must be off — objects render individually instead.
+        [Default(false)]
+#endif
         public bool ModelInstancing { get; set; }
         [Default(true)]
         public bool Wire { get; set; }
@@ -168,7 +179,12 @@ namespace ORTS.Settings
         public bool VerticalSync { get; set; }
         [Default(2000)]
         public int ViewingDistance { get; set; }
+#if WINDOWS
         [Default(true)]
+#else
+        // Distant-mountain rendering produces smeared/streaked geometry across the sky on DesktopGL; disable it.
+        [Default(false)]
+#endif
         public bool DistantMountains { get; set; }
         [Default(40000)]
         public int DistantMountainsViewingDistance { get; set; }
@@ -180,7 +196,14 @@ namespace ORTS.Settings
         public int WorldObjectDensity { get; set; }
         [Default(20)]
         public int DayAmbientLight { get; set; }
+#if WINDOWS
         [Default(AntiAliasingMethod.MSAA2x)]
+#else
+        // On MonoGame DesktopGL a multisampled offscreen render target (RenderSurface) cannot be sampled
+        // back as a texture without an explicit resolve, which renders the whole 3D scene black. Default
+        // anti-aliasing off on macOS/Linux so the scene render target is directly samplable.
+        [Default(AntiAliasingMethod.None)]
+#endif
         public int AntiAliasing { get; set; }
 
         // Simulation settings:

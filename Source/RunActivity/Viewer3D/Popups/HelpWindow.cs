@@ -21,7 +21,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+#if WINDOWS
 using System.Windows.Forms;
+#endif
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Orts.Simulation;
@@ -628,7 +630,7 @@ namespace Orts.Viewer3D.Popups
             //--------------------------------------------------------------------------------
             writeline();
             LogSeparator(80);
-            consolewltext("This is a Debrief Eval for " + Application.ProductName);
+            consolewltext("This is a Debrief Eval for " + ApplicationInfo.ProductName);
             LogSeparator(80);
             //--------------------------------------------------------------------------------
             consolewltext("Version      = " + (VersionInfo.Version.Length > 0 ? VersionInfo.Version : "<none>"));
@@ -1368,7 +1370,12 @@ namespace Orts.Viewer3D.Popups
             line = scrollbox.AddLayoutHorizontalLineOfText();
             line.Add(new Label(line.RemainingWidth, line.RemainingHeight, Viewer.Catalog.GetString("Car Weight (front on left):"), LabelAlignment.Left));
             scrollbox.AddSpace(scrollbox.RemainingWidth, 2);
-            var hscrollbox = scrollbox.AddLayoutScrollboxHorizontal(SystemInformation.HorizontalScrollBarHeight + spriteHeight + 2);
+#if WINDOWS
+            var scrollBarHeight = SystemInformation.HorizontalScrollBarHeight;
+#else
+            var scrollBarHeight = 17;
+#endif
+            var hscrollbox = scrollbox.AddLayoutScrollboxHorizontal(scrollBarHeight + spriteHeight + 2);
             var vbox = hscrollbox.AddLayoutVertical(carInfoList.Count * spriteWidth + 2);
             var weightbox = vbox.AddLayoutHorizontal(spriteHeight + 2);
             foreach (var car in carInfoList)

@@ -63,7 +63,7 @@ namespace Orts.Simulation
 					if (HazFiles.ContainsKey(hazFileName)) Hazzards[itemID].HazFile = HazFiles[hazFileName];
 					else
 					{
-						var hazF = new HazardFile(Simulator.RoutePath + "\\" + hazFileName);
+						var hazF = new HazardFile(Simulator.RoutePath + "/" + hazFileName);
 						HazFiles.Add(hazFileName, hazF);
 						Hazzards[itemID].HazFile = hazF;
 					}

@@ -59,11 +59,11 @@ namespace Orts.Simulation.Signalling
 #if DEBUG_PRINT_PROCESS
         public static int[] TDB_debug_ref = { 4813 };            /* signal TDB idents         */
         public static int[] OBJ_debug_ref = { -1 };            /* signal object reference   */
-        public static string dpr_fileLoc = @"C:\temp\";     /* file path for debug files */
+        public static string dpr_fileLoc = @"C:/temp/";     /* file path for debug files */
 #endif
 
 #if DEBUG_PRINT_ENABLED
-        public static string dpe_fileLoc = @"C:\temp\";     /* file path for debug files */
+        public static string dpe_fileLoc = @"C:/temp/";     /* file path for debug files */
 #endif
 
         public readonly SignalScripts SignalScripts;

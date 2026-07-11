@@ -27,7 +27,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+#if WINDOWS
 using Font = System.Drawing.Font;
+#else
+using Font = Orts.Viewer3D.Popups.SkiaFont;
+#endif
 using FontStyle = System.Drawing.FontStyle;
 using GraphicsUnit = System.Drawing.GraphicsUnit;
 
@@ -55,7 +59,11 @@ namespace Orts.Viewer3D.Popups
         /// size and style.</returns>
         public WindowTextFont GetScaled(string fontFamily, float sizeInPt, FontStyle style)
         {
+#if WINDOWS
             return GetExact(fontFamily, sizeInPt * System.Drawing.Graphics.FromHwnd(IntPtr.Zero).DpiY / 96, style);
+#else
+            return GetExact(fontFamily, sizeInPt, style);
+#endif
         }
 
         /// <summary>
@@ -92,7 +100,11 @@ namespace Orts.Viewer3D.Popups
         /// size and style with the given outline size.</returns>
         public WindowTextFont GetScaled(string fontFamily, float sizeInPt, FontStyle style, int outlineSize)
         {
+#if WINDOWS
             return GetExact(fontFamily, sizeInPt * System.Drawing.Graphics.FromHwnd(IntPtr.Zero).DpiY / 96, style, outlineSize);
+#else
+            return GetExact(fontFamily, sizeInPt, style, outlineSize);
+#endif
         }
 
         /// <summary>
@@ -411,7 +423,9 @@ namespace Orts.Viewer3D.Popups
         sealed internal class CharacterGroup
         {
             const int BoxSpacing = 1;
+#if WINDOWS
             const System.Windows.Forms.TextFormatFlags Flags = System.Windows.Forms.TextFormatFlags.NoPadding | System.Windows.Forms.TextFormatFlags.NoPrefix | System.Windows.Forms.TextFormatFlags.SingleLine | System.Windows.Forms.TextFormatFlags.Top;
+#endif
 
             readonly Font Font;
             readonly int OutlineSize;
@@ -446,6 +460,7 @@ namespace Orts.Viewer3D.Popups
                 Boxes = new Rectangle[Characters.Length];
                 AbcWidths = new Vector3[Characters.Length];
 
+#if WINDOWS
                 // Boring device context for APIs.
                 var hdc = NativeMethods.CreateCompatibleDC(IntPtr.Zero);
                 NativeMethods.SelectObject(hdc, Font.ToHfont());
@@ -495,6 +510,37 @@ namespace Orts.Viewer3D.Popups
                     // Cleanup.
                     NativeMethods.DeleteDC(hdc);
                 }
+#else
+                // Cross-platform glyph metrics via SkiaSharp. Uses per-character advance width in lieu of
+                // exact GDI ABC widths (good enough for the text atlas layout).
+                {
+                    var mergeIndex = 0;
+                    var spacing = BoxSpacing + OutlineSize;
+                    var x = spacing;
+                    var y = spacing;
+                    var height = (int)Math.Ceiling(Font.GetHeight()) + 1;
+                    for (var i = 0; i < Characters.Length; i++)
+                    {
+                        if ((mergeIndex < mergeCharacters.Length) && (mergeCharacters[mergeIndex] == Characters[i]))
+                        {
+                            AbcWidths[i] = mergeAbcWidths[mergeIndex];
+                            mergeIndex++;
+                        }
+                        else
+                        {
+                            var width = Font.MeasureWidth(Characters[i].ToString());
+                            AbcWidths[i] = new Vector3(0, width, 0);
+                        }
+                        Boxes[i] = new Rectangle(x, y, (int)(Math.Max(0, AbcWidths[i].X) + AbcWidths[i].Y + Math.Max(0, AbcWidths[i].Z) + 2 * OutlineSize), height + 2 * OutlineSize);
+                        x += Boxes[i].Width + BoxSpacing;
+                        if (x >= 256)
+                        {
+                            x = BoxSpacing;
+                            y += Boxes[i].Height + BoxSpacing;
+                        }
+                    }
+                }
+#endif
                 BoxesMaxRight = Boxes.Max(b => b.Right);
                 BoxesMaxBottom = Boxes.Max(b => b.Bottom);
             }
@@ -509,6 +555,7 @@ namespace Orts.Viewer3D.Popups
                 return Array.BinarySearch(Characters, character);
             }
 
+#if WINDOWS
             byte[] GetBitmapData(System.Drawing.Rectangle rectangle)
             {
                 var bitmap = new System.Drawing.Bitmap(rectangle.Width, rectangle.Height, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
@@ -527,6 +574,30 @@ namespace Orts.Viewer3D.Popups
                 bitmap.UnlockBits(bits);
                 return buffer;
             }
+#else
+            // SkiaSharp glyph-atlas rendering: white antialiased glyphs on a black background, returned as BGRA bytes.
+            byte[] GetBitmapData(System.Drawing.Rectangle rectangle)
+            {
+                int width = rectangle.Width, height = rectangle.Height;
+                var info = new SkiaSharp.SKImageInfo(width, height, SkiaSharp.SKColorType.Bgra8888, SkiaSharp.SKAlphaType.Opaque);
+                using (var surface = SkiaSharp.SKSurface.Create(info))
+                {
+                    var canvas = surface.Canvas;
+                    canvas.Clear(SkiaSharp.SKColors.Black);
+                    var baseline = Font.Ascent;
+                    for (var i = 0; i < Characters.Length; i++)
+                        canvas.DrawText(Characters[i].ToString(), Boxes[i].X + OutlineSize, Boxes[i].Y + OutlineSize + baseline, Font.Font, Font.Paint);
+                    canvas.Flush();
+                    using (var image = surface.Snapshot())
+                    using (var pixmap = image.PeekPixels())
+                    {
+                        var buffer = new byte[4 * width * height];
+                        Marshal.Copy(pixmap.GetPixels(), buffer, 0, buffer.Length);
+                        return buffer;
+                    }
+                }
+            }
+#endif
 
             [CallOnThread("Loader")]
             public void Load(GraphicsDevice graphicsDevice)
@@ -608,6 +679,7 @@ namespace Orts.Viewer3D.Popups
         }
     }
 
+#if WINDOWS
     static class NativeMethods
     {
         [DllImport("gdi32.dll", SetLastError = true)]
@@ -632,4 +704,5 @@ namespace Orts.Viewer3D.Popups
         [DllImport("gdi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern bool GetCharABCWidthsFloat(IntPtr hdc, uint firstChar, uint lastChar, out NativeStructs.AbcFloatWidth abcFloatWidths);
     }
+#endif
 }

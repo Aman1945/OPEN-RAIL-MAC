@@ -19,7 +19,9 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+#if WINDOWS
 using System.Media;
+#endif
 using System.Text;
 using System.Threading.Tasks;
 using EmbedIO.WebSockets;
@@ -35,7 +37,9 @@ namespace Orts.Viewer3D.WebServices
         private bool InitHandled = false;
 
         private bool BeepToBeDone = false;
+#if WINDOWS
         private readonly SoundPlayer SoundPlayerBeep;
+#endif
 
         private string HeaderPrev = "";
         private string TextPrev = "";
@@ -84,8 +88,10 @@ namespace Orts.Viewer3D.WebServices
             Viewer = viewer;
             AddProtocol("json");
 
+#if WINDOWS
             SoundPlayerBeep = new SoundPlayer(Path.Combine(Viewer.ContentPath, "Beep.wav"));
             SoundPlayerBeep.LoadAsync();
+#endif
         }
 
         /// <inheritdoc />
@@ -165,7 +171,9 @@ namespace Orts.Viewer3D.WebServices
 
                 if (BeepToBeDone)
                 {
+#if WINDOWS
                     SoundPlayerBeep.Play();
+#endif
                 }
             }
         }

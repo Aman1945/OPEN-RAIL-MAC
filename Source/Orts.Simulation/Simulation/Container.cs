@@ -254,10 +254,10 @@ namespace Orts.Simulation
             var containerParameters = containerFile.ContainerParameters;
             Name = containerParameters.Name;
            
-            ShapeFileName = @"..\" + containerParameters.ShapeFileName;
-            var workingString = containerParameters.ShapeFileName.Replace(@"\" , @"/");
+            ShapeFileName = @"../" + containerParameters.ShapeFileName;
+            var workingString = containerParameters.ShapeFileName.Replace(@"/" , @"/");
             var root  = workingString.Substring(0, workingString.IndexOf(@"/"));
-            BaseShapeFileFolderSlash = baseFolder + root + @"\";
+            BaseShapeFileFolderSlash = baseFolder + root + @"/";
             Enum.TryParse(containerParameters.ContainerType, out ContainerType containerType);
             ContainerType = containerType;
             ComputeDimensions();
@@ -533,8 +533,8 @@ namespace Orts.Simulation
                 {
                     foreach (var loadDataEntry in (loadStationPopulation as ContainerStationPopulation).LoadData)
                     {
-                        string loadDataFolder = Simulator.BasePath + @"\trains\trainset\" + loadDataEntry.FolderName;
-                        string loadFilePath = loadDataFolder + @"\" + loadDataEntry.FileName + ".load-or";
+                        string loadDataFolder = Simulator.BasePath + @"/trains/trainset/" + loadDataEntry.FolderName;
+                        string loadFilePath = loadDataFolder + @"/" + loadDataEntry.FileName + ".load-or";
                         if (!File.Exists(loadFilePath))
                         {
                             Trace.TraceWarning($"Ignored missing load {loadFilePath}");
@@ -557,7 +557,7 @@ namespace Orts.Simulation
             }
             else
             {
-                container.LoadFromContainerFile(loadFilePath, Simulator.BasePath + @"\trains\trainset\");
+                container.LoadFromContainerFile(loadFilePath, Simulator.BasePath + @"/trains/trainset/");
                 ContainerManager.LoadedContainers.Add(loadFilePath, container);
             }
             container.ComputeLoadWeight(loadState);

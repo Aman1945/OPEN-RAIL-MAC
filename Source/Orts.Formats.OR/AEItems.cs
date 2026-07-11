@@ -701,7 +701,7 @@ namespace Orts.Formats.OR
                 isSeen = true;
                 iconDist = (Math.Sqrt(Math.Pow((Location.X - point.X), 2) + Math.Pow((Location.Y - point.Y), 2)));
             }
-            //File.AppendAllText(@"F:\temp\AE.txt", "FindItem: pointX: " + point.X +
+            //File.AppendAllText(@"F:/temp/AE.txt", "FindItem: pointX: " + point.X +
             //    " pointY: " + point.Y + "\n");
             for (i = 0; i < poly.Count; i++)
             {
@@ -711,7 +711,7 @@ namespace Orts.Formats.OR
                     isSeen = false;
                     return dist;
                 }
-                //File.AppendAllText(@"F:\temp\AE.txt", "FindItem: polyX" + poly[i].X + 
+                //File.AppendAllText(@"F:/temp/AE.txt", "FindItem: polyX" + poly[i].X + 
                 //    " polyY: " + poly[i].Y + 
                 //    " polyX(j): " + poly[j].X +
                 //    " polyY (j): " + poly[j].Y + "\n");
@@ -720,7 +720,7 @@ namespace Orts.Formats.OR
                 && (poly[i].X <= point.X || poly[j].X <= point.X))
                 {
                     oddNodes ^= (poly[i].X + (point.Y - poly[i].Y) / (poly[j].Y - poly[i].Y) * (poly[j].X - poly[i].X) < point.X);
-                    //File.AppendAllText(@"F:\temp\AE.txt", "oddNodes ^=\n");
+                    //File.AppendAllText(@"F:/temp/AE.txt", "oddNodes ^=\n");
                 }
                 j = i;
             }
@@ -886,7 +886,7 @@ namespace Orts.Formats.OR
                 isSeen = true;
                 iconDist = (Math.Sqrt(Math.Pow((Location.X - placeNormalized.X), 2) + Math.Pow((Location.Y - placeNormalized.Y), 2)));
             }
-            //File.AppendAllText(@"F:\temp\AE.txt", "FindItem: pointX: " + point.X +
+            //File.AppendAllText(@"F:/temp/AE.txt", "FindItem: pointX: " + point.X +
             //    " pointY: " + point.Y + "\n");
             for (i = 0; i < poly.Count; i++)
             {
@@ -895,7 +895,7 @@ namespace Orts.Formats.OR
                 && (poly[i].X <= placeNormalized.X || poly[j].X <= placeNormalized.X))
                 {
                     oddNodes ^= (poly[i].X + (placeNormalized.Y - poly[i].Y) / (poly[j].Y - poly[i].Y) * (poly[j].X - poly[i].X) < placeNormalized.X);
-                    //File.AppendAllText(@"F:\temp\AE.txt", "oddNodes ^=\n");
+                    //File.AppendAllText(@"F:/temp/AE.txt", "oddNodes ^=\n");
                 }
                 j = i;
             }
@@ -1035,7 +1035,7 @@ namespace Orts.Formats.OR
         [JsonConstructor]
         public StationConnector(int i)
         {
-            //File.AppendAllText(@"F:\temp\AE.txt", "Json StationConnector :" + (int)i + "\n");
+            //File.AppendAllText(@"F:/temp/AE.txt", "Json StationConnector :" + (int)i + "\n");
             allowedDirections = new List<string>();
             allowedDirections.Add("   ");
             allowedDirections.Add("In");
@@ -1049,7 +1049,7 @@ namespace Orts.Formats.OR
 
         public StationConnector(TrackSegment segment)
         {
-            //File.AppendAllText(@"F:\temp\AE.txt", "StationConnector\n");
+            //File.AppendAllText(@"F:/temp/AE.txt", "StationConnector\n");
             this.segment = segment;
             segment.HasConnector = this;
             allowedDirections = new List<string>();
@@ -1270,7 +1270,7 @@ namespace Orts.Formats.OR
                     float errorRadius = 0;
                     if ((r = curve.setCenter(pA, pB, pointV)) != curve.Radius)
                     {
-                        //File.AppendAllText(@"F:\temp\AE.txt",
+                        //File.AppendAllText(@"F:/temp/AE.txt",
                         //    "Radius original: " + curve.Radius + " ,calculé: " + r + "\n");
                         errorRadius = curve.Radius;
                         curve.Radius = r;

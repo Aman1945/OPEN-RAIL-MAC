@@ -18,7 +18,9 @@
 // This file is the responsibility of the 3D & Environment Team. 
 
 using Orts.MultiPlayer;
+#if WINDOWS
 using Orts.Viewer3D.Debugging;
+#endif
 using System;
 
 namespace Orts.Viewer3D.Processes
@@ -50,6 +52,7 @@ namespace Orts.Viewer3D.Processes
                 Game.IsFixedTimeStep = false;
                 Game.InactiveSleepTime = TimeSpan.Zero;
 
+#if WINDOWS
                 // We must create these forms on the main thread (Render) or they won't pump events correctly.
                 Program.MapForm = new MapViewer(Viewer.Simulator, Viewer);
                 Program.MapForm.Hide();
@@ -57,6 +60,7 @@ namespace Orts.Viewer3D.Processes
                 Program.SoundDebugForm = new SoundDebugForm(Viewer);
                 Program.SoundDebugForm.Hide();
                 Viewer.SoundDebugFormEnabled = false;
+#endif
 
                 FirstFrame = false;
             }

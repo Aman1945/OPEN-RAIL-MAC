@@ -123,7 +123,7 @@ namespace ORTS.Settings
         public void LoadContent(ref string errorMsg)
         {
             // only for debug purposes
-            string definedContentJsonName = @"c:\content\routes.json";
+            string definedContentJsonName = @"c:/content/routes.json";
 
             string definedContentJsonDirectoryName = Path.GetTempFileName();
             File.Delete(definedContentJsonDirectoryName);

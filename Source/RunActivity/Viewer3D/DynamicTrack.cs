@@ -146,7 +146,7 @@ namespace Orts.Viewer3D
         {
             int trpIndex;
             if (shapePath == "" && viewer.Simulator.TSectionDat.TrackShapes.ContainsKey(trSection.ShapeIndex))
-                shapePath = String.Concat(viewer.Simulator.BasePath, @"\Global\Shapes\", viewer.Simulator.TSectionDat.TrackShapes.Get(trSection.ShapeIndex).FileName);
+                shapePath = String.Concat(viewer.Simulator.BasePath, @"/Global/Shapes/", viewer.Simulator.TSectionDat.TrackShapes.Get(trSection.ShapeIndex).FileName);
 
             if (viewer.TrackProfileIndicies.ContainsKey(shapePath))
                 viewer.TrackProfileIndicies.TryGetValue(shapePath, out trpIndex);
@@ -346,15 +346,15 @@ namespace Orts.Viewer3D
         /// <returns>Bool indicating if custom track profiles were found (returns FALSE if the only profile is the default profile)</returns>
         public static bool CreateTrackProfile(Viewer viewer, string routePath, out List<TRPFile> trpFiles)
         {
-            string path = routePath + @"\TrackProfiles";
+            string path = routePath + @"/TrackProfiles";
             List<string> profileNames = new List<string>();
             trpFiles = new List<TRPFile>();
 
             if (Directory.Exists(path))
             {
                 // The file called "TrProfile" should be used as the default track profile, if present
-                string xmlDefault = path + @"\TrProfile.xml";
-                string stfDefault = path + @"\TrProfile.stf";
+                string xmlDefault = path + @"/TrProfile.xml";
+                string stfDefault = path + @"/TrProfile.stf";
 
                 if (File.Exists(xmlDefault))
                 {

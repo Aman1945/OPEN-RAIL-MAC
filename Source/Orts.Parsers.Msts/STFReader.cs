@@ -168,6 +168,15 @@ namespace Orts.Parsers.Msts
         /// </summary>
         public const string EndBlockCommentSentinel = "#\u00b6";
 
+        /// <summary>
+        /// MSTS/OR code builds paths with the Windows separator '\'. On non-Windows platforms that is a
+        /// legal filename character, so convert it to '/' (which .NET accepts as a separator everywhere).
+        /// </summary>
+        public static string NormalizePathSeparators(string path)
+        {
+            return string.IsNullOrEmpty(path) ? path : path.Replace('\\', '/');
+        }
+
         /// <summary>Open a file, reader the header line, and prepare for STF parsing
         /// </summary>
         /// <param name="filename">Filename of the STF file to be opened and parsed.</param>
@@ -175,6 +184,7 @@ namespace Orts.Parsers.Msts
         /// <para>false - if Tree is not used which signicantly reduces GC</para></param>
         public STFReader(string filename, bool useTree)
         {
+            filename = NormalizePathSeparators(filename);
             var path = Path.GetDirectoryName(filename);
             if (Directory.Exists(path))
             {
@@ -1927,8 +1937,8 @@ namespace Orts.Parsers.Msts
                         }
                         var purefilename = Path.GetFileName(filename).ToLower();
                         if (purefilename == "[[samename]]")
-                            filename = Path.GetDirectoryName(filename) + @"\" + Path.GetFileName(FileName);
-                        var includeFileName = Path.GetDirectoryName(FileName) + @"\" + filename;
+                            filename = Path.GetDirectoryName(filename) + @"/" + Path.GetFileName(FileName);
+                        var includeFileName = Path.GetDirectoryName(FileName) + @"/" + filename;
                         if (!File.Exists(includeFileName))
                             STFException.TraceWarning(this, string.Format("'{0}' not found", includeFileName));
                         includeReader = new STFReader(includeFileName, false);
@@ -2552,7 +2562,7 @@ namespace Orts.Parsers.Msts
         {
             if (Path.IsPathRooted(fileName))
             {
-                this.directoryName = Path.GetDirectoryName(fileName) + @"\";
+                this.directoryName = Path.GetDirectoryName(fileName) + @"/";
             }
             this.streamReaderFactory = factory;
             this.SourceTokenStream = sourceTokenStream;
@@ -2796,6 +2806,7 @@ namespace Orts.Parsers.Msts
         /// <para>false - if Tree is not used which signicantly reduces GC</para></param>
         public STFReader(string fileName, bool useTree) : this()
         {
+            fileName = NormalizePathSeparators(fileName);
             string simisSignatureAsRead;
             var inputReader = this.streamReaderFactory.GetStreamReader(fileName, out simisSignatureAsRead);
             this.SimisSignature = simisSignatureAsRead;

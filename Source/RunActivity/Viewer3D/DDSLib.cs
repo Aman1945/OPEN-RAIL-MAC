@@ -58,6 +58,7 @@
 
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Orts.Viewer3D

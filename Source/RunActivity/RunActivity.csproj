@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework Condition="'$(BuildDotNet)' == 'true'">net6-windows</TargetFramework>
-    <TargetFramework Condition="'$(TargetFramework)' == ''">net472</TargetFramework>
-    <OutputType>WinExe</OutputType>
+    <TargetFramework Condition="'$(MacBuild)' == 'true'">net8.0</TargetFramework>
+    <TargetFramework Condition="'$(BuildDotNet)' == 'true' AND '$(MacBuild)' != 'true'">net6-windows</TargetFramework>
+    <TargetFramework Condition="'$(TargetFramework)' == '' AND '$(MacBuild)' != 'true'">net472</TargetFramework>
+    <OutputType>Exe</OutputType>
     <RootNamespace>Orts</RootNamespace>
-    <ApplicationIcon>..\ORTS.ico</ApplicationIcon>
-    <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <ApplicationIcon Condition="'$(MacBuild)' != 'true'">..\ORTS.ico</ApplicationIcon>
+    <UseWindowsForms Condition="'$(MacBuild)' != 'true'">true</UseWindowsForms>
+    <ImportWindowsDesktopTargets Condition="'$(MacBuild)' != 'true'">true</ImportWindowsDesktopTargets>
     <IsPublishable>False</IsPublishable>
     <AssemblyTitle>Open Rails Activity Runner</AssemblyTitle>
     <Description>Open Rails Transport Simulator</Description>
@@ -14,13 +15,18 @@
     <Product>Open Rails</Product>
     <Copyright>Copyright © 2009 - 2022</Copyright>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-    <DefineConstants>TRACE;WINDOWS;NEW_ACTION;WITH_NEW_SAVE;ACTIVITY_EDITOR</DefineConstants>
+    <DefineConstants Condition="'$(MacBuild)' == 'true'">TRACE;NEW_ACTION;WITH_NEW_SAVE;ACTIVITY_EDITOR;MAC</DefineConstants>
+    <DefineConstants Condition="'$(MacBuild)' != 'true'">TRACE;WINDOWS;NEW_ACTION;WITH_NEW_SAVE;ACTIVITY_EDITOR</DefineConstants>
   </PropertyGroup>
+  <ItemGroup Condition="'$(MacBuild)' == 'true'">
+    <!-- Allow System.Drawing.Common (used for font glyph rendering) to run on macOS/Linux via libgdiplus. -->
+    <RuntimeHostConfigurationOption Include="System.Drawing.EnableUnixSupport" Value="true" Trim="false" />
+  </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <DocumentationFile>..\..\Program\RunActivity.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
-  <PropertyGroup>
+  <PropertyGroup Condition="'$(MacBuild)' != 'true'">
     <ApplicationManifest>..\Launcher\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
@@ -28,10 +34,24 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\3rdPartyLibs\GNU.Gettext.dll</HintPath>
     </Reference>
-    <Reference Include="GNU.Gettext.WinForms, Version=1.0.5151.39911, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="GNU.Gettext.WinForms, Version=1.0.5151.39911, Culture=neutral, processorArchitecture=MSIL" Condition="'$(MacBuild)' != 'true'">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\3rdPartyLibs\GNU.Gettext.WinForms.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(MacBuild)' == 'true'">
+    <Compile Remove="Viewer3D\Map\MapForm.cs" />
+    <Compile Remove="Viewer3D\Map\MapForm.Designer.cs" />
+    <Compile Remove="Viewer3D\Map\MapDataProvider.cs" />
+    <Compile Remove="Viewer3D\Map\MapThemeProvider.cs" />
+    <Compile Remove="Viewer3D\Debugging\MessageViewer.cs" />
+    <Compile Remove="Viewer3D\Debugging\MessageViewer.Designer.cs" />
+    <Compile Remove="Viewer3D\Debugging\SoundDebugForm.cs" />
+    <Compile Remove="Viewer3D\Debugging\SoundDebugForm.Designer.cs" />
+    <Compile Remove="Viewer3D\UserInputRailDriver.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(MacBuild)' != 'true'">
+    <Compile Remove="Viewer3D\UserInputRailDriverStub.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\3rdPartyLibs\openal-soft\Win32\OpenAL32.dll">
@@ -651,13 +671,18 @@
     <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.355802">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.0.1641" />
-    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.0.1641" />
+    <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.0.1641" Condition="'$(MacBuild)' != 'true'" />
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.0.1641" Condition="'$(MacBuild)' != 'true'" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.0.1641" Condition="'$(MacBuild)' == 'true'" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-    <PackageReference Include="RailDriver" Version="0.7.10" />
-    <PackageReference Include="System.Management" Version="7.0.0" />
+    <PackageReference Include="RailDriver" Version="0.7.10" Condition="'$(MacBuild)' != 'true'" />
+    <PackageReference Include="System.Management" Version="7.0.0" Condition="'$(MacBuild)' != 'true'" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <PackageReference Include="Unosquare.Swan.Lite" Version="3.1.0" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.0" Condition="'$(MacBuild)' == 'true'" />
+    <PackageReference Include="System.Resources.Extensions" Version="8.0.0" Condition="'$(MacBuild)' == 'true'" />
+    <PackageReference Include="SkiaSharp" Version="2.88.8" Condition="'$(MacBuild)' == 'true'" />
+    <PackageReference Include="SkiaSharp.NativeAssets.macOS" Version="2.88.8" Condition="'$(MacBuild)' == 'true'" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
@@ -672,7 +697,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(MacBuild)' != 'true'">
     <Exec Command="PostBuildActions.bat" />
   </Target>
 </Project>

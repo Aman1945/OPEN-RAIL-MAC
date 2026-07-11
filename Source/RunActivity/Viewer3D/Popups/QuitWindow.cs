@@ -18,10 +18,10 @@
 // This file is the responsibility of the 3D & Environment Team. 
 
 using System;
-using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Orts.Common;
 using Orts.Viewer3D.Processes;
+using ORTS.Common;
 using ORTS.Common.Input;
 
 namespace Orts.Viewer3D.Popups
@@ -43,7 +43,7 @@ namespace Orts.Viewer3D.Popups
 			else heightForLabels = (vbox.RemainingHeight - 2 * ControlLayout.SeparatorSize) / 2;
             var spacing = (heightForLabels - Owner.TextFontDefault.Height) / 2;
             vbox.AddSpace(0, spacing);
-            vbox.Add(buttonQuit = new Label(vbox.RemainingWidth, Owner.TextFontDefault.Height, Viewer.Catalog.GetStringFmt("Quit {1} ({0})", Owner.Viewer.Settings.Input.Commands[(int)UserCommand.GameQuit], Application.ProductName), LabelAlignment.Center));
+            vbox.Add(buttonQuit = new Label(vbox.RemainingWidth, Owner.TextFontDefault.Height, Viewer.Catalog.GetStringFmt("Quit {1} ({0})", Owner.Viewer.Settings.Input.Commands[(int)UserCommand.GameQuit], ApplicationInfo.ProductName), LabelAlignment.Center));
             vbox.AddSpace(0, spacing);
             vbox.AddHorizontalSeparator();
 			if (!Orts.MultiPlayer.MPManager.IsMultiPlayer())

@@ -19,11 +19,11 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Orts.Processes;
 using ORTS.Common;
 using System;
 using System.Diagnostics;
-using System.Windows.Forms;
 using static ORTS.Settings.UserSettings;
 
 namespace Orts.Viewer3D.Processes
@@ -41,7 +41,6 @@ namespace Orts.Viewer3D.Processes
         public Profiler Profiler { get; private set; }
 
         readonly Game Game;
-        readonly Form GameForm;
         readonly Point GameWindowSize;
         readonly WatchdogToken WatchdogToken;
 
@@ -51,7 +50,7 @@ namespace Orts.Viewer3D.Processes
         RenderFrame NextFrame;      // we prepare the next frame in the background while the current one is rendering,
 
         public bool IsMouseVisible { get; set; }  // handles cross thread issues by signalling RenderProcess of a change
-        public Cursor ActualCursor = Cursors.Default;
+        public MouseCursor ActualCursor = MouseCursor.Arrow;
 
         // Diagnostic information
         public SmoothedData FrameRate { get; private set; }
@@ -71,7 +70,6 @@ namespace Orts.Viewer3D.Processes
         internal RenderProcess(Game game)
         {
             Game = game;
-            GameForm = (Form)Control.FromHandle(Game.Window.Handle);
 
             WatchdogToken = new WatchdogToken(System.Threading.Thread.CurrentThread);
 
@@ -90,10 +88,20 @@ namespace Orts.Viewer3D.Processes
             PrimitiveCount = new int[(int)RenderPrimitiveSequence.Sentinel];
             PrimitivePerFrame = new int[(int)RenderPrimitiveSequence.Sentinel];
 
+#if MAC
+            // On MonoGame DesktopGL, background-thread GPU resource creation (textures, vertex/index buffers)
+            // is marshalled onto the render thread via Threading.BlockOnUIThread and only serviced once per
+            // frame by SdlGamePlatform's Threading.Run(). Throttling the render loop to 10FPS during loading
+            // (as the Windows build does) therefore throttles world loading to ~10 GPU ops/sec, making it take
+            // many minutes. Run uncapped so the loader's GPU work is serviced as fast as possible.
+            Game.IsFixedTimeStep = false;
+            Game.InactiveSleepTime = TimeSpan.Zero;
+#else
             // Run the game initially at 10FPS fixed-time-step. Do not change this! It affects the loading performance.
             Game.IsFixedTimeStep = true;
             Game.TargetElapsedTime = TimeSpan.FromMilliseconds(100);
             Game.InactiveSleepTime = TimeSpan.FromMilliseconds(100);
+#endif
 
             // Set up the rest of the graphics according to the settings.
             GraphicsDeviceManager.SynchronizeWithVerticalRetrace = Game.Settings.VerticalSync;
@@ -148,9 +156,9 @@ namespace Orts.Viewer3D.Processes
             isFullScreen = pp.IsFullScreen;
             if (pp.IsFullScreen)
             {
-                var screen = Screen.FromControl(GameForm);
-                pp.BackBufferWidth = screen.Bounds.Width;
-                pp.BackBufferHeight = screen.Bounds.Height;
+                var displayMode = e.GraphicsDeviceInformation.Adapter.CurrentDisplayMode;
+                pp.BackBufferWidth = displayMode.Width;
+                pp.BackBufferHeight = displayMode.Height;
             }
             else
             {
@@ -266,9 +274,9 @@ namespace Orts.Viewer3D.Processes
 
             // Restrict `ActualCursor` to the main window so that it won't affect other popup
             // windows, such as the Dispatch window. This prevents cursor flickering.
-            if (GameForm.Focused == true)
+            if (Game.IsActive)
             {
-                GameForm.Cursor = ActualCursor;
+                Mouse.SetCursor(ActualCursor);
             }
 
             if (ToggleFullScreenRequested)
@@ -280,7 +288,20 @@ namespace Orts.Viewer3D.Processes
 
             if (gameTime.TotalGameTime.TotalSeconds > 0.001)
             {
+#if MAC
+                // On DesktopGL the Updater thread creates GPU resources (materials, shadow map, etc.) via
+                // MonoGame's BlockOnUIThread, which blocks until the render (UI) thread services the queued
+                // GL work. If we simply blocked in WaitTillFinished the render thread would never service it,
+                // deadlocking. Instead, wait for the Updater in short slices, servicing the UI-thread action
+                // queue between waits. (Must wait on the finish event, not poll the Finished flag: the flag is
+                // set before the start event is reset in SignalFinish, so polling races with our SignalStart
+                // and can wipe the start signal, leaving the updater asleep and this loop spinning forever.)
+                while (!Game.UpdaterProcess.WaitTillFinished(4))
+                    Orts.Viewer3D.UIThreadMarshal.PumpUIThread();
+                Orts.Viewer3D.UIThreadMarshal.PumpUIThread();
+#else
                 Game.UpdaterProcess.WaitTillFinished();
+#endif
 
                 // Must be done in XNA Game thread.
                 UserInput.Update(Game);
@@ -360,11 +381,13 @@ namespace Orts.Viewer3D.Processes
         {
             Game.WatchdogProcess.Unregister(WatchdogToken);
 
+#if WINDOWS
             // these run in the Renderer thread, and thus cannot be disposed in GameStateViewer3D
             if (Program.MapForm != null)
                 Program.MapForm.Dispose();
             if (Program.SoundDebugForm != null)
                 Program.SoundDebugForm.Dispose();
+#endif
         }
 
         static void SwapFrames(ref RenderFrame frame1, ref RenderFrame frame2)

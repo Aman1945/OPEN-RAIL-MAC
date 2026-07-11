@@ -74,7 +74,7 @@ namespace Orts.Formats.OR
         {
 
 #if DEBUG_REPORTS
-            File.Delete(@"C:\temp\printproc.txt");
+            File.Delete(@"C:/temp/printproc.txt");
 #endif
 
             //SignalRefList = new Dictionary<uint, SignalRefObject>();
@@ -135,13 +135,13 @@ namespace Orts.Formats.OR
 
             PrintTCBase(trackDB.TrackNodes);
 
-            if (File.Exists(@"C:\temp\SignalObjects.txt"))
+            if (File.Exists(@"C:/temp/SignalObjects.txt"))
             {
-                File.Delete(@"C:\temp\SignalObjects.txt");
+                File.Delete(@"C:/temp/SignalObjects.txt");
             }
-            if (File.Exists(@"C:\temp\SignalShapes.txt"))
+            if (File.Exists(@"C:/temp/SignalShapes.txt"))
             {
-                File.Delete(@"C:\temp\SignalShapes.txt");
+                File.Delete(@"C:/temp/SignalShapes.txt");
             }
 
 			var sob = new StringBuilder();
@@ -173,7 +173,7 @@ namespace Orts.Formats.OR
 					sob.AppendFormat("TC TCNextTC    : {0}\n", singleSignal.TCNextTC);
                 }
             }
-			File.AppendAllText(@"C:\temp\SignalObjects.txt", sob.ToString());
+			File.AppendAllText(@"C:/temp/SignalObjects.txt", sob.ToString());
 
 			var ssb = new StringBuilder();
             foreach (var sshape in sigcfg.SignalShapes)
@@ -205,7 +205,7 @@ namespace Orts.Formats.OR
                 }
 				ssb.Append("\n==========================================\n");
             }
-			File.AppendAllText(@"C:\temp\SignalShapes.txt", ssb.ToString());
+			File.AppendAllText(@"C:/temp/SignalShapes.txt", ssb.ToString());
 #endif
 
             // Clear world lists to save memory
@@ -269,7 +269,7 @@ namespace Orts.Formats.OR
 
             // get all filesnames in World directory
 
-            var WFilePath = data.RoutePath + @"\WORLD\";
+            var WFilePath = data.RoutePath + @"/WORLD/";
 
             var Tokens = new List<TokenID>();
             Tokens.Add(TokenID.Signal);
@@ -861,7 +861,7 @@ namespace Orts.Formats.OR
             signalObjects[foundSignals].signalRef = this;
 
 #if DEBUG_PRINT
-            File.AppendAllText(@"C:\temp\speedpost.txt",
+            File.AppendAllText(@"C:/temp/speedpost.txt",
 				String.Format("\nPlaced : at : {0} {1}:{2} {3}; angle - track : {4}:{5}; delta : {6}; dir : {7}\n",
 				speedItem.TileX, speedItem.TileZ, speedItem.X, speedItem.Z,
 				speedItem.Angle, signalObjects[foundSignals].tdbtraveller.RotY,

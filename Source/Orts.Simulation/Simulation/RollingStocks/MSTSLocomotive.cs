@@ -847,7 +847,7 @@ namespace Orts.Simulation.RollingStocks
             cabViewType = ((viewPointList[0].StartDirection.Y >= 90 && viewPointList[0].StartDirection.Y <= 270)
                 || (viewPointList[0].StartDirection.Y <= -90 && viewPointList[0].StartDirection.Y >= -270)) ? CabViewType.Rear : CabViewType.Front;
             var wag = this as MSTSWagon;
-            var wagFolderSlash = Path.GetDirectoryName(wag.WagFilePath) + @"\";
+            var wagFolderSlash = Path.GetDirectoryName(wag.WagFilePath) + @"/";
             string shapeFilePath;
             bool boundingLimitsFound = false;
             ShapeDescriptorFile shapeFile = new ShapeDescriptorFile();

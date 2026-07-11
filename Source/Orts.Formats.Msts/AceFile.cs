@@ -91,10 +91,20 @@ namespace Orts.Formats.Msts
 
             // If the data is raw data, we must be able to convert the Ace format in to an XNA format or we'll blow up.
             var textureFormat = SurfaceFormat.Color;
+            var decompressDxt = false;
             if ((options & SimisAceFormatOptions.RawData) != 0)
             {
                 if (!SimisAceSurfaceFormats.ContainsKey(surfaceFormat)) throw new InvalidDataException(String.Format("Unsupported surface format {0:X8}", surfaceFormat));
                 textureFormat = SimisAceSurfaceFormats[surfaceFormat];
+#if !WINDOWS
+                // DesktopGL on macOS does not render S3TC/DXT textures correctly, so decompress them to RGBA
+                // on the CPU and upload as plain Color instead.
+                if (DxtDecompress.IsDxt(surfaceFormat))
+                {
+                    decompressDxt = true;
+                    textureFormat = SurfaceFormat.Color;
+                }
+#endif
             }
 
             // Calculate how many images we're going to load; 1 for non-mipmapped, 1+log(width)/log(2) for mipmapped.
@@ -143,7 +153,18 @@ namespace Orts.Formats.Msts
                     // For <4 pixels the images are in RGB format. There's no point reading them though, as the
                     // API accepts the 4x4 image's data for the 2x2 and 1x1 case. They do need to be set though!
 
-                    texture.SetData(imageIndex, null, buffer, 0, buffer.Length);
+                    if (decompressDxt)
+                    {
+                        // Decompress the DXT block buffer to RGBA and upload as Color (see DxtDecompress).
+                        var w = Math.Max(1, imageWidth);
+                        var h = Math.Max(1, imageHeight);
+                        var rgba = DxtDecompress.Decode(buffer, w, h, surfaceFormat);
+                        texture.SetData(imageIndex, null, rgba, 0, rgba.Length);
+                    }
+                    else
+                    {
+                        texture.SetData(imageIndex, null, buffer, 0, buffer.Length);
+                    }
                 }
             }
             else
