@@ -24,6 +24,32 @@ It has been confirmed running successfully after a full set of cross-platform fi
 
 ---
 
+## 🚀 Quick Start (no compiling needed)
+
+The GitHub source tree does **not** contain the compiled game or its compiled shader
+files (`Program/Content/*.mgfx`). If you just want to play, download the ready-to-run
+build instead of the repository ZIP:
+
+1. Download **`OpenRails-macOS-arm64.zip`** from the
+   [latest Release](https://github.com/Aman1945/OPEN-RAIL-MAC/releases/latest).
+2. Install the prerequisites once (needs [Homebrew](https://brew.sh)):
+   ```bash
+   brew install dotnet sdl2 openal-soft
+   ```
+3. Unzip, then in Terminal:
+   ```bash
+   cd ~/Downloads/OpenRails-macOS-arm64
+   xattr -dr com.apple.quarantine .   # lets macOS run the downloaded libraries
+   ./run-openrails.sh
+   ```
+
+You still need MSTS / Open Rails route and rolling-stock content to drive a train.
+
+**Black screen, or "Loading.mgfx is missing"?** You are running a build made from the
+source ZIP. Use the Release download above — it includes all 12 compiled shaders.
+
+---
+
 ## 🛠 Requirements
 
 - A **Mac with Apple Silicon** (M1/M2/M3/M4…).
@@ -38,7 +64,11 @@ It has been confirmed running successfully after a full set of cross-platform fi
 
 ---
 
-## ▶️ Running
+## ▶️ Running (advanced / building from source)
+
+Most people should use the [Quick Start](#-quick-start-no-compiling-needed) above. This
+section is for running from a build you compiled yourself. Note that compiling also
+requires building the `.fx` shaders to `.mgfx` (OpenGL profile) with MonoGame's `mgfxc`.
 
 From the built program folder (`Program/`):
 
