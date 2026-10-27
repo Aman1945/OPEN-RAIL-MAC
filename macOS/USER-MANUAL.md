@@ -98,7 +98,20 @@ Open **Display options** in the menu. They are saved when you press START.
 |---|---|
 | **Full screen** | Plays full screen. Turn it off to play in a window. |
 | **Show the whole 2D cab** | Older cabs are a 4:3 picture. On a widescreen display the top and bottom can be cut off. Turn this on to see the whole cab, with black bars at the sides. |
+| **Viewing distance** | How far away scenery is drawn. **A shorter distance usually gives a smoother frame rate** (see "Smoother frame rate" below). |
 | **Window size** | The size of the window when Full screen is off, for example `1280x720`. |
+
+### Smoother frame rate
+
+If the game becomes choppy, especially when you look back along a long train, lower the
+**Viewing distance** in Display options (for example to **Balanced: 1000 m** or **Fast: 750 m**).
+
+Why it helps: on a big route the game draws tens of thousands of objects every frame, and the
+number grows with the viewing distance. In a test on the KonkanIR route, a viewing distance of
+2000 m drew about 34,000 objects per frame at the start, 1500 m about 28,000, 1000 m about 18,000
+and 750 m about 12,000. Fewer objects means less work per frame. How much smoother it gets depends
+on your Mac and the route. In the game, **Alt + F5** (on a Mac keyboard: **fn + Option + F5**) shows the
+information window with the frame rate.
 
 ### Starting from the command line instead
 
@@ -165,6 +178,7 @@ new `Program` folder, because the new zip contains a fresh one.
 | **"Python 3 was not found"** | In Terminal run `xcode-select --install`, then try again. (Homebrew installs this normally.) |
 | **Menu says ".NET runtime" is missing** | In Terminal run `brew install dotnet`. |
 | **The route list is empty** | The menu cannot find your content. See section 3, or use **Route content folder** in the menu. |
+| **The frame rate drops, or the game feels slow (for example when looking back)** | Lower the **Viewing distance** in Display options (section 4, "Smoother frame rate"). |
 | **The cab is cut off** | Turn on **Show the whole 2D cab** in Display options (section 4). |
 | **The game does not open, or stops with an error** | The menu shows a message with the error code. The detailed log is the file **`OpenRailsLog.txt` on your Desktop**. See "Getting help". |
 | **F2 (save) does nothing** | On a Mac keyboard hold **fn** and press **F2** (section 5). |

@@ -192,7 +192,7 @@ def scan():
 # OpenRails.ini (the few display options this menu exposes)
 # --------------------------------------------------------------------------------------------
 
-OPTION_DEFAULTS = {"FullScreen": True, "Letterbox2DCab": False, "WindowSize": "1024x768"}
+OPTION_DEFAULTS = {"FullScreen": True, "Letterbox2DCab": False, "WindowSize": "1024x768", "ViewingDistance": 2000}
 
 
 def read_ini():
@@ -217,12 +217,19 @@ def current_options():
                 values[key] = payload.strip().lower() == "true"
             elif kind == "string":
                 values[key] = urllib.parse.unquote(payload)
+            elif kind == "int":
+                try:
+                    values[key] = int(payload.strip())
+                except ValueError:
+                    pass
     return values
 
 
 def format_option(key, value):
     if key in ("FullScreen", "Letterbox2DCab"):
         return "bool:true" if value else "bool:false"
+    if key == "ViewingDistance":
+        return "int:%d" % value
     return "string:" + urllib.parse.quote(str(value), safe="")
 
 
@@ -254,6 +261,9 @@ def validated_options(req):
     for key in ("FullScreen", "Letterbox2DCab"):
         if isinstance(req.get(key), bool):
             out[key] = req[key]
+    distance = req.get("ViewingDistance")
+    if isinstance(distance, int) and not isinstance(distance, bool) and 500 <= distance <= 5000:
+        out["ViewingDistance"] = distance
     size = req.get("WindowSize")
     if isinstance(size, str) and re.match(r"^\d{3,5}x\d{3,5}$", size):
         out["WindowSize"] = size
@@ -429,6 +439,13 @@ PAGE = r"""<!DOCTYPE html>
       <details><summary>Display options</summary>
         <div class="opt"><input type="checkbox" id="fullscreen"><span>Full screen</span></div>
         <div class="opt"><input type="checkbox" id="letterbox"><span>Show the whole 2D cab (black bars instead of cropping)</span></div>
+        <label>Viewing distance</label>
+        <select id="vdist">
+          <option value="750">Fast: 750 m</option><option value="1000">Balanced: 1000 m</option>
+          <option value="1500">Detailed: 1500 m</option><option value="2000">Far: 2000 m (Open Rails default)</option>
+        </select>
+        <div class="hint">A longer distance draws many more objects, which can lower the frame rate, especially when you
+          look back along the train. If the game is choppy, choose a shorter distance.</div>
         <label>Window size (used when not full screen)</label>
         <input type="text" id="wsize" placeholder="1280x720">
       </details>
@@ -480,6 +497,11 @@ async function load() {
   DATA = info.routes; fill($('route'), DATA); fillRoute();
   $('fullscreen').checked = info.options.FullScreen; $('letterbox').checked = info.options.Letterbox2DCab;
   $('wsize').value = info.options.WindowSize;
+  const vd = String(info.options.ViewingDistance);
+  if (![...$('vdist').options].some(o => o.value === vd)) {   // a custom value from OpenRails.ini
+    const o = document.createElement('option'); o.value = vd; o.textContent = 'Custom: ' + vd + ' m'; $('vdist').appendChild(o);
+  }
+  $('vdist').value = vd;
   if (!DATA.length) $('folder').open = true;
   $('rootmsg').textContent = info.roots.length ? 'Using: ' + info.roots.join(', ') : 'No content folder found yet.';
 }
@@ -490,7 +512,8 @@ async function addRoot() {
 async function startGame() {
   const body = {route: $('route').value, mode: mode, activity: $('activity').value, consist: $('consist').value,
     path: $('path').value, time: $('time').value, season: $('season').value, weather: $('weather').value,
-    FullScreen: $('fullscreen').checked, Letterbox2DCab: $('letterbox').checked, WindowSize: $('wsize').value};
+    FullScreen: $('fullscreen').checked, Letterbox2DCab: $('letterbox').checked, WindowSize: $('wsize').value,
+    ViewingDistance: +$('vdist').value};
   $('status').textContent = 'Starting...'; $('tail').classList.add('hidden');
   const res = await api('/api/start', body);
   if (res.error) { $('status').textContent = res.error; return; }
