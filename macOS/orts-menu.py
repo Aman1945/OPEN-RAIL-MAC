@@ -436,7 +436,8 @@ PAGE = r"""<!DOCTYPE html>
       <button class="start" id="start" onclick="startGame()">START</button>
       <div id="status"></div>
       <pre id="tail" class="hidden"></pre>
-      <div class="hint">Loading a big route can take a few minutes. In game: W / S = throttle, arrow keys = camera, 1 to 5 = views, F1 = help.</div>
+      <div class="hint">Loading a big route can take a few minutes. In game: D / A = throttle up / down, W / S = forward / reverse,
+        Esc = menu, F1 = list of all keys. Keep the Terminal window open while you play.</div>
     </div>
   </div>
 <script>

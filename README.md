@@ -44,6 +44,9 @@ build instead of the repository ZIP:
 4. Double-click **`Open Rails Menu.command`**. The menu opens in your web browser: pick a
    route, an Activity or an Explore run (consist, path, time, season, weather), and press START.
 
+New here? Read the **[User Manual](macOS/USER-MANUAL.md)**: install, starting the game, the
+keys, troubleshooting.
+
 You still need MSTS / Open Rails route and rolling-stock content to drive a train. The menu
 finds it automatically in `~/MSTS` (the folder that contains `ROUTES`, `TRAINS` and `GLOBAL`);
 if yours is elsewhere, open "Route content folder" in the menu and enter it once.
