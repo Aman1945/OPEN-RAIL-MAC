@@ -128,22 +128,19 @@ namespace Orts.Common
         /// </summary>
         /// <param name="filePath"></param>
         public void SaveLog( string filePath ) {
-            Stream stream = null;
             try {
-                stream = new FileStream( filePath, FileMode.Create );
-                BinaryFormatter formatter = new BinaryFormatter();
                 // Re-sort based on time as tests show that some commands are deferred.
                 CommandList.Sort( ( x, y ) => x.Time.CompareTo( y.Time ) );
-                formatter.Serialize( stream, CommandList );
-            } catch( IOException ) {
-                // Do nothing but warn, ignoring errors.
-                Trace.TraceWarning( "SaveLog error writing command log " + filePath );
-            } finally {
-                if( stream != null )
-                {
-                    stream.Close();
-                    Trace.WriteLine("\nList of commands to replay saved");
+                // Serialize to memory first, so a serialization failure never leaves an empty or partial file behind.
+                using( var buffer = new MemoryStream() ) {
+                    new BinaryFormatter().Serialize( buffer, CommandList );
+                    File.WriteAllBytes( filePath, buffer.ToArray() );
                 }
+                Trace.WriteLine("\nList of commands to replay saved");
+            } catch( Exception e ) {
+                // The replay log is optional (the .save file is already written), so warn but never crash the game.
+                // BinaryFormatter can be unavailable, e.g. disabled by the runtime or removed in .NET 9+.
+                Trace.TraceWarning( "SaveLog error writing command log " + filePath + ": " + e.Message );
             }
         }
 
@@ -152,16 +149,14 @@ namespace Orts.Common
         /// </summary>
         /// <param name="fullFilePath"></param>
         public void LoadLog( string filePath ) {
-            Stream stream = null;
             try {
-                stream = new FileStream( filePath, FileMode.Open );
-                BinaryFormatter formatter = new BinaryFormatter();
-                CommandList = (List<ICommand>)formatter.Deserialize( stream );
-            } catch( IOException ) {
-                // Do nothing but warn, ignoring errors.
-                Trace.TraceWarning( "LoadLog error reading command log " + filePath );
-            } finally {
-                if( stream != null ) { stream.Close(); }
+                using( var stream = new FileStream( filePath, FileMode.Open ) ) {
+                    BinaryFormatter formatter = new BinaryFormatter();
+                    CommandList = (List<ICommand>)formatter.Deserialize( stream );
+                }
+            } catch( Exception e ) {
+                // Do nothing but warn, ignoring errors (missing, empty or unreadable replay file).
+                Trace.TraceWarning( "LoadLog error reading command log " + filePath + ": " + e.Message );
             }
         }
 
