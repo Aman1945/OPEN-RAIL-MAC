@@ -41,11 +41,15 @@ namespace Orts.Formats.Msts
             var dxt1 = aceSurfaceFormat == 0x12;
             var dxt3 = aceSurfaceFormat == 0x14;
 
+            // Scratch buffers reused for every block (a 2048 x 2048 texture has 262,144 blocks).
+            var alpha = new byte[16];
+            var av = new int[8];
+            var r = new int[4]; var g = new int[4]; var b = new int[4];
+
             for (var by = 0; by < blocksY; by++)
             {
                 for (var bx = 0; bx < blocksX; bx++)
                 {
-                    var alpha = new byte[16];
                     for (var i = 0; i < 16; i++) alpha[i] = 255;
 
                     if (dxt3)
@@ -65,7 +69,6 @@ namespace Orts.Formats.Msts
                         if (pos + 8 > src.Length) return dst;
                         var a0 = src[pos];
                         var a1 = src[pos + 1];
-                        var av = new int[8];
                         av[0] = a0; av[1] = a1;
                         if (a0 > a1)
                             for (var i = 1; i < 7; i++) av[i + 1] = ((7 - i) * a0 + i * a1) / 7;
@@ -84,7 +87,6 @@ namespace Orts.Formats.Msts
                     if (pos + 8 > src.Length) return dst;
                     int c0 = src[pos] | (src[pos + 1] << 8);
                     int c1 = src[pos + 2] | (src[pos + 3] << 8);
-                    var r = new int[4]; var g = new int[4]; var b = new int[4];
                     Rgb565(c0, out r[0], out g[0], out b[0]);
                     Rgb565(c1, out r[1], out g[1], out b[1]);
                     if (dxt1 && c0 <= c1)

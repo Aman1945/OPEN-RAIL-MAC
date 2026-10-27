@@ -1236,6 +1236,33 @@ namespace Orts.Viewer3D
             }
             else
             {
+#if !WINDOWS
+                // MonoGame's OpenGL backend uploads SurfaceFormat.Dxt1 as an opaque S3TC format, so the transparent
+                // pixels of a DXT1 texture (decals, markings, window cut-outs) come out black, and S3TC is not
+                // reliably supported on macOS anyway. Decompress DXT1/3/5 on the CPU and upload plain RGBA, as is
+                // already done for .ace textures (see Orts.Formats.Msts.AceFile).
+                var dxtAceCode = loadSurfaceFormat == LoadSurfaceFormat.Dxt1 ? 0x12 : loadSurfaceFormat == LoadSurfaceFormat.Dxt3 ? 0x14 : loadSurfaceFormat == LoadSurfaceFormat.Dxt5 ? 0x16 : 0;
+                if (isCompressed && dxtAceCode != 0)
+                {
+                    var rgbaTex = new Texture2D(device, width, height, hasMipMaps, SurfaceFormat.Color);
+                    // Keep the alpha information the compressed format would have had (1 bit for DXT1, 8 for DXT3/5).
+                    rgbaTex.Tag = new Orts.Formats.Msts.AceInfo() { AlphaBits = (byte)(dxtAceCode == 0x12 ? 1 : 8) };
+
+                    for (int i = 0; i < rgbaTex.LevelCount; i++)
+                    {
+                        int numBytes = 0;
+                        byte[] localMipData = mipData;
+                        GetMipMaps(streamOffset, i, hasAnyMipmaps, width, height, isCompressed, compressionFormat, rgbBitCount, isCubeMap, reader, loadSurfaceFormat, ref localMipData, out numBytes);
+                        mipData = localMipData;
+
+                        var rgba = Orts.Formats.Msts.DxtDecompress.Decode(localMipData, MipMapSize(i, width), MipMapSize(i, height), dxtAceCode);
+                        rgbaTex.SetData(i, null, rgba, 0, rgba.Length);
+                    }
+
+                    texture = rgbaTex;
+                    return;
+                }
+#endif
                 Texture2D tex = GenerateNewTexture2D(loadSurfaceFormat, compressionFormat, device, width, height, hasMipMaps, pixelFlags, rgbBitCount);
 
                 for (int i = 0; i < tex.LevelCount; i++)
