@@ -65,34 +65,55 @@ Folder names can be upper or lower case; the menu copes with both.
 
 ## 4. Start the game
 
+The menu looks and works like the Open Rails menu on Windows.
+
 1. Open the unzipped folder and **double-click `Open Rails Menu.command`**.
     A Terminal window opens, and then the menu opens in your web browser.
     *(If macOS refuses to open it, see "Troubleshooting".)*
-2. **Look at the top of the menu.** It says **Setup OK**, or it lists what is missing and how to fix it.
+2. **Check the big white panel on the right.** If something is missing (for example the .NET
+    runtime or your content), it shows a red **Setup problem** with how to fix it.
 3. **Choose what to play:**
 
     | Field | What it does |
     |---|---|
+    | **Installation profile** | A folder of content (see section 3). Most people have just one. |
     | **Route** | The route (the track and scenery). |
-    | **Mode: Explore** | Free driving. You choose the train, where it starts, and the weather. |
-    | **Mode: Activity** | A prepared scenario with a timetable and tasks. Choose the activity. |
-    | **Consist (train)** | Explore mode: the locomotive and cars. |
-    | **Path** | Explore mode: where the train starts and which way it goes. |
-    | **Time / Season / Weather** | Explore mode: time of day, and the conditions. |
+    | **Activity** | **- Explore Route -** is free driving. The other entries are prepared activities with tasks and a timetable. |
+    | **Locomotive** | Explore: choose a locomotive to list only the trains that use it, or leave **- Any Locomotive -**. |
+    | **Consist** | Explore: the train (locomotive and cars). |
+    | **Starting at / Heading to** | Explore: where the train starts and where its path goes. |
+    | **Time / Season / Weather** | Explore: the time of day (type it as `10:30`) and the conditions. For an activity these show the activity's own values, greyed out. |
+    | **Duration / Difficulty** | Shown for an activity, greyed out. |
 
-4. Press **START**. A game window opens. Loading a big route can take from a few seconds to
-    several minutes. Please be patient.
+    The white panel shows details about your choice (the route, the locomotive, the path or the
+    activity and its briefing). Press the small arrow on a section to read all of it.
+4. Press **Start** (in the **Singleplayer** box). A game window opens. Loading a big route can take
+    from a few seconds to several minutes. Please be patient.
 5. **Leave the Terminal window open while you play.** Closing it can also close the game.
     When you are finished, close the game, then close the Terminal window (or press Ctrl + C in it).
 
-### If your content is not in the list of folders above
+The menu remembers your last choices.
 
-Open **Route content folder** in the menu, type the folder that contains `ROUTES`, and press
-**Use**. The menu remembers it.
+### The buttons at the bottom
+
+| Button | What it does |
+|---|---|
+| **Content** | Shows your installation profiles and lets you add another content folder (it must contain `ROUTES`). |
+| **Options** | Display options (see below). |
+| **Tools** | **Show the log file** (`OpenRailsLog.txt` on your Desktop) and **Edit OpenRails.ini**. |
+| **Documents** | This manual, and the Open Rails manual on the web. |
+| **Logging** | Turns the log file on or off. Keep it on, it helps when something goes wrong. |
+
+**Timetable** mode, **Resume/Replay** and **Multiplayer** are shown, greyed out, like in the
+Windows menu. They are not available on macOS yet.
+
+### If your content is not found
+
+Press **Content**, type the folder that contains `ROUTES`, and press **Add**. The menu remembers it.
 
 ### Display options
 
-Open **Display options** in the menu. They are saved when you press START.
+Press **Options** in the menu. They are saved when you press **OK**.
 
 | Option | What it does |
 |---|---|
@@ -104,7 +125,7 @@ Open **Display options** in the menu. They are saved when you press START.
 ### Smoother frame rate
 
 If the game becomes choppy, especially when you look back along a long train, lower the
-**Viewing distance** in Display options (for example to **Balanced: 1000 m** or **Fast: 750 m**).
+**Viewing distance** in **Options** (for example to **Balanced: 1000 m** or **Fast: 750 m**).
 
 Why it helps: on a big route the game draws tens of thousands of objects every frame, and the
 number grows with the viewing distance. In a test on the KonkanIR route, a viewing distance of
@@ -176,11 +197,11 @@ new `Program` folder, because the new zip contains a fresh one.
 | **Black screen, or "Loading.mgfx is missing"** | You are using a build made from the source code. Use the zip from the Releases page (section 2). |
 | **macOS says the file "cannot be opened" or is from an unidentified developer** | Run the `xattr -dr com.apple.quarantine .` command from section 2, step 3. Or open **System Settings**, **Privacy & Security**, scroll down, and press **Open Anyway** next to the blocked file. |
 | **"Python 3 was not found"** | In Terminal run `xcode-select --install`, then try again. (Homebrew installs this normally.) |
-| **Menu says ".NET runtime" is missing** | In Terminal run `brew install dotnet`. |
-| **The route list is empty** | The menu cannot find your content. See section 3, or use **Route content folder** in the menu. |
-| **The frame rate drops, or the game feels slow (for example when looking back)** | Lower the **Viewing distance** in Display options (section 4, "Smoother frame rate"). |
-| **The cab is cut off** | Turn on **Show the whole 2D cab** in Display options (section 4). |
-| **The game does not open, or stops with an error** | The menu shows a message with the error code. The detailed log is the file **`OpenRailsLog.txt` on your Desktop**. See "Getting help". |
+| **The menu shows a red "Setup problem" about the .NET runtime** | In Terminal run `brew install dotnet`. |
+| **The route list is empty** | The menu cannot find your content. See section 3, or press **Content** in the menu and add the folder. |
+| **The frame rate drops, or the game feels slow (for example when looking back)** | Lower the **Viewing distance** in **Options** (section 4, "Smoother frame rate"). |
+| **The cab is cut off** | Turn on **Show the whole 2D cab** in **Options** (section 4). |
+| **The game does not open, or stops with an error** | The menu shows a message with the error code. The detailed log is the file **`OpenRailsLog.txt` on your Desktop** (menu: **Tools**, **Show the log file**). See "Getting help". |
 | **F2 (save) does nothing** | On a Mac keyboard hold **fn** and press **F2** (section 5). |
 | **The game crashed when saving** | Update to the latest release (section 6). Older builds had this bug. |
 | **Loading is slow** | Big routes take a while. Wait for it. |
@@ -190,7 +211,7 @@ new `Program` folder, because the new zip contains a fresh one.
 ## 8. What is not included
 
 - The Windows **Menu.exe** is not available on macOS. This menu replaces the most important part
-  of it: choosing a route and starting an Explore or Activity run, plus three display options.
+  of it, with the same layout: choosing a route and starting an Explore or Activity run, plus a few display options.
 - **Timetable mode, multiplayer, and the content installer/updater** are not in the menu, and have
   not been tested on macOS.
 - Loading a **saved game** is not offered by the menu yet.
