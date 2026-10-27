@@ -14,6 +14,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKUIDelegate, WKNaviga
     var output = ""
     var loaded = false
     var quitting = false
+    var programDirUsed = ""
     let selfTest = CommandLine.arguments.contains("--selftest")
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -21,6 +22,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKUIDelegate, WKNaviga
         buildMenu()
         buildWindow()
         guard let programDir = locateProgramDir() else { NSApp.terminate(nil); return }
+        programDirUsed = programDir.path
         startServer(programDir: programDir)
     }
 
@@ -190,7 +192,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKUIDelegate, WKNaviga
         """
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {   // let the page load its data first
             self.web.evaluateJavaScript(js) { result, error in
-                print("SELFTEST " + ((result as? String) ?? "error: \(String(describing: error))"))
+                print("SELFTEST " + ((result as? String) ?? "error: \(String(describing: error))") + " programDir=" + self.programDirUsed)
                 fflush(stdout)
                 NSApp.terminate(nil)
             }
