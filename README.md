@@ -21,6 +21,35 @@ It has been confirmed running successfully after a full set of cross-platform fi
   input and audio.
 - Loads standard MSTS / Open Rails route and rolling-stock content, same as the
   Windows version.
+- Tested on a **MacBook Air (13-inch, Apple M5, 16 GB)** with **macOS Tahoe 26.7.1**.
+
+---
+
+## 📸 Screenshots
+
+The Open Rails menu as a native Mac app, running on a MacBook Air (M5). It follows the layout
+and behaviour of the Open Rails menu on Windows. (Screenshots taken on the author's Mac; the
+serial number is blurred.)
+
+<img src="macOS/screenshots/01-menu.jpg" width="900" alt="The Open Rails menu as a Mac app next to About This Mac, which shows a MacBook Air 13-inch with an Apple M5 chip, 16 GB and macOS Tahoe 26.7.1">
+
+**Options:** full screen, show the whole 2D cab, window size and viewing distance.
+
+<img src="macOS/screenshots/02-options.jpg" width="900" alt="The Options dialog of the Open Rails menu on macOS">
+
+**Viewing distance:** a shorter distance usually gives a smoother frame rate.
+
+<img src="macOS/screenshots/03-viewing-distance.jpg" width="900" alt="The Viewing distance list in the Options dialog: Fast 750 m, Balanced 1000 m, Detailed 1500 m, Far 2000 m">
+
+**Content:** your installation profiles, and adding another content folder.
+
+<img src="macOS/screenshots/04-content.jpg" width="900" alt="The Content dialog listing the installation profile and a box to add a folder">
+
+**Choosing what to play** (native Mac pop-up lists):
+
+<img src="macOS/screenshots/05-locomotives.jpg" width="440" alt="The locomotive list"> <img src="macOS/screenshots/06-activities.jpg" width="440" alt="The activity list, starting with Explore Route">
+
+<img src="macOS/screenshots/07-routes.jpg" width="440" alt="The route list: AU NSW Great Zig Zag and KonkanIR (Electric)"> <img src="macOS/screenshots/08-installation-profile.jpg" width="440" alt="The installation profile list">
 
 ---
 
