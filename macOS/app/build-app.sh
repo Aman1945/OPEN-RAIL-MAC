@@ -4,7 +4,7 @@
 set -e
 HERE="$(cd "$(dirname "$0")" && pwd)"
 OUT="${1:-$HERE/build}"
-VERSION="${2:-1.4}"
+VERSION="${2:-1.0}"
 APP="$OUT/Open Rails.app"
 
 rm -rf "$APP" "$OUT/OpenRails.iconset"
