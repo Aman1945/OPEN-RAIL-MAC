@@ -36,14 +36,22 @@ build instead of the repository ZIP:
    ```bash
    brew install dotnet sdl2 openal-soft
    ```
-3. Unzip, then in Terminal:
+3. Unzip, then in Terminal (once):
    ```bash
    cd ~/Downloads/OpenRails-macOS-arm64
    xattr -dr com.apple.quarantine .   # lets macOS run the downloaded libraries
-   ./run-openrails.sh
    ```
+4. Double-click **`Open Rails Menu.command`**. The menu opens in your web browser: pick a
+   route, an Activity or an Explore run (consist, path, time, season, weather), and press START.
 
-You still need MSTS / Open Rails route and rolling-stock content to drive a train.
+You still need MSTS / Open Rails route and rolling-stock content to drive a train. The menu
+finds it automatically in `~/MSTS` (the folder that contains `ROUTES`, `TRAINS` and `GLOBAL`);
+if yours is elsewhere, open "Route content folder" in the menu and enter it once.
+
+The menu also has a few display options (full screen, window size, and "show the whole 2D cab"
+if the cab looks cropped on a widescreen display). It checks your setup at the top of the page
+and tells you what is missing. Prefer the command line? `./run-openrails.sh -start -explorer
+<path.pat> <consist.con> 12:00:00 1 0` does the same thing.
 
 **Black screen, or "Loading.mgfx is missing"?** You are running a build made from the
 source ZIP. Use the Release download above — it includes all 12 compiled shaders.
