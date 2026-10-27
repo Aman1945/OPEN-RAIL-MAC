@@ -371,3 +371,6 @@ MigrationBackup/
 # macOS
 .DS_Store
 **/.DS_Store
+
+# The Mac app is built by macOS/app/build-app.sh
+/macOS/app/build/

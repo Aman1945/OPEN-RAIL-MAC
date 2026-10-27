@@ -11,7 +11,6 @@ Run it with "Open Rails Menu.command" (double-click) or: python3 orts-menu.py
 Needs only Python 3 (included with the Xcode Command Line Tools), no extra packages.
 """
 
-import collections
 import http.server
 import json
 import os
@@ -433,18 +432,15 @@ def setup_checks():
 
 
 class Game(object):
+    """Starts RunActivity. The game is not tied to this menu: its output goes to a file (not a pipe) and it
+    runs in its own session, so closing the menu or the Terminal window does not close the game."""
+
     def __init__(self):
         self.proc = None
-        self.output = collections.deque(maxlen=60)
-        self.lock = threading.Lock()
+        self.log_path = os.path.join(HOME, "Library", "Logs", "Open Rails Menu", "last-run.txt")
 
     def running(self):
         return self.proc is not None and self.proc.poll() is None
-
-    def _pump(self, proc):
-        for line in proc.stdout:
-            with self.lock:
-                self.output.append(line.rstrip("\n"))
 
     def start(self, args):
         dotnet = find_dotnet()
@@ -459,10 +455,15 @@ class Game(object):
             return True, cmd
         env = dict(os.environ)
         env["DYLD_LIBRARY_PATH"] = "/opt/homebrew/lib:" + env.get("DYLD_LIBRARY_PATH", "")
-        self.output.clear()
-        self.proc = subprocess.Popen(cmd, cwd=PROGRAM_DIR, env=env, stdout=subprocess.PIPE,
-                                     stderr=subprocess.STDOUT, universal_newlines=True, errors="replace")
-        threading.Thread(target=self._pump, args=(self.proc,), daemon=True).start()
+        try:
+            os.makedirs(os.path.dirname(self.log_path), exist_ok=True)
+            out = open(self.log_path, "w")
+        except OSError:
+            out = subprocess.DEVNULL
+        self.proc = subprocess.Popen(cmd, cwd=PROGRAM_DIR, env=env, stdin=subprocess.DEVNULL, stdout=out,
+                                     stderr=subprocess.STDOUT, start_new_session=True)
+        if out is not subprocess.DEVNULL:
+            out.close()  # the game keeps its own copy of the file
         return True, cmd
 
     def status(self):
@@ -471,8 +472,11 @@ class Game(object):
         code = self.proc.poll()
         if code is None:
             return {"state": "running"}
-        with self.lock:
-            tail = list(self.output)[-25:]
+        try:
+            with open(self.log_path, "r", errors="replace") as f:
+                tail = f.read()[-6000:].splitlines()[-25:]
+        except OSError:
+            tail = []
         return {"state": "exited", "code": code, "tail": tail}
 
 
@@ -544,6 +548,10 @@ PAGE = r"""<!DOCTYPE html>
   html { background:#CBD1DA; }
   body { margin:0; min-height:100vh; display:flex; justify-content:center; align-items:flex-start; padding:28px 12px;
          font:11px/13px Tahoma,"Segoe UI",Arial,sans-serif; color:#000; }
+  html.native { background:var(--face); }
+  .native body { padding:0; display:block; min-height:0; }
+  .native #win { border:0; box-shadow:none; width:854px; }
+  .native #title { display:none; }
   #win { width:856px; background:var(--face); border:1px solid #7A8AA0; box-shadow:0 12px 36px rgba(0,0,0,.35); }
   #title { height:31px; background:#fff; display:flex; align-items:center; padding:0 9px; font:12px "Segoe UI",system-ui,sans-serif; }
   #title img { width:16px; height:16px; margin-right:8px; }
@@ -878,6 +886,10 @@ async function load() {
   onProfile(); restoreSelection();
 }
 document.addEventListener('DOMContentLoaded', () => {
+  if (/[?&]app=1/.test(location.search)) {   // inside the Mac app: look like a window, not a web page
+    document.documentElement.classList.add('native');
+    document.addEventListener('contextmenu', e => { if (e.target.tagName !== 'INPUT') e.preventDefault(); });
+  }
   fill($('season'), SEASONS.map((s, i) => ({label: s, value: i}))); $('season').selectedIndex = 1;
   fill($('weather'), WEATHERS.map((s, i) => ({label: s, value: i})));
   $('times').innerHTML = Array.from({length: 24}, (_, h) => '<option value="' + String(h).padStart(2, '0') + ':00">').join('');
@@ -929,11 +941,12 @@ class Handler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         if not self._host_ok():
             return self._send(403, "forbidden", "text/plain")
-        if self.path in ("/", "/index.html"):
+        route = urllib.parse.urlsplit(self.path).path
+        if route in ("/", "/index.html"):
             page = (PAGE.replace("__TOKEN__", TOKEN).replace("__LOGO__", LOGO_PNG).replace("__EXPOPEN__", EXPANDER_OPEN_PNG)
                     .replace("__EXPCLOSED__", EXPANDER_CLOSED_PNG).replace("__ORDOCS__", OR_DOCS_URL))
             return self._send(200, page, "text/html")
-        if self.path == "/manual":
+        if route == "/manual":
             local = local_manual()
             if local:
                 with open(local, "rb") as f:
@@ -941,10 +954,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
             return self._send(302, "", "text/plain", {"Location": MANUAL_URL})
         if not self._api_ok():
             return self._json({"error": "forbidden"}, 403)
-        if self.path == "/api/info":
+        if route == "/api/info":
             SNAPSHOT["roots"] = scan()
             return self._json({"roots": public_view(SNAPSHOT["roots"]), "checks": setup_checks(), "options": current_options()})
-        if self.path == "/api/status":
+        if route == "/api/status":
             return self._json(GAME.status())
         self._json({"error": "not found"}, 404)
 

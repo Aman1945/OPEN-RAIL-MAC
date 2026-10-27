@@ -65,11 +65,15 @@ Folder names can be upper or lower case; the menu copes with both.
 
 ## 4. Start the game
 
-The menu looks and works like the Open Rails menu on Windows.
+The menu is a Mac app with its own window. It looks and works like the Open Rails menu on Windows.
 
-1. Open the unzipped folder and **double-click `Open Rails Menu.command`**.
-    A Terminal window opens, and then the menu opens in your web browser.
-    *(If macOS refuses to open it, see "Troubleshooting".)*
+1. Open the unzipped folder and **double-click `Open Rails`** (the app with the green logo).
+    The menu window opens. *(If macOS refuses to open it, see "Troubleshooting".)*
+    The first time, if the app cannot find the game, it asks you to choose the folder you
+    unzipped; it remembers your choice.
+
+    *Alternative:* **`Open Rails Menu.command`** opens the same menu in your web browser instead.
+    Use it if the app does not start.
 2. **Check the big white panel on the right.** If something is missing (for example the .NET
     runtime or your content), it shows a red **Setup problem** with how to fix it.
 3. **Choose what to play:**
@@ -89,8 +93,9 @@ The menu looks and works like the Open Rails menu on Windows.
     activity and its briefing). Press the small arrow on a section to read all of it.
 4. Press **Start** (in the **Singleplayer** box). A game window opens. Loading a big route can take
     from a few seconds to several minutes. Please be patient.
-5. **Leave the Terminal window open while you play.** Closing it can also close the game.
-    When you are finished, close the game, then close the Terminal window (or press Ctrl + C in it).
+5. The game runs on its own: you can close the menu window while you play. To play something
+    else, close the game first, then use the menu again. (If you used `Open Rails Menu.command`,
+    close its Terminal window to quit the menu.)
 
 The menu remembers your last choices.
 
@@ -195,8 +200,8 @@ new `Program` folder, because the new zip contains a fresh one.
 | Problem | What to do |
 |---|---|
 | **Black screen, or "Loading.mgfx is missing"** | You are using a build made from the source code. Use the zip from the Releases page (section 2). |
-| **macOS says the file "cannot be opened" or is from an unidentified developer** | Run the `xattr -dr com.apple.quarantine .` command from section 2, step 3. Or open **System Settings**, **Privacy & Security**, scroll down, and press **Open Anyway** next to the blocked file. |
-| **"Python 3 was not found"** | In Terminal run `xcode-select --install`, then try again. (Homebrew installs this normally.) |
+| **macOS says the app or file "cannot be opened" or is from an unidentified developer** | Run the `xattr -dr com.apple.quarantine .` command from section 2, step 3. Or open **System Settings**, **Privacy & Security**, scroll down, and press **Open Anyway** next to the blocked app. |
+| **"Python 3 was not found" (the app or the .command file says so)** | In Terminal run `xcode-select --install`, then try again. (Homebrew installs this normally.) |
 | **The menu shows a red "Setup problem" about the .NET runtime** | In Terminal run `brew install dotnet`. |
 | **The route list is empty** | The menu cannot find your content. See section 3, or press **Content** in the menu and add the folder. |
 | **The frame rate drops, or the game feels slow (for example when looking back)** | Lower the **Viewing distance** in **Options** (section 4, "Smoother frame rate"). |

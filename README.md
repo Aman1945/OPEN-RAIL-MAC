@@ -41,9 +41,10 @@ build instead of the repository ZIP:
    cd ~/Downloads/OpenRails-macOS-arm64
    xattr -dr com.apple.quarantine .   # lets macOS run the downloaded libraries
    ```
-4. Double-click **`Open Rails Menu.command`**. The menu opens in your web browser and looks and
+4. Double-click **`Open Rails`** (the app). The menu opens in its own window and looks and
    works like the Open Rails menu on Windows: pick a route, an Activity or an Explore run
    (locomotive, consist, path, time, season, weather), and press **Start**.
+   (`Open Rails Menu.command` opens the same menu in your web browser instead.)
 
 New here? Read the **[User Manual](macOS/USER-MANUAL.md)**: install, starting the game, the
 keys, troubleshooting.
