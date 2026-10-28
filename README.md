@@ -17,7 +17,7 @@ It has been confirmed running successfully after a full set of cross-platform fi
 ## ✅ Status
 
 - Runs natively on **Apple Silicon (arm64)** macOS.
-- Uses the **.NET runtime** with **SDL2** and **OpenAL** (via Homebrew) for windowing,
+- Uses the **.NET runtime** (via Homebrew) with **SDL2** (included in the download) and **OpenAL** for windowing,
   input and audio.
 - Loads standard MSTS / Open Rails route and rolling-stock content, same as the
   Windows version.
@@ -63,7 +63,7 @@ build instead of the repository ZIP:
    [latest Release](https://github.com/Aman1945/OPEN-RAIL-MAC/releases/latest).
 2. Install the prerequisites once (needs [Homebrew](https://brew.sh)):
    ```bash
-   brew install dotnet sdl2 openal-soft
+   brew install dotnet openal-soft
    ```
 3. Unzip, then in Terminal (once):
    ```bash
@@ -99,7 +99,7 @@ source ZIP. Use the Release download above — it includes all 12 compiled shade
   via `--roll-forward LatestMajor`).
 - **Homebrew** with the native libraries:
   ```bash
-  brew install sdl2 openal-soft dotnet
+  brew install openal-soft dotnet
   ```
 - MSTS / Open Rails **route + rolling-stock content** to actually drive a train
   (same content the Windows Open Rails uses).

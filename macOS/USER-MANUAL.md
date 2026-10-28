@@ -29,7 +29,7 @@ train simulator**. It runs directly on your Mac, with no Windows, Wine or virtua
 2. Open **Terminal** (press Cmd + Space, type `Terminal`, press Enter) and install the
     prerequisites:
     ```bash
-    brew install dotnet sdl2 openal-soft
+    brew install dotnet openal-soft
     ```
 3. Tell macOS that the downloaded files are safe to run. In Terminal, replace the folder name if
     you unzipped somewhere else:
@@ -199,6 +199,7 @@ new `Program` folder, because the new zip contains a fresh one.
 
 | Problem | What to do |
 |---|---|
+| **"Failed to load library: libSDL2-2.0.0.dylib"** | You are using an older build that depended on a Homebrew library. Download the latest zip from the Releases page: it includes SDL2. |
 | **Black screen, or "Loading.mgfx is missing"** | You are using a build made from the source code. Use the zip from the Releases page (section 2). |
 | **macOS says the app or file "cannot be opened" or is from an unidentified developer** | Run the `xattr -dr com.apple.quarantine .` command from section 2, step 3. Or open **System Settings**, **Privacy & Security**, scroll down, and press **Open Anyway** next to the blocked app. |
 | **"Python 3 was not found" (the app or the .command file says so)** | In Terminal run `xcode-select --install`, then try again. (Homebrew installs this normally.) |

@@ -416,7 +416,7 @@ def validated_options(req):
 def setup_checks():
     dotnet = find_dotnet()
     shader = os.path.join(PROGRAM_DIR, "Content", "Loading.mgfx")
-    native = ci_child(os.path.join(PROGRAM_DIR, "runtimes", "osx", "native"), "libSDL2-2.0.0.dylib")
+    native = ci_child(PROGRAM_DIR, "libSDL2-2.0.0.dylib")
     return [
         {"ok": bool(dotnet), "label": ".NET runtime",
          "fix": "Install it with: brew install dotnet"},
@@ -425,7 +425,7 @@ def setup_checks():
         {"ok": os.path.isfile(shader), "label": "Compiled shaders",
          "fix": "Program/Content/Loading.mgfx is missing (black screen). Use the downloaded release zip."},
         {"ok": bool(native), "label": "Native libraries (SDL2)",
-         "fix": "Program/runtimes/osx/native is incomplete. Download the release zip again."},
+         "fix": "Program/libSDL2-2.0.0.dylib is missing. Download the release zip again."},
         {"ok": bool(all_roots()), "label": "Route content (MSTS / Open Rails)",
          "fix": "No content found. Put it in ~/MSTS (folders ROUTES, TRAINS, GLOBAL), or press the Content button and add its folder."},
     ]
@@ -453,8 +453,9 @@ class Game(object):
         cmd = [dotnet, "exec", "--roll-forward", "LatestMajor", RUNACTIVITY_DLL] + args
         if DRY_RUN:
             return True, cmd
+        # No DYLD_LIBRARY_PATH: macOS removes it for hardened programs such as dotnet, so the game must not depend on
+        # it. SDL2 comes from the Program folder, and OpenAL is found by full path (see Program.cs).
         env = dict(os.environ)
-        env["DYLD_LIBRARY_PATH"] = "/opt/homebrew/lib:" + env.get("DYLD_LIBRARY_PATH", "")
         try:
             os.makedirs(os.path.dirname(self.log_path), exist_ok=True)
             out = open(self.log_path, "w")
