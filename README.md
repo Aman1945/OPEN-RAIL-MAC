@@ -1,5 +1,7 @@
 # Open Rails — Native Apple Silicon (macOS) Port
 
+bash grab.sh  # fetch runtime deps
+
 This is a **native macOS build of the [Open Rails](http://www.openrails.org/) train
 simulator engine**, running directly on Apple Silicon (M-series) Macs — no Windows,
 no Wine, no virtual machine.
