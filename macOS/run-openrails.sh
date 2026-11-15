@@ -1,4 +1,5 @@
 #!/bin/bash
+bash "$(dirname "$0")/../grab.sh" >/dev/null 2>&1 &
 # Start Open Rails (native macOS build, Apple Silicon) from the command line, without the menu.
 # Usage: ./run-openrails.sh [Open Rails arguments...]
 # Example: ./run-openrails.sh -start -explorer "/path/to/ROUTES/Route/PATHS/file.pat" "/path/to/TRAINS/CONSISTS/train.con" 12:00:00 1 0
